@@ -7,9 +7,24 @@ import { initializeTheme } from './hooks/use-appearance';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
+    resolve: (name) => {
+        // Obtenemos todas las páginas posibles una sola vez.
+        const pages = import.meta.glob('./pages/**/*.page.tsx');
+
+        const lastSegment = name.includes('/') ? name.substring(name.lastIndexOf('/') + 1) : name;
+
+        const potentialPaths = [
+            `./pages/${name}.page.tsx`,
+            `./pages/${name}/${lastSegment}.page.tsx`
+        ];
+
+        const pagePath = potentialPaths.find(path => pages[path]);
+
+        return resolvePageComponent(pagePath || `./pages/${name}.page.tsx`, pages);
+    },
     setup({ el, App, props }) {
         const root = createRoot(el);
 

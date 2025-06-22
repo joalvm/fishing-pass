@@ -30,7 +30,7 @@ export default function AuthLayout({ children, title, description, ...props }: P
     }, [images.length]);
 
     return (
-        <div className="grid min-h-svh shadow-2xl inset-shadow-zinc-950 lg:grid-cols-2" {...props}>
+        <div className="grid min-h-svh shadow-2xl inset-shadow-zinc-950 lg:grid-cols-2">
             <div className="flex flex-col gap-4 p-2 md:p-5">
                 <div className="flex justify-center gap-2 md:justify-start">
                     <a href="#" className="flex items-center gap-2 font-medium">
@@ -44,14 +44,12 @@ export default function AuthLayout({ children, title, description, ...props }: P
                         {appearance === 'light' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                     </button>
                 </div>
-                <div className="flex flex-1 items-center justify-center">
-                    <div className="w-full max-w-xs">
-                        <div className="flex flex-col items-center gap-2 text-center">
-                            <h1 className="text-2xl font-bold">{title}</h1>
-                            <p className="text-sm text-balance text-muted-foreground">{description}</p>
-                        </div>
-                        {children}
+                <div className="flex flex-1 flex-col items-center justify-center gap-6">
+                    <div className="flex flex-col items-center gap-2 text-center">
+                        <h1 className="text-2xl font-bold">{title}</h1>
+                        <p className="text-sm text-balance text-muted-foreground">{description}</p>
                     </div>
+                    <div {...props}>{children}</div>
                 </div>
             </div>
             {/* Panel Derecho - Carrusel de Imágenes */}

@@ -4,26 +4,28 @@ namespace App\Models;
 
 use App\Enums\CharType;
 use App\Enums\LengthType;
+use App\Models\Company\Company;
 use App\Models\Person\Person;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Lang;
 use Joalvm\Utils\Rules\PgInteger;
 
 /**
- * @property      int                          $id
- * @property      string                       $name
- * @property      string                       $abbr
- * @property      LengthType                   $length_type
- * @property      int                          $length
- * @property      CharType                     $char_type
- * @property-read Collection<array-key,Person> $persons
+ * @property      int                           $id
+ * @property      string                        $name
+ * @property      string                        $abbr
+ * @property      LengthType                    $length_type
+ * @property      int                           $length
+ * @property      CharType                      $char_type
+ * @property-read Collection<array-key,Person>  $persons
+ * @property-read Collection<array-key,Company> $companies
  */
 class DocumentType extends Model
 {
+    /** @use HasFactory<\Database\Factories\DocumentTypeFactory> */
     use HasFactory;
     use SoftDeletes;
 
@@ -54,9 +56,14 @@ class DocumentType extends Model
         ];
     }
 
-    public function persons(): HasMany
+    public function persons()
     {
-        return $this->hasMany(Person::class);
+        return $this->hasMany(Person::class, 'document_type_id');
+    }
+
+    public function companies()
+    {
+        return $this->hasMany(Company::class, 'document_type_id');
     }
 
     public function unique(string $column): callable

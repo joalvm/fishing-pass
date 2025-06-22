@@ -9,7 +9,7 @@ import { ComponentProps } from 'react';
 
 export default function Login({ className, ...props }: ComponentProps<'form'>) {
     return (
-        <AuthLayout title="FISHING PASS" description="Inicia sesión en tu cuenta para continuar">
+        <AuthLayout title="FISHING PASS" description="Inicia sesión en tu cuenta para continuar" className="w-full max-w-xs">
             <form className={cn('flex flex-col gap-6', className)} {...props}>
                 <div className="flex flex-col items-center gap-2 text-center"></div>
                 <div className="grid gap-6">

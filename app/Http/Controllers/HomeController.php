@@ -15,11 +15,4 @@ class HomeController extends Controller
             'message' => 'Welcome to the application! Please log in to continue.',
         ]);
     }
-
-    public function register()
-    {
-        return Inertia::render('register', [
-            'message' => 'Registra a tu empresa para comenzar a usar la aplicación.',
-        ]);
-    }
 }

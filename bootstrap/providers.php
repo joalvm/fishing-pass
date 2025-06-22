@@ -2,5 +2,5 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    // Joalvm\Utils\UtilsServiceProvider::class,
+    App\Providers\BindingServiceProvider::class,
 ];

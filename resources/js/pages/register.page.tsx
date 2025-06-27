@@ -16,7 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import AuthLayout from '@/layouts/auth-layout';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { ArrowLeft, Building2Icon, User2Icon } from 'lucide-react';
 import { ComponentProps, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -167,6 +167,7 @@ export default function Register({ className, documentTypes, sidebarOpen, ...pro
 
     return (
         <AuthLayout title="FISHING PASS" description="Complete los datos de su empresa para solicitar acceso al sistema" className="w-full max-w-2xl">
+            <Head title="Registro de Empresa" />
             <Toaster position="top-center" />
             <div className="mx-auto flex w-full max-w-lg flex-col justify-center space-y-6">
                 <Form {...form}>

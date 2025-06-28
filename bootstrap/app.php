@@ -15,6 +15,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
+        $middleware->redirectGuestsTo('/login');
+
+        $middleware->alias([
+            'cguest' => App\Http\Middleware\RedirectIfAuthenticated::class,
+            'platform' => App\Http\Middleware\CheckUserPlatform::class,
+        ]);
 
         $middleware->web(append: [
             HandleAppearance::class,

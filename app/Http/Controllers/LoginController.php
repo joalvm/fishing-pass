@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -36,9 +37,16 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        dd($request->user());
+        /** @var User $user */
+        $user = Auth::user();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user->loadMissing('person.company');
+
+        if ($user->person and $user->person->company_id) {
+            return redirect()->intended(route('client.dashboard', absolute: false));
+        }
+
+        return redirect()->intended(route('admin.dashboard', absolute: false));
     }
 
     /**

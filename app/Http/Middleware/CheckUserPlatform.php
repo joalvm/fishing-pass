@@ -15,14 +15,26 @@ class CheckUserPlatform
         $user = Auth::user();
         $person = $user?->person;
 
-        if ('admin' === $platform and (!$person || !$person->company_id)) {
+        if ('admin' === $platform && (!$person || !$person->company_id)) {
             return $next($request);
         }
 
-        if ('client' === $platform and $person and $person->company_id) {
+        if ('client' === $platform && $person && $person->company_id) {
             return $next($request);
         }
 
-        abort(403, 'No tienes acceso a esta sección.');
+        // Redirección amigable según el tipo de usuario
+        if ($user) {
+            if ($person && $person->company_id) {
+                return redirect()->intended(route('client.dashboard', absolute: false));
+            }
+
+            return redirect()->intended(route('admin.dashboard', absolute: false));
+        }
+
+        return redirect()
+            ->intended(route('login.create', absolute: false))
+            ->with('error', 'Acceso denegado. No tienes permiso para acceder a esta sección.')
+        ;
     }
 }

@@ -4,7 +4,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [App\Http\Controllers\LoginController::class, 'create'])->name('login');
+Route::get('/', [App\Http\Controllers\LoginController::class, 'create'])->name('login.create');
+Route::post('/login', [App\Http\Controllers\LoginController::class, 'store'])
+    ->name('login.store')
+    ->middleware('throttle:6,1')
+;
 Route::get('/register', [App\Http\Controllers\RegisterController::class, 'create'])->name('register.create');
 Route::post('/register', [App\Http\Controllers\RegisterController::class, 'store'])
     ->name('register.store')

@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { EyeIcon, EyeOffIcon, GitCompareIcon, LoaderCircleIcon } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
-import { z } from 'zod';
 
 interface LoginProps {
     status?: string;
@@ -20,12 +19,6 @@ type LoginForm = {
     password: string;
     remember: boolean;
 };
-
-const schema = z.object({
-    email: z.string().min(1, 'El nombre de usuario es obligatorio'),
-    password: z.string().min(1, 'La contraseña es obligatoria'),
-    remember: z.boolean().default(false),
-});
 
 export default function Login({ status, canResetPassword, ...props }: LoginProps) {
     const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
@@ -53,8 +46,8 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
                 <div className="flex flex-col items-center gap-2 text-center">asqw</div>
                 <div className="grid gap-6">
                     <div className="grid gap-3">
-                        <Label htmlFor="email" className={cn(errors.email && 'text-destructive')}>
-                            Email address
+                        <Label htmlFor="email" className={cn('gap-0', errors.email && 'text-destructive')}>
+                            Correo electrónico<small>*</small>
                         </Label>
                         <Input
                             id="email"
@@ -71,13 +64,15 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
                                 errors.email &&
                                     'border-destructive hover:border-destructive focus-visible:border-destructive focus-visible:ring-destructive',
                             )}
-                            placeholder="email@example.com"
+                            placeholder="email@correo.com"
                         />
                         <InputError message={errors.email} />
                     </div>
                     <div className="grid gap-3">
                         <div className="flex items-center justify-between">
-                            <Label htmlFor="password">Contraseña *</Label>
+                            <Label htmlFor="password" className={cn('gap-0', errors.password && 'text-destructive')}>
+                                Contraseña<small>*</small>
+                            </Label>
                             <a href="#" aria-disabled className="ml-auto text-sm underline-offset-4 hover:underline">
                                 ¿Olvidaste tu contraseña?
                             </a>
@@ -92,7 +87,7 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
                                 autoComplete="current-password"
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
-                                placeholder="Password"
+                                placeholder="Contraseña"
                                 className={cn(
                                     '[&::-ms-reveal]:hidden',
                                     errors.password &&

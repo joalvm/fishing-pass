@@ -45,8 +45,7 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
         <AuthLayout title="FISHING PASS" description="Inicia sesión en tu cuenta para continuar" className="w-full max-w-xs">
             <Head title="Iniciar sesión" />
             <form className="flex flex-col gap-6" onSubmit={submit} {...props}>
-                <div className="flex flex-col items-center gap-2 text-center">asqw</div>
-                <div className="grid gap-6">
+                <div className="grid gap-6 text-center">
                     <div className="grid gap-3">
                         <Label htmlFor="email" className={cn('gap-0', errors.email && 'text-destructive')}>
                             Correo electrónico<small>*</small>

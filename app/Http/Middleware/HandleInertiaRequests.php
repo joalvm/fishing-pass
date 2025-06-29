@@ -2,10 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Foundation\Inspiring;
+use App\Models\Company\Company;
+use App\Models\Person\Person;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -37,20 +38,72 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
-
         return [
             ...parent::share($request),
             'name' => config('app.name'),
-            'quote' => ['message' => trim($message), 'author' => trim($author)],
-            'auth' => [
-                'user' => $request->user(),
-            ],
-            'ziggy' => fn (): array => [
-                ...(new Ziggy())->toArray(),
-                'location' => $request->url(),
-            ],
-            'sidebarOpen' => !$request->hasCookie('sidebar_state') || 'true' === $request->cookie('sidebar_state'),
+            'auth' => $this->getAuth($request),
+        ];
+    }
+
+    private function getAuth(Request $request): ?array
+    {
+        /** @var User $user */
+        $user = $request->user();
+        if (!$user) {
+            return null;
+        }
+
+        return [
+            'type' => $user->person->company ? 'client' : 'internal',
+            'user' => $this->getUser($user),
+            'person' => $this->getPerson($user->person),
+            'company' => $this->getCompany($user->person->company),
+        ];
+    }
+
+    private function getUser(User $model): array
+    {
+        return [
+            'id' => $model->id,
+            'email' => $model->email,
+            'avatar_url' => $model->avatar_url,
+            'is_super_admin' => $model->is_super_admin,
+            'enabled' => $model->enabled,
+            'email_verified_at' => $model->email_verified_at,
+        ];
+    }
+
+    private function getPerson(Person $model): array
+    {
+        return [
+            'id' => $model->id,
+            'document_type_id' => $model->document_type_id,
+            'document_number' => $model->document_number,
+            'first_name' => $model->first_name,
+            'middle_name' => $model->middle_name,
+            'last_name_paternal' => $model->last_name_paternal,
+            'last_name_maternal' => $model->last_name_maternal,
+            'gender' => $model->gender->value,
+            'email' => $model->email,
+            'phone' => $model->phone,
+        ];
+    }
+
+    private function getCompany(?Company $company): ?array
+    {
+        if (!$company) {
+            return null;
+        }
+
+        return [
+            'id' => $company->id,
+            'entity_type' => $company->entity_type->value,
+            'business_name' => $company->business_name,
+            'document_type_id' => $company->document_type_id,
+            'document_number' => $company->document_number,
+            'email' => $company->email,
+            'phone' => $company->phone,
+            'address' => $company->address,
         ];
     }
 }

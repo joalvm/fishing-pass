@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\DataObjects\Repositories\CreateDocumentTypeData;
 use App\DataObjects\Repositories\UpdateDocumentTypeData;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDocumentTypeRequest;
 use App\Http\Requests\UpdateDocumentTypeRequest;
 use App\Interfaces\DocumentTypesInterface;

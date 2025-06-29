@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { router } from '@inertiajs/react';
+import { PropsWithChildren } from 'react';
 
-export default function DashboardPage() {
+export default function DashboardPage(props: PropsWithChildren) {
     const handleLogout = () => {
         router.delete(route('logout'), {
             replace: true,
@@ -16,6 +17,7 @@ export default function DashboardPage() {
             <Button type="button" onClick={handleLogout} className="mt-6">
                 Cerrar sesión
             </Button>
+            <pre>{JSON.stringify(props, null, 2)}</pre>
         </div>
     );
 }

@@ -38,19 +38,8 @@ interface DocumentType {
     char_type: string;
 }
 
-type CompanyFormData = {
-    entity_type: CompanyEntityType;
-    business_name: string;
-    document_type_id: number;
-    document_number: string;
-    email: string;
-    phone?: string | null;
-    address: string;
-};
-
 interface RegisterProps extends ComponentProps<'form'> {
     documentTypes: DocumentType[];
-    sidebarOpen?: boolean;
 }
 
 // Schema de validación con Zod - actualizar para validación dinámica
@@ -114,7 +103,7 @@ const createCompanySchema = function (documentTypes: DocumentType[]) {
     return schema;
 };
 
-export default function Register({ className, documentTypes, sidebarOpen, ...props }: RegisterProps) {
+export default function Register({ className, documentTypes, ...props }: RegisterProps) {
     const [isJuridical, setIsJuridical] = useState(true);
     const [successRegister, setSuccesRegister] = useState(false);
 

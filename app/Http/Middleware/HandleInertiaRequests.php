@@ -7,6 +7,7 @@ use App\Models\Person\Person;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -42,6 +43,10 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => $this->getAuth($request),
+            'ziggy' => fn (): array => [
+                ...(new Ziggy())->toArray(),
+                'location' => $request->url(),
+            ],
         ];
     }
 

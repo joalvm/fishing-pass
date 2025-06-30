@@ -22,7 +22,7 @@ Route::middleware('cguest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::delete('/logout', [App\Http\Controllers\LoginController::class, 'destroy'])->name('logout');
+    Route::post('/logout', [App\Http\Controllers\LoginController::class, 'destroy'])->name('logout');
 });
 
 require __DIR__ . '/admin.php';

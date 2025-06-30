@@ -1,8 +1,10 @@
 import { LucideIcon } from 'lucide-react';
-import type { Config } from 'ziggy-js';
 
 export interface Auth {
+    type: 'internal' | 'client';
     user: User;
+    person: Person;
+    company: Company | null;
 }
 
 export interface BreadcrumbItem {
@@ -24,20 +26,40 @@ export interface NavItem {
 
 export interface SharedData {
     name: string;
-    quote: { message: string; author: string };
     auth: Auth;
-    ziggy: Config & { location: string };
-    sidebarOpen: boolean;
     [key: string]: unknown;
 }
 
 export interface User {
     id: number;
-    name: string;
     email: string;
-    avatar?: string;
+    avatar_url: string | null;
+    is_super_admin: boolean;
+    enabled: boolean;
     email_verified_at: string | null;
-    created_at: string;
-    updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface Person {
+    id:number;
+    document_type_id: number;
+    document_number: string;
+    first_name: string;
+    middle_name: string | null;
+    last_name_paternal: string;
+    last_name_maternal: string | null;
+    gender: 'MALE' | 'FEMALE';
+    email: string | null;
+    phone: string | null;
+}
+
+export interface Company {
+    id: number;
+    entity_type: 'JURIDICAL_PERSON' | 'NATURAL_PERSON';
+    business_name: string;
+    document_type_id: number;
+    document_number: string;
+    email: string;
+    address: string;
+    phone: string | null;
 }

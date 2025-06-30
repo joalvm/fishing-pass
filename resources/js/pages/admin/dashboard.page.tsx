@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import Dashboard from '@/layouts/dashboard/dashboard.layout';
 import { router } from '@inertiajs/react';
 import { PropsWithChildren } from 'react';
 
@@ -10,14 +11,14 @@ export default function DashboardPage(props: PropsWithChildren) {
     };
 
     return (
-        <div className="flex h-screen flex-col items-center justify-center">
-            <h1 className="mb-4 text-4xl font-bold">Dashboard</h1>
-            <p className="text-lg">Welcome to the dashboard!</p>
-            <p className="mt-2 text-sm text-gray-500">This is a placeholder for the dashboard content.</p>
-            <Button type="button" onClick={handleLogout} className="mt-6">
-                Cerrar sesión
-            </Button>
-            <pre>{JSON.stringify(props, null, 2)}</pre>
-        </div>
+        <Dashboard breadcrumbs={[{ title: 'Dashboard', href: route('admin.dashboard') }]}>
+            <div className="flex h-full flex-col items-center justify-center">
+                <h1 className="mb-4 text-2xl font-bold">Welcome to the Dashboard</h1>
+                <p className="mb-6">This is your dashboard where you can manage your application.</p>
+                <Button onClick={handleLogout} variant="destructive">
+                    Logout
+                </Button>
+            </div>
+        </Dashboard>
     );
 }

@@ -7,9 +7,9 @@ import AuthLayout from '@/layouts/auth-layout';
 import { cn } from '@/lib/utils';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { EyeIcon, EyeOffIcon, GitCompareIcon, LoaderCircleIcon } from 'lucide-react';
-import { FormEventHandler, useState } from 'react';
+import { ComponentProps, FormEventHandler, useState } from 'react';
 
-interface LoginProps {
+interface LoginProps extends ComponentProps<'form'> {
     status?: string;
     canResetPassword?: boolean;
 }
@@ -21,7 +21,7 @@ type LoginForm = {
 };
 
 export default function Login({ status, canResetPassword, ...props }: LoginProps) {
-    const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
+    const { data, ...form } = useForm<Required<LoginForm>>({
         email: '',
         password: '',
         remember: false,
@@ -35,8 +35,8 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('login.store'), {
-            onFinish: () => reset('password'),
+        form.post(route('login.store'), {
+            onFinish: () => form.reset('password'),
             replace: true,
         });
     };
@@ -47,7 +47,7 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
             <form className="flex flex-col gap-6" onSubmit={submit} {...props}>
                 <div className="grid gap-6 text-center">
                     <div className="grid gap-3">
-                        <Label htmlFor="email" className={cn('gap-0', errors.email && 'text-destructive')}>
+                        <Label htmlFor="email" className={cn('gap-0', form.errors.email && 'text-destructive')}>
                             Correo electrónico<small>*</small>
                         </Label>
                         <Input
@@ -57,21 +57,21 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
                             autoFocus
                             tabIndex={1}
                             autoComplete="email"
-                            disabled={processing}
+                            disabled={form.processing}
                             value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
+                            onChange={(e) => form.setData('email', e.target.value)}
                             className={cn(
                                 '[&::-ms-reveal]:hidden',
-                                errors.email &&
+                                form.errors.email &&
                                     'border-destructive hover:border-destructive focus-visible:border-destructive focus-visible:ring-destructive',
                             )}
                             placeholder="email@correo.com"
                         />
-                        <InputError message={errors.email} />
+                        <InputError message={form.errors.email} />
                     </div>
                     <div className="grid gap-3">
                         <div className="flex items-center justify-between">
-                            <Label htmlFor="password" className={cn('gap-0', errors.password && 'text-destructive')}>
+                            <Label htmlFor="password" className={cn('gap-0', form.errors.password && 'text-destructive')}>
                                 Contraseña<small>*</small>
                             </Label>
                             <a href="#" aria-disabled className="ml-auto text-sm underline-offset-4 hover:underline">
@@ -87,14 +87,14 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
                                 tabIndex={2}
                                 autoComplete="current-password"
                                 value={data.password}
-                                onChange={(e) => setData('password', e.target.value)}
+                                onChange={(e) => form.setData('password', e.target.value)}
                                 placeholder="Contraseña"
                                 className={cn(
                                     '[&::-ms-reveal]:hidden',
-                                    errors.password &&
+                                    form.errors.password &&
                                         'border-destructive hover:border-destructive focus-visible:border-destructive focus-visible:ring-destructive',
                                 )}
-                                disabled={processing}
+                                disabled={form.processing}
                             />
                             <Button
                                 type="button"
@@ -102,14 +102,14 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
                                 size="sm"
                                 className={cn(
                                     'hover:bg-input-hover focus:bg-input-focus absolute top-1/2 right-0.5 z-20 -translate-y-1/2',
-                                    errors.password && 'text-destructive',
+                                    form.errors.password && 'text-destructive',
                                 )}
                                 onClick={toggleVisibility}
                             >
                                 {!visible ? <EyeIcon className="h-4 w-4" /> : <EyeOffIcon className="h-4 w-4" />}
                             </Button>
                         </div>
-                        <InputError message={errors.password} />
+                        <InputError message={form.errors.password} />
                     </div>
                     <div className="grid gap-3">
                         <div className="flex items-center gap-2">
@@ -118,15 +118,15 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
                                 name="remember"
                                 checked={data.remember}
                                 tabIndex={3}
-                                disabled={processing}
+                                disabled={form.processing}
                                 value={data.remember ? 'on' : 'off'}
-                                onCheckedChange={(chk) => setData('remember', !data.remember)}
+                                onCheckedChange={(chk) => form.setData('remember', !data.remember)}
                             />
                             <Label htmlFor="remember">Recuérdame</Label>
                         </div>
                     </div>
-                    <Button type="submit" className="w-full" tabIndex={4} disabled={processing}>
-                        {processing && <LoaderCircleIcon className="h-4 w-4 animate-spin" />}
+                    <Button type="submit" className="w-full" tabIndex={4} disabled={form.processing}>
+                        {form.processing && <LoaderCircleIcon className="h-4 w-4 animate-spin" />}
                         Acceder
                     </Button>
                     <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">

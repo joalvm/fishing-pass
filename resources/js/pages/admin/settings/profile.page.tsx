@@ -1,4 +1,4 @@
-import HeadingSmall from '@/components/heading-small';
+import Heading from '@/layouts/app/components/heading.component';
 import SettingsLayout from '@/layouts/app/settings.layout';
 
 const breadcrumbs = [
@@ -11,7 +11,7 @@ const breadcrumbs = [
 export default function ProfilePage() {
     return (
         <SettingsLayout breadcrumbs={breadcrumbs}>
-            <HeadingSmall title="Configuración de perfil" description="Actualiza tu información de perfil aquí." />
+            <Heading title="Configuración de perfil" description="Actualiza tu información de perfil aquí." size="small" />
         </SettingsLayout>
     );
 }

@@ -1,5 +1,5 @@
-import HeadingSmall from '@/components/heading-small';
 import { Appearance, useAppearance } from '@/hooks/use-appearance';
+import Heading from '@/layouts/app/components/heading.component';
 import SettingsLayout from '@/layouts/app/settings.layout';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
@@ -24,7 +24,7 @@ export default function AppearancePage({ className, ...props }: React.HTMLAttrib
     return (
         <SettingsLayout breadcrumbs={breadcrumbs}>
             <div className="space-y-6">
-                <HeadingSmall title="Configuración de apariencia" description="Actualiza la configuración de apariencia de tu cuenta" />
+                <Heading title="Configuración de apariencia" description="Actualiza la configuración de apariencia de tu cuenta" size="small" />
                 <div className={cn('inline-flex gap-1 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-800', className)} {...props}>
                     {tabs.map(({ value, icon: Icon, label }) => (
                         <button

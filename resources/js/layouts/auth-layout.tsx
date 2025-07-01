@@ -1,5 +1,5 @@
 import { useAppearance } from '@/hooks/use-appearance';
-import AppLogo from '@/layouts/dashboard/components/sidebar/app-logo';
+import AppLogo from '@/layouts/app/components/sidebar/app-logo';
 import { Moon, Sun } from 'lucide-react';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 

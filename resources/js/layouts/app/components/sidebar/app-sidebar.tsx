@@ -17,7 +17,7 @@ import { NavUser } from './nav-user/nav-user';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Panel de control',
         href: route('admin.dashboard'),
         icon: LayoutGrid,
     },
@@ -26,12 +26,12 @@ const mainNavItems: NavItem[] = [
 export function AppSidebar() {
     const { open } = useSidebar();
     return (
-        <Sidebar collapsible="icon">
+        <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch className="justify-center">
+                            <Link href="/" prefetch className="justify-center">
                                 <img src="/logo.svg" alt="Express Pass Logo" className={cn('h-8', { hidden: !open })} />
                                 <img src="/icon.svg" alt="Express Pass Logo" className={cn('h-5', { hidden: open })} />
                             </Link>

@@ -1,7 +1,8 @@
+import AuthType from '@/enums/auth-type.enum';
 import { LucideIcon } from 'lucide-react';
 
 export interface Auth {
-    type: 'internal' | 'client';
+    type: AuthType;
     user: User;
     person: Person;
     company: Company | null;

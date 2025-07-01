@@ -1,9 +1,9 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { UserInfo } from '@/layouts/dashboard/components/sidebar/nav-user/user-info';
-import { UserMenuContent } from '@/layouts/dashboard/components/sidebar/nav-user/user-menu-content';
 import { ChevronsUpDown } from 'lucide-react';
+import { UserInfo } from './user-info';
+import { UserMenuContent } from './user-menu-content';
 
 export function NavUser() {
     const { state } = useSidebar();

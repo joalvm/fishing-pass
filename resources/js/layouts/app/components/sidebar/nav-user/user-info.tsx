@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useDashboard } from '@/layouts/dashboard/dashboard.context';
+import { useApp } from '@/layouts/app/app.context';
 
 export function UserInfo() {
-    const { user, person, getInitials } = useDashboard();
+    const { user, person, getInitials } = useApp();
     return (
         <>
             <Avatar className="h-8 w-8 overflow-hidden rounded-full">

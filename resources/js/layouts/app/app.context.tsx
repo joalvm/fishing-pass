@@ -1,9 +1,10 @@
+import AuthType from '@/enums/auth-type.enum';
 import { Company, Person, SharedData, User } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-interface DashboardContextProps {
-    authType: 'internal' | 'client';
+interface AppContextProps {
+    authType: AuthType;
     user: User;
     person: Person;
     company: Company | null;
@@ -12,11 +13,11 @@ interface DashboardContextProps {
     toggleSidebar: () => void;
 }
 
-const DashboardContext = createContext<DashboardContextProps | undefined>(undefined);
+const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 const SIDEBAR_STORAGE_KEY = 'dashboard_sidebar_open';
 
-export function DashboardProvider({ children }: PropsWithChildren) {
+export function AppProvider({ children }: PropsWithChildren) {
     const { auth } = usePage<SharedData>().props;
     const [sidebarOpen, setSidebarOpenState] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
@@ -57,13 +58,13 @@ export function DashboardProvider({ children }: PropsWithChildren) {
         [auth, sidebarOpen, toggleSidebar],
     );
 
-    return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>;
+    return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
 
-export function useDashboard() {
-    const context = useContext(DashboardContext);
+export function useApp() {
+    const context = useContext(AppContext);
     if (!context) {
-        throw new Error('useDashboard debe usarse dentro de DashboardProvider');
+        throw new Error('useDashboard debe usarse dentro de AppProvider');
     }
     return context;
 }

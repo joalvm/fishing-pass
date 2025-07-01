@@ -7,7 +7,17 @@ Route::middleware(['auth', 'platform:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        // Aquí puedes agregar más rutas de admin
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::prefix('settings')
+            ->name('settings.')
+            ->group(function () {
+                Route::get('profile', [DashboardController::class, 'profile'])->name('profile');
+                Route::get('password', [DashboardController::class, 'password'])->name('password');
+                Route::get('appearance', [DashboardController::class, 'appearance'])->name('appearance');
+
+                Route::redirect('/', 'settings/profile')->name('index');
+            })
+        ;
     })
 ;

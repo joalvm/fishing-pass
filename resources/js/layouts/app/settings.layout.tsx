@@ -15,12 +15,12 @@ function sideNavItems(authType: AuthType) {
     return [
         {
             title: 'Perfil',
-            href: route(`${prefix}.settings.profile`),
+            href: route(`${prefix}.settings.profile.edit`),
             icon: null,
         },
         {
             title: 'Contraseña',
-            href: route(`${prefix}.settings.password`),
+            href: route(`${prefix}.settings.password.edit`),
             icon: null,
         },
         {

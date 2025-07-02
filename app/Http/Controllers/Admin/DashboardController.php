@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Interfaces\DocumentTypesInterface;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class DashboardController
+class DashboardController extends Controller
 {
     public function __construct(protected DocumentTypesInterface $documentTypeRepository)
     {
@@ -15,18 +16,6 @@ class DashboardController
     public function index(): Response
     {
         return Inertia::render('admin/dashboard');
-    }
-
-    public function profile(): Response
-    {
-        return Inertia::render('admin/settings/profile', [
-            'documentTypes' => $this->documentTypeRepository->all(),
-        ]);
-    }
-
-    public function password(): Response
-    {
-        return Inertia::render('admin/settings/password');
     }
 
     public function appearance(): Response

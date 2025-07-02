@@ -1,4 +1,5 @@
 import InputError from '@/components/input-error';
+import InputPassword from '@/components/input-password';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -6,8 +7,8 @@ import { Switch } from '@/components/ui/switch';
 import AuthLayout from '@/layouts/auth-layout';
 import { cn } from '@/lib/utils';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { EyeIcon, EyeOffIcon, GitCompareIcon, LoaderCircleIcon } from 'lucide-react';
-import { ComponentProps, FormEventHandler, useState } from 'react';
+import { GitCompareIcon, LoaderCircleIcon } from 'lucide-react';
+import { ComponentProps, FormEventHandler } from 'react';
 
 interface LoginProps extends ComponentProps<'form'> {
     status?: string;
@@ -26,11 +27,6 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
         password: '',
         remember: false,
     });
-    const [visible, setVisible] = useState(false);
-
-    const toggleVisibility = () => {
-        setVisible(!visible);
-    };
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -78,37 +74,17 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
                                 ¿Olvidaste tu contraseña?
                             </a>
                         </div>
-                        <div className="relative flex items-center">
-                            <Input
-                                type={visible ? 'text' : 'password'}
-                                id="password"
-                                name="password"
-                                required
-                                tabIndex={2}
-                                autoComplete="current-password"
-                                value={data.password}
-                                onChange={(e) => form.setData('password', e.target.value)}
-                                placeholder="Contraseña"
-                                className={cn(
-                                    '[&::-ms-reveal]:hidden',
-                                    form.errors.password &&
-                                        'border-destructive hover:border-destructive focus-visible:border-destructive focus-visible:ring-destructive',
-                                )}
-                                disabled={form.processing}
-                            />
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                className={cn(
-                                    'hover:bg-input-hover focus:bg-input-focus absolute top-1/2 right-0.5 z-20 -translate-y-1/2',
-                                    form.errors.password && 'text-destructive',
-                                )}
-                                onClick={toggleVisibility}
-                            >
-                                {!visible ? <EyeIcon className="h-4 w-4" /> : <EyeOffIcon className="h-4 w-4" />}
-                            </Button>
-                        </div>
+                        <InputPassword
+                            id="password"
+                            name="password"
+                            value={data.password}
+                            onChange={(e) => form.setData('password', e.target.value)}
+                            error={form.errors.password}
+                            disabled={form.processing}
+                            tabIndex={2}
+                            required
+                            autoComplete="current-password"
+                        />
                         <InputError message={form.errors.password} />
                     </div>
                     <div className="grid gap-3">
@@ -120,7 +96,7 @@ export default function Login({ status, canResetPassword, ...props }: LoginProps
                                 tabIndex={3}
                                 disabled={form.processing}
                                 value={data.remember ? 'on' : 'off'}
-                                onCheckedChange={(chk) => form.setData('remember', !data.remember)}
+                                onCheckedChange={(chk) => form.setData('remember', chk)}
                             />
                             <Label htmlFor="remember">Recuérdame</Label>
                         </div>

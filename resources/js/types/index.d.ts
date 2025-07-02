@@ -1,4 +1,5 @@
 import AuthType from '@/enums/auth-type.enum';
+import PersonGender from '@/enums/person-gender.enum';
 import { LucideIcon } from 'lucide-react';
 
 export interface Auth {
@@ -49,7 +50,7 @@ export interface Person {
     middle_name: string | null;
     last_name_paternal: string;
     last_name_maternal: string | null;
-    gender: 'MALE' | 'FEMALE';
+    gender: PersonGender;
     email: string | null;
     phone: string | null;
 }

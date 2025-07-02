@@ -14,7 +14,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Toaster } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import CharType from '@/enums/char-type.enum';
+import LengthType from '@/enums/length-type.enum';
 import AuthLayout from '@/layouts/auth-layout';
+import DocumentType from '@/types/document-types.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Head, Link, router } from '@inertiajs/react';
 import { ArrowLeft, Building2Icon, User2Icon } from 'lucide-react';
@@ -26,16 +29,6 @@ import z from 'zod';
 enum CompanyEntityType {
     JURIDICAL_PERSON = 'JURIDICAL_PERSON',
     NATURAL_PERSON = 'NATURAL_PERSON',
-}
-
-// Tipos de documento del seeder
-interface DocumentType {
-    id: number;
-    name: string;
-    abbr: string;
-    length_type: string;
-    length: number;
-    char_type: string;
 }
 
 interface RegisterProps extends ComponentProps<'form'> {
@@ -62,18 +55,21 @@ const createCompanySchema = function (documentTypes: DocumentType[]) {
                 if (!docType) return true;
 
                 // Validación de longitud
-                if (docType.length_type === 'EXACT' && data.document_number.length !== docType.length) {
+                if (docType.length_type === LengthType.EXACT && data.document_number.length !== docType.length) {
                     return false;
                 }
-                if (docType.length_type === 'MAX' && data.document_number.length > docType.length) {
+                if (docType.length_type === LengthType.MAX && data.document_number.length > docType.length) {
+                    return false;
+                }
+                if (docType.length_type === LengthType.MIN && data.document_number.length < docType.length) {
                     return false;
                 }
 
                 // Validación de tipo de caracteres
-                if (docType.char_type === 'NUMERIC' && !/^\d+$/.test(data.document_number)) {
+                if (docType.char_type === CharType.NUMERIC && !/^\d+$/.test(data.document_number)) {
                     return false;
                 }
-                if (docType.char_type === 'ALPHA_NUMERIC' && !/^[a-zA-Z0-9]+$/.test(data.document_number)) {
+                if (docType.char_type === CharType.ALPHA_NUMERIC && !/^[a-zA-Z0-9]+$/.test(data.document_number)) {
                     return false;
                 }
 
@@ -84,15 +80,17 @@ const createCompanySchema = function (documentTypes: DocumentType[]) {
                 if (!docType) return { message: 'Tipo de documento no válido', path: ['document_type_id'] };
 
                 let message = '';
-                if (docType.length_type === 'EXACT') {
+                if (docType.length_type === LengthType.EXACT) {
                     message = `Máx. ${docType.length} caracteres.\n`;
-                } else if (docType.length_type === 'MAX') {
+                } else if (docType.length_type === LengthType.MAX) {
                     message = `El número de caracteres no puede exceder ${docType.length}. \n`;
+                } else if (docType.length_type === LengthType.MIN) {
+                    message = `El número de caracteres debe ser al menos ${docType.length}. \n`;
                 }
 
-                if (docType.char_type === 'NUMERIC') {
+                if (docType.char_type === CharType.NUMERIC) {
                     message += '\nDebe contener solo números.';
-                } else if (docType.char_type === 'ALPHA_NUMERIC') {
+                } else if (docType.char_type === CharType.ALPHA_NUMERIC) {
                     message += '\nDebe contener solo caracteres alfanuméricos.';
                 }
 

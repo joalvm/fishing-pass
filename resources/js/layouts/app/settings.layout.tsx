@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator';
 import AuthType from '@/enums/auth-type.enum';
 import Heading from '@/layouts/app/components/heading.component';
 import { cn } from '@/lib/utils';
-import { type NavItem } from '@/types';
+import { type NavItem } from '@/types/app.type';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
 import { useApp } from './app.context';

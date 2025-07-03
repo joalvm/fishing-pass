@@ -8,12 +8,13 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import PersonGender from '@/enums/person-gender.enum';
 import Heading from '@/layouts/app/components/heading.component';
 import SettingsLayout from '@/layouts/app/settings.layout';
-import { SharedData } from '@/types';
-import DocumentType from '@/types/document-types.type';
+import { SharedData } from '@/types/app.type';
+import DocumentType from '@/types/document-type.type';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { CheckCircleIcon, InfoIcon, LoaderCircleIcon, SaveIcon, SendIcon, ShieldAlertIcon } from 'lucide-react';
 import { FormEventHandler } from 'react';
+import navigation from '../navigation';
 
 const breadcrumbs = [
     {
@@ -68,7 +69,7 @@ export default function ProfilePage({ documentTypes }: ProfilePageProps) {
     };
 
     return (
-        <SettingsLayout breadcrumbs={breadcrumbs}>
+        <SettingsLayout navigation={navigation} breadcrumbs={breadcrumbs}>
             <div className="space-y-6">
                 <Heading title="Configuración de perfil" description="Actualiza tu información de perfil aquí." size="small" />
                 <form onSubmit={handleSubmit} className="space-y-6">

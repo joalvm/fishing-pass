@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\clients\ClientsController;
+use App\Http\Controllers\Admin\clients\RequestController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Settings\PasswordController;
 use App\Http\Controllers\Admin\Settings\ProfileController;
@@ -25,5 +27,8 @@ Route::middleware(['auth', 'platform:admin'])
                 Route::redirect('/', 'settings/profile')->name('index');
             })
         ;
+
+        Route::resource('clients/requests', RequestController::class)->names('clients.requests');
+        Route::resource('clients', ClientsController::class)->names('clients');
     })
 ;

@@ -1,5 +1,6 @@
 import AuthType from '@/enums/auth-type.enum';
-import { Company, Person, SharedData, User } from '@/types';
+import { SharedData } from '@/types/app.type';
+import { Company, Person, User } from '@/types/auth.type';
 import { usePage } from '@inertiajs/react';
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 

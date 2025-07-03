@@ -1,35 +1,12 @@
 import AuthType from '@/enums/auth-type.enum';
+import CompanyEntityType from '@/enums/company-entity-type';
 import PersonGender from '@/enums/person-gender.enum';
-import { LucideIcon } from 'lucide-react';
 
 export interface Auth {
     type: AuthType;
     user: User;
     person: Person;
     company: Company | null;
-}
-
-export interface BreadcrumbItem {
-    title: string;
-    href: string;
-}
-
-export interface NavGroup {
-    title: string;
-    items: NavItem[];
-}
-
-export interface NavItem {
-    title: string;
-    href: string;
-    icon?: LucideIcon | null;
-    isActive?: boolean;
-}
-
-export interface SharedData {
-    name: string;
-    auth: Auth;
-    [key: string]: unknown;
 }
 
 export interface User {
@@ -57,7 +34,7 @@ export interface Person {
 
 export interface Company {
     id: number;
-    entity_type: 'JURIDICAL_PERSON' | 'NATURAL_PERSON';
+    entity_type: CompanyEntityType;
     business_name: string;
     document_type_id: number;
     document_number: string;

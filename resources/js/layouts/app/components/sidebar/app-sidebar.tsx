@@ -9,21 +9,16 @@ import {
     useSidebar,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
-import { type NavItem } from '@/types';
+import { type NavItem } from '@/types/app.type';
 import { Link } from '@inertiajs/react';
-import { LayoutGrid } from 'lucide-react';
 import { NavMain } from './nav-main';
 import { NavUser } from './nav-user/nav-user';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Panel de control',
-        href: route('admin.dashboard'),
-        icon: LayoutGrid,
-    },
-];
+interface AppSidebarProps {
+    items: NavItem[];
+}
 
-export function AppSidebar() {
+export function AppSidebar({ items }: AppSidebarProps) {
     const { open } = useSidebar();
     return (
         <Sidebar collapsible="icon" variant="inset">
@@ -40,8 +35,8 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
-                <NavMain items={mainNavItems} />
+            <SidebarContent className="py-2">
+                <NavMain items={items} />
             </SidebarContent>
 
             <SidebarFooter>

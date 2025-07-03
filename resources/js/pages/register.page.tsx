@@ -15,9 +15,10 @@ import { Toaster } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import CharType from '@/enums/char-type.enum';
+import CompanyEntityType from '@/enums/company-entity-type';
 import LengthType from '@/enums/length-type.enum';
 import AuthLayout from '@/layouts/auth-layout';
-import DocumentType from '@/types/document-types.type';
+import DocumentType from '@/types/document-type.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Head, Link, router } from '@inertiajs/react';
 import { ArrowLeft, Building2Icon, User2Icon } from 'lucide-react';
@@ -25,11 +26,6 @@ import { ComponentProps, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
-
-enum CompanyEntityType {
-    JURIDICAL_PERSON = 'JURIDICAL_PERSON',
-    NATURAL_PERSON = 'NATURAL_PERSON',
-}
 
 interface RegisterProps extends ComponentProps<'form'> {
     documentTypes: DocumentType[];

@@ -8,6 +8,7 @@ import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { CheckCircleIcon, LoaderCircleIcon, SaveIcon } from 'lucide-react';
 import { FormEventHandler } from 'react';
+import navigation from '../navigation';
 
 const breadcrumbs = [
     {
@@ -39,7 +40,7 @@ export default function ProfilePage() {
     };
 
     return (
-        <SettingsLayout breadcrumbs={breadcrumbs}>
+        <SettingsLayout navigation={navigation} breadcrumbs={breadcrumbs}>
             <Heading title="Cambiar contraseña" description="Actualiza tu contraseña aquí." size="small" />
             <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
                 <div className="grid gap-2">

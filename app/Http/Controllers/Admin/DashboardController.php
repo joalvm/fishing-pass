@@ -15,7 +15,7 @@ class DashboardController extends Controller
 
     public function index(): Response
     {
-        return Inertia::render('admin/dashboard');
+        return Inertia::render('admin/dashboard/dashboard');
     }
 
     public function appearance(): Response

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Settings\PasswordUpdateRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class PasswordController extends Controller
@@ -16,9 +17,15 @@ class PasswordController extends Controller
 
     public function update(PasswordUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        if (!Hash::check($request->input('current_password'), $request->user()->password)) {
+            return back()->withErrors(['current_password' => 'La contraseña actual es incorrecta.']);
+        }
 
-        $request->user()->save();
+        $validated = $request->validated();
+
+        $request->user()->update([
+            'password' => Hash::make($validated['password']),
+        ]);
 
         return to_route('admin.settings.password.edit');
     }

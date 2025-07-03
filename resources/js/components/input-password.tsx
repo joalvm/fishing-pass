@@ -12,20 +12,20 @@ export default function InputPassword({ error, ...props }: InputPasswordProps) {
     const [visible, setVisible] = useState(false);
 
     return (
-        <div className="relative">
+        <div className="relative flex items-center">
             <Input
                 type={visible ? 'text' : 'password'}
+                {...props}
                 className={cn(
                     '[&::-ms-reveal]:hidden',
                     !!error && 'border-destructive hover:border-destructive focus-visible:border-destructive focus-visible:ring-destructive',
                 )}
-                {...props}
             />
             <Button
                 type="button"
                 variant="ghost"
                 size="icon"
-                className={cn('hover:bg-input-hover focus:bg-input-focus absolute top-1/2 right-0.5 z-20 h-8 w-8 -translate-y-1/2', {
+                className={cn('hover:bg-input-hover focus:bg-input-focus absolute top-1/2 right-1 z-20 h-8 w-8 -translate-y-1/2', {
                     'text-destructive': !!error,
                 })}
                 onClick={() => setVisible((v) => !v)}

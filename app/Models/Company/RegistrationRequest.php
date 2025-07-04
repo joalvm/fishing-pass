@@ -27,7 +27,7 @@ use Joalvm\Utils\Rules\PgInteger;
  * @property      string|null        $email
  * @property      RegistrationStatus $status
  * @property      Carbon|null        $approved_at
- * @property      int|null           $aproved_by
+ * @property      int|null           $approved_by
  * @property      string|null        $rejected_reason
  * @property-read DocumentType       $documentType
  * @property-read Company|null       $company
@@ -50,7 +50,7 @@ class RegistrationRequest extends Model
         'email',
         'status',
         'approved_at',
-        'aproved_by',
+        'approved_by',
         'rejected_reason',
     ];
 
@@ -59,7 +59,7 @@ class RegistrationRequest extends Model
         'entity_type' => EntityType::class,
         'status' => RegistrationStatus::class,
         'approved_at' => 'datetime',
-        'aproved_by' => 'integer',
+        'approved_by' => 'integer',
     ];
 
     public function __construct(array $attributes = [])
@@ -92,7 +92,7 @@ class RegistrationRequest extends Model
             'email' => ['nullable', 'email'],
             'status' => ['required', RegistrationStatus::rule()],
             'approved_at' => ['nullable', 'date'],
-            'aproved_by' => ['required_with:approved_at', 'integer'],
+            'approved_by' => ['required_with:approved_at', 'integer'],
             'rejected_reason' => [
                 'nullable',
                 'required_with:status,' . RegistrationStatus::REJECTED->value,

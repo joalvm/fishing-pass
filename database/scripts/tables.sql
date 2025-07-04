@@ -88,9 +88,10 @@ CREATE TABLE public."companies" (
     "entity_type" public."company_entity_type" NOT NULL,
     "document_type_id" int4 NOT NULL,
     "document_number" varchar NOT NULL, -- Número de identificación tributaria o equivalente
-    "email" varchar NOT NULL,
+    "email" varchar NULL,
     "phone" varchar NULL,
     "address" varchar NULL,
+    "enabled" bool NOT NULL DEFAULT TRUE, -- Indica si la empresa está activa
     "registration_request_id" int4 NULL, -- Referencia a la solicitud de registro solo si usó el módulo de registro.
     "created_at" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -108,7 +109,7 @@ CREATE TABLE public."company_registration_requests" (
     "entity_type" public."company_entity_type" NOT NULL,
     "document_type_id" int4 NOT NULL,
     "document_number" varchar NOT NULL,
-    "email" varchar NOT NULL,
+    "email" varchar NULL,
     "phone" varchar NULL,
     "address" varchar NULL,
     "status" public."company_registration_status" NOT NULL DEFAULT 'PENDING',

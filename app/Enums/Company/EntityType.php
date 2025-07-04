@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Enums;
+namespace App\Enums\Company;
 
 use Joalvm\Utils\Traits\ExtendsEnums;
 
 /**
  * Enum que representa los tipos de entidades de una empresa.
  */
-enum CompanyEntityType: string
+enum EntityType: string
 {
     use ExtendsEnums;
 

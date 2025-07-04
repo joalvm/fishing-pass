@@ -4,60 +4,68 @@ namespace App\Models\Company;
 
 use App\Enums\CharType;
 use App\Enums\Company\EntityType;
+use App\Enums\Company\RegistrationStatus;
 use App\Enums\LengthType;
 use App\Models\DocumentType;
-use App\Models\Person\Person;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Lang;
 use Joalvm\Utils\Model;
 use Joalvm\Utils\Rules\PgInteger;
 
 /**
- * Representa una empresa.
+ * Representa una solicitud de registro de empresa.
  *
- * @property      int                          $id
- * @property      EntityType                   $entity_type
- * @property      string                       $business_name
- * @property      int                          $document_type_id
- * @property      string                       $document_number
- * @property      string                       $address
- * @property      string|null                  $phone
- * @property      string                       $email
- * @property      bool                         $enabled
- * @property-read DocumentType                 $documentType
- * @property-read Collection<array-key,Person> $persons
+ * @property      int                $id
+ * @property      EntityType         $entity_type
+ * @property      string             $business_name
+ * @property      int                $document_type_id
+ * @property      string             $document_number
+ * @property      string|null        $address
+ * @property      string|null        $phone
+ * @property      string|null        $email
+ * @property      RegistrationStatus $status
+ * @property      Carbon|null        $approved_at
+ * @property      int|null           $aproved_by
+ * @property      string|null        $rejected_reason
+ * @property-read DocumentType       $documentType
+ * @property-read Company|null       $company
  */
-class Company extends Model
+class RegistrationRequest extends Model
 {
-    /** @use HasFactory<\Database\Factories\Company\CompanyFactory> */
+    /** @use HasFactory<\Database\Factories\Company\RegistrationRequestFactory> */
     use HasFactory;
     use SoftDeletes;
 
-    protected $table = 'public.companies';
+    protected $table = 'public.company_registration_requests';
 
     protected $fillable = [
-        'entity_type',
         'business_name',
+        'entity_type',
         'document_type_id',
         'document_number',
         'address',
         'phone',
         'email',
-        'enabled',
-        'registration_request_id',
+        'status',
+        'approved_at',
+        'aproved_by',
+        'rejected_reason',
     ];
 
     protected $casts = [
         'document_type_id' => 'integer',
-        'registration_request_id' => 'integer',
         'entity_type' => EntityType::class,
+        'status' => RegistrationStatus::class,
+        'approved_at' => 'datetime',
+        'aproved_by' => 'integer',
     ];
 
     public function __construct(array $attributes = [])
     {
         $this->setAttribute('entity_type', EntityType::JURIDICAL_PERSON);
+        $this->setAttribute('status', RegistrationStatus::PENDING);
 
         parent::__construct($attributes);
     }
@@ -66,11 +74,12 @@ class Company extends Model
     {
         return [
             'business_name' => ['required', 'string'],
+            'entity_type' => ['required', EntityType::rule()],
             'document_type_id' => [
                 'required',
                 'integer',
                 PgInteger::id(),
-                $this->ruleExistDocumentType(),
+                $this->ruleExistsDocumentType(),
             ],
             'document_number' => [
                 'required',
@@ -78,11 +87,17 @@ class Company extends Model
                 $this->ruleUniqueDocumentNumber(),
                 $this->ruleValidDocumentNumber(),
             ],
-            'address' => ['required', 'string'],
-            'email' => ['nullable', 'email'],
+            'address' => ['nullable', 'string'],
             'phone' => ['nullable', 'string'],
-            'registration_request_id' => ['nullable', 'integer', PgInteger::id()],
-            'enabled' => ['boolean'],
+            'email' => ['nullable', 'email'],
+            'status' => ['required', RegistrationStatus::rule()],
+            'approved_at' => ['nullable', 'date'],
+            'aproved_by' => ['required_with:approved_at', 'integer'],
+            'rejected_reason' => [
+                'nullable',
+                'required_with:status,' . RegistrationStatus::REJECTED->value,
+                'string',
+            ],
         ];
     }
 
@@ -91,17 +106,17 @@ class Company extends Model
         return $this->belongsTo(DocumentType::class, 'document_type_id');
     }
 
-    public function persons()
+    public function company()
     {
-        return $this->hasMany(Person::class, 'company_id');
+        return $this->hasOne(Company::class, 'registration_request_id');
     }
 
-    private function ruleExistDocumentType(): \Closure
+    protected function ruleExistsDocumentType(): \Closure
     {
         return function ($attribute, $value, $fail) {
             $query = $this->documentType()->getQuery();
 
-            if (!$query->first()) {
+            if (!$query->exists()) {
                 $fail(Lang::get('validation.exists', ['attribute' => $attribute]));
             }
         };
@@ -125,6 +140,11 @@ class Company extends Model
         };
     }
 
+    /**
+     * Valida el número de documento según el tipo de documento.
+     *
+     * @todo Implementar esta funcionalidad en un validator personalizado para no repetir código.
+     */
     private function ruleValidDocumentNumber(): \Closure
     {
         return function ($attribute, $value, $fail) {

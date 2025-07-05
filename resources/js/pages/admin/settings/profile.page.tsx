@@ -8,10 +8,10 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import PersonGender from '@/enums/person-gender.enum';
 import Heading from '@/layouts/app/components/heading.component';
 import SettingsLayout from '@/layouts/app/settings.layout';
-import { SharedData } from '@/types/app.type';
+import { PageProps } from '@/types/app.type';
 import DocumentType from '@/types/document-type.type';
 import { Transition } from '@headlessui/react';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { CheckCircleIcon, InfoIcon, LoaderCircleIcon, SaveIcon, SendIcon, ShieldAlertIcon } from 'lucide-react';
 import { FormEventHandler } from 'react';
 import navigation from '../navigation';
@@ -23,9 +23,9 @@ const breadcrumbs = [
     },
 ];
 
-type ProfilePageProps = {
+interface ProfilePageProps extends PageProps {
     documentTypes: DocumentType[];
-};
+}
 
 type ProfileForm = {
     avatar_url?: string | null;
@@ -40,11 +40,7 @@ type ProfileForm = {
     phone?: string | null;
 };
 
-export default function ProfilePage({ documentTypes }: ProfilePageProps) {
-    const {
-        auth: { person, user },
-    } = usePage<SharedData>().props;
-
+export default function ProfilePage({ documentTypes, auth: { person, user } }: ProfilePageProps) {
     const { data, ...form } = useForm<Required<ProfileForm>>({
         avatar_url: user?.avatar_url ?? null,
         document_type_id: person?.document_type_id ?? 0,

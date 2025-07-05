@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\clients\ClientsController;
-use App\Http\Controllers\Admin\clients\RequestController;
+use App\Http\Controllers\Admin\Clients\ClientsController;
+use App\Http\Controllers\Admin\Clients\RequestController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Settings\PasswordController;
 use App\Http\Controllers\Admin\Settings\ProfileController;

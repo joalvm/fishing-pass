@@ -3,13 +3,14 @@
 namespace App\DataObjects\Repositories\Companies;
 
 use App\Enums\Company\EntityType;
+use App\Enums\Company\RegistrationStatus;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\EnumCast;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 
-class CreateCompanyData extends Data
+class CreateRegistrationRequestData extends Data
 {
     public function __construct(
         #[MapName('entity_type')]
@@ -21,9 +22,17 @@ class CreateCompanyData extends Data
         public int $documentTypeId,
         #[MapName('document_number')]
         public string $documentNumber,
-        public string $email,
-        public string $address,
+        #[WithCast(EnumCast::class, RegistrationStatus::class)]
+        public RegistrationStatus $status,
+        public ?string $email,
+        public ?string $address = null,
         public string|Optional|null $phone = null,
+        #[MapName('approved_by')]
+        public ?int $approvedBy = null,
+        #[MapName('rejected_reason')]
+        public ?string $rejectedReason = null,
+        #[MapName('approved_at')]
+        public ?string $approvedAt = null,
     ) {
     }
 }

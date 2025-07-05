@@ -20,7 +20,7 @@ export default function AppLayout({ children, navigation, title, breadcrumbs }: 
                 <AppSidebar items={navigation} />
                 <SidebarInset className="mx-auto flex w-full flex-1 flex-col">
                     <AppSidebarHeader breadcrumbs={breadcrumbs} />
-                    <div className="flex h-full w-full p-6">{children}</div>
+                    {children}
                 </SidebarInset>
             </SidebarProvider>
         </AppProvider>

@@ -1,23 +1,37 @@
-export interface HeadingProps {
-    title: string;
-    description?: string;
-    size?: 'small' | 'default';
-}
+import { cva, VariantProps } from 'class-variance-authority';
+import { ComponentProps } from 'react';
 
-export default function Heading({ title, description, size = 'default' }: HeadingProps) {
-    if (size === 'small') {
-        return (
-            <header>
-                <h3 className="mb-0.5 text-base font-medium">{title}</h3>
-                {description && <p className="text-sm text-muted-foreground">{description}</p>}
-            </header>
-        );
-    }
+const headingVariants = cva('flex flex-col gap-4 md:flex-row md:items-center md:justify-between', {
+    variants: {
+        size: {
+            small: 'mb-0.5',
+            default: 'mb-8',
+        },
+    },
+    defaultVariants: {
+        size: 'default',
+    },
+});
 
+type HeadingProps = ComponentProps<'header'> &
+    VariantProps<typeof headingVariants> & {
+        title: string;
+        description?: string;
+        size?: 'small' | 'default';
+    };
+
+export default function Heading({ className, children, title, description, size = 'default' }: HeadingProps) {
     return (
-        <div className="mb-8 space-y-0.5">
-            <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
-            {description && <p className="text-sm text-muted-foreground">{description}</p>}
-        </div>
+        <header className={headingVariants({ size, className })} data-slot="heading">
+            <div className="flex-1 space-y-0.5">
+                {size === 'small' ? (
+                    <h2 className="text-base font-medium">{title}</h2>
+                ) : (
+                    <h1 className="text-xl font-semibold tracking-tight">{title}</h1>
+                )}
+                {description && <p className="text-sm text-muted-foreground">{description}</p>}
+            </div>
+            {children && <div>{children}</div>}
+        </header>
     );
 }

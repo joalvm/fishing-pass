@@ -1,5 +1,5 @@
 import AuthType from '@/enums/auth-type.enum';
-import { SharedData } from '@/types/app.type';
+import { PageProps } from '@/types/app.type';
 import { Company, Person, User } from '@/types/auth.type';
 import { usePage } from '@inertiajs/react';
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -19,7 +19,7 @@ const AppContext = createContext<AppContextProps | undefined>(undefined);
 const SIDEBAR_STORAGE_KEY = 'dashboard_sidebar_open';
 
 export function AppProvider({ children }: PropsWithChildren) {
-    const { auth } = usePage<SharedData>().props;
+    const { auth } = usePage<PageProps>().props;
     const [sidebarOpen, setSidebarOpenState] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
             const stored = localStorage.getItem(SIDEBAR_STORAGE_KEY);

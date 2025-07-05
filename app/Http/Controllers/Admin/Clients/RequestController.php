@@ -1,19 +1,45 @@
 <?php
 
-namespace App\Http\Controllers\Admin\clients;
+namespace App\Http\Controllers\Admin\Clients;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\Companies\RegistrationRequestInterface;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class RequestController extends Controller
 {
+    public function __construct(
+        protected RegistrationRequestInterface $requestRepository,
+    ) {
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('admin/clients/requests/requests');
+        $collection = $this->requestRepository
+            ->setStatuses($request->input('statuses'))
+            ->all()
+        ;
+
+        return Inertia::render('admin/clients/requests/requests', [
+            'requests' => [
+                'data' => $collection,
+                'meta' => $collection->getMetadata(),
+            ],
+            'filters' => [
+                'per_page' => to_int($request->input('per_page', $collection->perPage())),
+                'page' => to_int($request->input('page', $collection->currentPage())),
+                'contains' => $request->input('contains', [
+                    'items' => $request->input('contains.items', ['business_name', 'document_number', 'email']),
+                    'text' => $request->input('contains.text', ''),
+                ]),
+                'sort' => $request->input('sort', new \stdClass()),
+                'statuses' => $request->input('statuses', []),
+            ],
+        ]);
     }
 
     /**

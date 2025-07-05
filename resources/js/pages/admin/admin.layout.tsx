@@ -3,6 +3,10 @@ import navigation from './navigation';
 
 type AdminLayoutProps = Omit<AppLayoutProps, 'navigation'>;
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
-    return <AppLayout navigation={navigation}>{children}</AppLayout>;
+export default function AdminLayout({ children, ...props }: AdminLayoutProps) {
+    return (
+        <AppLayout navigation={navigation} {...props}>
+            {children}
+        </AppLayout>
+    );
 }

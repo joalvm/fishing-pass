@@ -35,7 +35,7 @@ export type Paginate<T> = {
 
 export interface BreadcrumbItem {
     title: string;
-    href: string;
+    href?: string;
 }
 
 export type NavItem =

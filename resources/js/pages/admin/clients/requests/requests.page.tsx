@@ -1,10 +1,8 @@
-import { Button } from '@/components/ui/button';
 import CompanyEntityType from '@/enums/company-entity-type';
 import RegistrationStatus from '@/enums/registration-status.enum';
 import Content from '@/layouts/app/components/content.component';
 import Heading from '@/layouts/app/components/heading.component';
 import { Filter, PageProps, Paginate } from '@/types/app.type';
-import { PlusCircleIcon } from 'lucide-react';
 import AdminLayout from '../../admin.layout';
 
 interface RegistrationRequest {
@@ -37,18 +35,13 @@ interface RegistrationRequestsPageProps extends PageProps {
     requests: Paginate<RegistrationRequest>;
 }
 
+const breadcrumbs = [{ title: 'Solicitudes de registro' }];
+
 export default function RegistrationRequestsPage(props: RegistrationRequestsPageProps) {
     return (
-        <AdminLayout title="Solicitudes de registro">
+        <AdminLayout title="Solicitudes de registro" breadcrumbs={breadcrumbs}>
             <Content size="lg">
-                <Heading title="Solicitudes de registro" description="Lista de de cliente que solicitan pertenecer a la plataforma.">
-                    <div className="flex justify-end gap-2">
-                        <Button variant="outline" size="sm" className="w-fit">
-                            <PlusCircleIcon className="mr-2 h-4 w-4" />
-                            Nueva solicitud
-                        </Button>
-                    </div>
-                </Heading>
+                <Heading title="Solicitudes de registro" description="Lista de de cliente que solicitan pertenecer a la plataforma." />
                 <pre className="rounded-lg bg-gray-100 p-4">
                     <code className="text-sm">{JSON.stringify(props.filters, null, 2)}</code>
                 </pre>

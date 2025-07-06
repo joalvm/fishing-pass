@@ -65,6 +65,7 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
         int $approvedBy,
     ): RegistrationRequest {
         $data = UpdateRegistrationRequestData::from([
+            ...$model->getAttributes(),
             'status' => RegistrationStatus::APPROVED,
             'approved_by' => $approvedBy,
             'approved_at' => now(),
@@ -79,6 +80,7 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
         string $reason,
     ): RegistrationRequest {
         $data = UpdateRegistrationRequestData::from([
+            ...$model->getAttributes(),
             'status' => RegistrationStatus::REJECTED,
             'rejected_reason' => $reason,
             'approved_by' => $rejectedBy,

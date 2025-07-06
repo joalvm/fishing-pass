@@ -30,7 +30,6 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
     public function create(CreateRegistrationRequestData $data): RegistrationRequest
     {
         $model = $this->model->newInstance($data->all());
-
         $model->validate()->save();
 
         return $model;
@@ -84,7 +83,12 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
 
     public function getModel(int $id): ?RegistrationRequest
     {
-        return $this->model->find($id);
+        return $this->model->newQuery()->find($id);
+    }
+
+    public function getModelByDocumentNumber(string $documentNumber): ?RegistrationRequest
+    {
+        return $this->model->newQuery()->where('document_number', $documentNumber)->first();
     }
 
     /**

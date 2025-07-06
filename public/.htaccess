@@ -22,4 +22,17 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
+    # Proteger la carpeta build
+    <Directory "build">
+        # Denegar acceso por defecto
+        Order deny,allow
+        Deny from all
+
+        # Permitir solo archivos estáticos comunes
+        <FilesMatch "\.(js|css|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|eot)$">
+            Allow from all
+        </FilesMatch>
+    </Directory>
+
 </IfModule>

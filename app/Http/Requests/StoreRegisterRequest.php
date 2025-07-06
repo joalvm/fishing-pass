@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\CompanyEntityType;
+use App\Enums\Company\EntityType;
 use Illuminate\Foundation\Http\FormRequest;
 use Joalvm\Utils\Rules\PgInteger;
 
@@ -24,7 +24,7 @@ class StoreRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'entity_type' => ['required', 'string', CompanyEntityType::ruleIn()],
+            'entity_type' => ['required', 'string', EntityType::ruleIn()],
             'document_type_id' => ['required', 'integer', PgInteger::id()],
             'document_number' => ['required', 'string'],
             'business_name' => ['required', 'string'],

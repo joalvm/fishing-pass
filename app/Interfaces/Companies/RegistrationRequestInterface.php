@@ -62,6 +62,11 @@ interface RegistrationRequestInterface
     public function getModel(int $id): ?RegistrationRequest;
 
     /**
+     * Obtiene el modelo de solicitud de registro por el número de documento de la empresa.
+     */
+    public function getModelByDocumentNumber(string $documentNumber): ?RegistrationRequest;
+
+    /**
      * Establece el filtro de búsqueda por estado de solicitud.
      *
      * @param array<value-of<RegistrationStatus>> $statuses

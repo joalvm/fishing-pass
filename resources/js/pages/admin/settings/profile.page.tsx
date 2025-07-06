@@ -57,8 +57,6 @@ export default function ProfilePage({ documentTypes, auth: { person, user } }: P
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        console.log('Submitting profile form:', data);
-
         form.put(route('admin.settings.profile.update'), {
             preserveScroll: true,
         });

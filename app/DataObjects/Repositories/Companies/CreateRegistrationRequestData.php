@@ -22,17 +22,17 @@ class CreateRegistrationRequestData extends Data
         public int $documentTypeId,
         #[MapName('document_number')]
         public string $documentNumber,
+        public string $address,
         #[WithCast(EnumCast::class, RegistrationStatus::class)]
-        public RegistrationStatus $status,
-        public ?string $email,
-        public ?string $address = null,
-        public string|Optional|null $phone = null,
+        public RegistrationStatus|Optional $status,
+        public string|Optional|null $phone,
+        public Optional|string|null $email,
         #[MapName('approved_by')]
-        public ?int $approvedBy = null,
+        public Optional|int|null $approvedBy,
         #[MapName('rejected_reason')]
-        public ?string $rejectedReason = null,
+        public Optional|string|null $rejectedReason,
         #[MapName('approved_at')]
-        public ?string $approvedAt = null,
+        public Optional|string|null $approvedAt,
     ) {
     }
 }

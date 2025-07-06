@@ -58,9 +58,13 @@ function Content({ children }: PropsWithChildren) {
                                     'bg-muted': currentPath === item.href,
                                 })}
                             >
-                                <Link href={item.href} prefetch>
-                                    {item.title}
-                                </Link>
+                                {item.href ? (
+                                    <Link href={item.href} prefetch>
+                                        {item.title}
+                                    </Link>
+                                ) : (
+                                    <span>{item.title}</span>
+                                )}
                             </Button>
                         ))}
                     </nav>

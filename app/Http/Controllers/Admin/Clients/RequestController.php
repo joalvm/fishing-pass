@@ -25,6 +25,7 @@ class RequestController extends Controller
         ;
 
         return Inertia::render('admin/clients/requests/requests', [
+            'stats' => $this->requestRepository->stats(),
             'requests' => [
                 'data' => $collection,
                 'meta' => $collection->getMetadata(),

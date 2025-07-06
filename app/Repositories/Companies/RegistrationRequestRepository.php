@@ -7,6 +7,7 @@ use App\DataObjects\Repositories\Companies\UpdateRegistrationRequestData;
 use App\Enums\Company\RegistrationStatus;
 use App\Interfaces\Companies\RegistrationRequestInterface;
 use App\Models\Company\RegistrationRequest;
+use Illuminate\Support\Facades\DB;
 use Joalvm\Utils\Builder;
 use Joalvm\Utils\Collection;
 use Joalvm\Utils\Item;
@@ -25,6 +26,20 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
     public function find(int $id): ?Item
     {
         return $this->builder()->find($id);
+    }
+
+    public function stats(): ?Item
+    {
+        return Builder::table('public.company_registration_requests', 'crr')
+            ->select([
+                DB::raw('count(id) as total'),
+                DB::raw("count(id) filter (where status = 'APPROVED') as approved"),
+                DB::raw("count(id) filter (where status = 'REJECTED') as rejected"),
+                DB::raw("count(id) filter (where status = 'PENDING') as pending"),
+            ])
+            ->whereNull('crr.deleted_at')
+            ->groupBy('status')
+            ->first();
     }
 
     public function create(CreateRegistrationRequestData $data): RegistrationRequest

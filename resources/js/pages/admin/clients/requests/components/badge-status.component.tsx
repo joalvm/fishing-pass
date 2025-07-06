@@ -9,9 +9,9 @@ const badgeVariants = cva(
     {
         variants: {
             status: {
-                [RegistrationStatus.PENDING]: 'bg-green-500/5 border-green-500/30 text-green-500',
-                [RegistrationStatus.APPROVED]: 'bg-green-500/5 border-green-500/30 text-green-500',
-                [RegistrationStatus.REJECTED]: 'bg-red-500/5 border-red-500/30 text-red-500',
+                [RegistrationStatus.PENDING]: 'bg-blue-400/10 border-transparent text-blue-600 dark:text-blue-400',
+                [RegistrationStatus.APPROVED]: 'bg-green-400/10 border-transparent text-green-600 dark:text-green-400',
+                [RegistrationStatus.REJECTED]: 'bg-red-400/10 border-transparent text-red-600 dark:text-red-400',
             },
         },
         defaultVariants: {

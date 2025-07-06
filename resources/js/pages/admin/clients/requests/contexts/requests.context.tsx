@@ -42,8 +42,8 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
 
         if (debouncedSearchTerm) params.contains = { items: ['business_name', 'document_number'], text: debouncedSearchTerm };
         if (statuses.length > 0) params.statuses = statuses;
-        if (page !== DEFAULT_PAGE) params.page = page;
         if (perPage !== DEFAULT_PER_PAGE) params.per_page = perPage;
+        if (page !== DEFAULT_PAGE) params.page = page;
 
         router.get(location.pathname, params as any, {
             preserveState: true,

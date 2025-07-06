@@ -11,15 +11,14 @@ export function Pagination() {
     const canGoNext = current_page < last_page;
 
     return (
-        <div className="flex items-center px-2 py-4 justify-end">
+        <div className="flex items-center px-2 py-4 justify-end text-gray-700">
             <div className="flex items-center space-x-6 lg:space-x-8 ">
                 {/* Página actual */}
                 <div className="flex items-center justify-center text-sm font-medium">
-                    {current_page} / {last_page}
+                    {current_page} / {last_page} {' '} <p className="hidden text-sm font-medium sm:block ml-2"> páginas</p>
                 </div>
                 {/* Filas por página */}
                 <div className="flex items-center space-x-2">
-                    <p className="hidden text-sm font-medium sm:block">Filas</p>
                     <Select
                         value={`${per_page}`}
                         onValueChange={value => setPerPage(Number(value))}
@@ -35,6 +34,7 @@ export function Pagination() {
                             ))}
                         </SelectContent>
                     </Select>
+                    <p className="hidden text-sm font-medium sm:block">Filas</p>
                 </div>
 
                 {/* Botones de paginación */}

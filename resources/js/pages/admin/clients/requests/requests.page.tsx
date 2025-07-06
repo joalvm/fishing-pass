@@ -4,6 +4,7 @@ import Content from '@/layouts/app/components/content.component';
 import Heading from '@/layouts/app/components/heading.component';
 import { Filter, PageProps, Paginate } from '@/types/app.type';
 import AdminLayout from '../../admin.layout';
+import TotalRequests from './components/stats/total-requests';
 
 interface RegistrationRequest {
     id: number;
@@ -42,9 +43,10 @@ export default function RegistrationRequestsPage(props: RegistrationRequestsPage
         <AdminLayout title="Solicitudes de registro" breadcrumbs={breadcrumbs}>
             <Content size="lg">
                 <Heading title="Solicitudes de registro" description="Lista de de cliente que solicitan pertenecer a la plataforma." />
-                <pre className="rounded-lg bg-gray-100 p-4">
-                    <code className="text-sm">{JSON.stringify(props.filters, null, 2)}</code>
-                </pre>
+                {/* Aqui los cards de estadisticas */}
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    <TotalRequests />
+                </div>
             </Content>
         </AdminLayout>
     );

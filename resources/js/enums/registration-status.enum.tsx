@@ -1,7 +1,7 @@
 enum RegistrationStatus {
-    PENDING = 'pending',
-    APPROVED = 'approved',
-    REJECTED = 'rejected',
+    PENDING = 'PENDING',
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED',
 }
 
 export default RegistrationStatus;

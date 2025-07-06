@@ -13,13 +13,15 @@ export interface PageProps {
 export type Filter<T> = {
     page?: number;
     perPage?: number;
-    sort?: Partial<{ [K in Flatten<T>]: 'asc' | 'desc' }>;
+    sort?: Sort<T>;
     contains?: {
         items: Flatten<T>[];
         text: string;
     };
     [key: string]: unknown;
 };
+
+export type Sort<T> = Partial<{ [K in Flatten<T>]: 'asc' | 'desc' }>;
 
 export type Paginate<T> = {
     data: T[];

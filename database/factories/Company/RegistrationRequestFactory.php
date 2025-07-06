@@ -7,7 +7,7 @@ use App\Models\DocumentType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Company\Company>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Company\RegistrationRequest>
  */
 class RegistrationRequestFactory extends Factory
 {

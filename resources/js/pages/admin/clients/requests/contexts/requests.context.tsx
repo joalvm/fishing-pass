@@ -2,20 +2,21 @@ import { createContext, useContext, useState, useMemo, ReactNode, useEffect } fr
 import { Filter, Paginate } from '@/types/app.type';
 import RegistrationRequest from '../types/registration-request.type';
 import { useDebounce } from '@/hooks/use-debounce.hook';
+import RegistrationStatus from '../enums/registration-status.enum';
 import { router } from '@inertiajs/react';
 
 interface RequestsContextType {
     requests: Paginate<RegistrationRequest>;
     filters: {
         searchTerm: string;
-        statuses: string[];
+        statuses: RegistrationStatus[];
     };
     pagination: {
         page: number;
         perPage: number;
     };
     setSearchTerm: (term: string) => void;
-    setStatuses: (statuses: string[]) => void;
+    setStatuses: (statuses: RegistrationStatus[]) => void;
     setPage: (page: number) => void;
     setPerPage: (perPage: number) => void;
 }
@@ -53,14 +54,29 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
 
     }, [debouncedSearchTerm, statuses, page, perPage]);
 
+    const handleSetSearchTerm = (term: string) => {
+        setSearchTerm(term);
+        setPage(DEFAULT_PAGE);
+    };
+
+    const handleSetStatuses = (statuses: RegistrationStatus[]) => {
+        setStatuses(statuses);
+        setPage(DEFAULT_PAGE);
+    };
+
+    const handleSetPerPage = (num: number) => {
+        setPerPage(num);
+        setPage(DEFAULT_PAGE);
+    };
+
     const value = useMemo(() => ({
         requests,
         filters: { searchTerm, statuses },
         pagination: { page, perPage },
-        setSearchTerm,
-        setStatuses,
+        setSearchTerm: handleSetSearchTerm,
+        setStatuses: handleSetStatuses,
         setPage,
-        setPerPage,
+        setPerPage: handleSetPerPage,
     }), [requests, searchTerm, statuses, page, perPage]);
 
     return (

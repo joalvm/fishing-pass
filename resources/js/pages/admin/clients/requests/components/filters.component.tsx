@@ -14,6 +14,19 @@ export function Filters() {
         setStatuses(newStatuses);
     };
 
+    const getStatusColor = (status: RegistrationStatus) => {
+        switch (status) {
+            case RegistrationStatus.APPROVED:
+                return 'bg-green-500';
+            case RegistrationStatus.PENDING:
+                return 'bg-blue-500';
+            case RegistrationStatus.REJECTED:
+                return 'bg-red-500';
+            default:
+                return 'bg-gray-500';
+        }
+    };
+
     return (
         <div className="flex items-center justify-between py-4">
             <Input
@@ -35,7 +48,8 @@ export function Filters() {
                             checked={filters.statuses.includes(status)}
                             onCheckedChange={checked => handleStatusChange(status, !!checked)}
                         >
-                            {RegistrationStatusLabel(status)}
+                            <div className={`mr-2 h-2 w-2 rounded-full ${getStatusColor(status)}`} />
+                            <span>{RegistrationStatusLabel(status)}</span>
                         </DropdownMenuCheckboxItem>
                     ))}
                 </DropdownMenuContent>

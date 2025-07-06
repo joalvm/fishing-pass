@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ComponentProps } from "react";
 import RegistrationStatus, { RegistrationStatusLabel } from "../enums/registration-status.enum";
+import { CheckIcon, CheckCheckIcon, XIcon } from 'lucide-react';
 
 const badgeVariants = cva(
     'text-[0.65rem] capitalize',
@@ -25,9 +26,24 @@ type BadgeStatusProps = ComponentProps<typeof Badge> & VariantProps<typeof badge
 }
 
 export default function BadgeStatus({ className, status, ...props }: BadgeStatusProps) {
+    const renderIcon = () => {
+        const iconProps = { className: 'h-3 w-3' };
+        switch (status) {
+            case RegistrationStatus.PENDING:
+                return <CheckIcon {...iconProps} className={cn(iconProps.className, 'text-gray-500 dark:text-gray-400')} />;
+            case RegistrationStatus.APPROVED:
+                return <CheckCheckIcon {...iconProps} />;
+            case RegistrationStatus.REJECTED:
+                return <XIcon {...iconProps} />;
+            default:
+                return null;
+        }
+    };
+
     return (
-        <Badge variant="outline" data-status={status} className={cn(className,badgeVariants({ status }))} {...props}>
+        <Badge variant="outline" data-status={status} className={cn('inline-flex items-center', className, badgeVariants({ status }))} {...props}>
+            {renderIcon()}
             {RegistrationStatusLabel(status)}
         </Badge>
-    )
+    );
 }

@@ -3,12 +3,11 @@ import Heading from '@/layouts/app/components/heading.component';
 import { Filter, PageProps, Paginate } from '@/types/app.type';
 import AdminLayout from '../../admin.layout';
 import { Filters } from './components/filters.component';
-import { Pagination } from './components/pagination.component';
 import ApprovedRequests from './components/stats/approved-requests';
 import PendingRequests from './components/stats/pending-requests';
 import RejectedRequests from './components/stats/rejected-requests';
 import TotalRequests from './components/stats/total-requests';
-import { RequestsTable } from './components/table.component';
+import RequestsTable from './components/table/request-table.component';
 import { RequestsProvider } from './contexts/requests.context';
 import RegistrationRequest from './types/registration-request.type';
 import Stats from './types/stats.type';
@@ -37,7 +36,6 @@ export default function RegistrationRequestsPage({ requests, stats, filters }: R
                     <div>
                         <Filters />
                         <RequestsTable />
-                        <Pagination />
                     </div>
                 </Content>
             </RequestsProvider>

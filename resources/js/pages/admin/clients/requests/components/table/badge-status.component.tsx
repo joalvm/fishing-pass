@@ -2,7 +2,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ComponentProps } from "react";
-import RegistrationStatus, { RegistrationStatusLabel } from "../enums/registration-status.enum";
+import RegistrationStatus, { RegistrationStatusLabel } from "../../enums/registration-status.enum";
 import { CheckIcon, CheckCheckIcon, XIcon } from 'lucide-react';
 
 const badgeVariants = cva(

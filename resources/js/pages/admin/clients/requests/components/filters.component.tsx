@@ -33,7 +33,7 @@ export function Filters() {
                 placeholder="Buscar por nombre de empresa..."
                 value={filters.searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
-                className="max-w-sm"
+                className="max-w-sm shadow-none focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:ring-primary"
             />
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>

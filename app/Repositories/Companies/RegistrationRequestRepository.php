@@ -32,13 +32,12 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
     {
         return Builder::table('public.company_registration_requests', 'crr')
             ->select([
-                DB::raw('count(id) as total'),
-                DB::raw("count(id) filter (where status = 'APPROVED') as approved"),
-                DB::raw("count(id) filter (where status = 'REJECTED') as rejected"),
-                DB::raw("count(id) filter (where status = 'PENDING') as pending"),
+                DB::raw('count(1) as total'),
+                DB::raw("count(1) filter (where status = 'APPROVED') as approved"),
+                DB::raw("count(1) filter (where status = 'REJECTED') as rejected"),
+                DB::raw("count(1) filter (where status = 'PENDING') as pending"),
             ])
             ->whereNull('crr.deleted_at')
-            ->groupBy('status')
             ->first();
     }
 

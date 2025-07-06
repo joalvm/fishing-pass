@@ -1,13 +1,20 @@
-export enum RegistrationStatus {
+enum RegistrationStatus {
     PENDING = 'PENDING',
     APPROVED = 'APPROVED',
     REJECTED = 'REJECTED',
-    INCOMPLETE = 'INCOMPLETE',
 }
 
-export const RegistrationStatusLabels: Record<RegistrationStatus, string> = {
-    [RegistrationStatus.PENDING]: 'Pendiente',
-    [RegistrationStatus.APPROVED]: 'Aprobado',
-    [RegistrationStatus.REJECTED]: 'Rechazado',
-    [RegistrationStatus.INCOMPLETE]: 'Incompleto',
-};
+export function RegistrationStatusLabel(status: RegistrationStatus) {
+    switch (status) {
+        case RegistrationStatus.PENDING:
+            return 'Pendiente';
+        case RegistrationStatus.APPROVED:
+            return 'Aprobado';
+        case RegistrationStatus.REJECTED:
+            return 'Rechazado';
+        default:
+            return 'Desconocido';
+    }
+}
+
+export default RegistrationStatus;

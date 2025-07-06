@@ -1,8 +1,8 @@
 import { cva, VariantProps } from "class-variance-authority";
 import { Badge } from "@/components/ui/badge";
-import RegistrationStatus from "@/enums/registration-status.enum";
 import { cn } from "@/lib/utils";
 import { ComponentProps } from "react";
+import RegistrationStatus, { RegistrationStatusLabel } from "../enums/registration-status.enum";
 
 const badgeVariants = cva(
     'text-[0.65rem] capitalize',
@@ -25,22 +25,9 @@ type BadgeStatusProps = ComponentProps<typeof Badge> & VariantProps<typeof badge
 }
 
 export default function BadgeStatus({ className, status, ...props }: BadgeStatusProps) {
-    const label = (status: RegistrationStatus) => {
-        switch (status) {
-            case RegistrationStatus.PENDING:
-                return 'Pendiente';
-            case RegistrationStatus.APPROVED:
-                return 'Aprobado';
-            case RegistrationStatus.REJECTED:
-                return 'Rechazado';
-            default:
-                return 'Desconocido';
-        }
-    }
-
     return (
         <Badge variant="outline" data-status={status} className={cn(className,badgeVariants({ status }))} {...props}>
-            {label(status)}
+            {RegistrationStatusLabel(status)}
         </Badge>
     )
 }

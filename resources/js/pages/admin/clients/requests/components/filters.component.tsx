@@ -2,7 +2,7 @@ import { Input } from '@/components/ui/input';
 import { useRequests } from '../contexts/requests.context';
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { RegistrationStatus, RegistrationStatusLabels } from '../enums/registration-status.enum';
+import RegistrationStatus, { RegistrationStatusLabel } from '../enums/registration-status.enum';
 
 export function Filters() {
     const { filters, setSearchTerm, setStatuses } = useRequests();
@@ -35,7 +35,7 @@ export function Filters() {
                             checked={filters.statuses.includes(status)}
                             onCheckedChange={checked => handleStatusChange(status, !!checked)}
                         >
-                            {RegistrationStatusLabels[status]}
+                            {RegistrationStatusLabel(status)}
                         </DropdownMenuCheckboxItem>
                     ))}
                 </DropdownMenuContent>

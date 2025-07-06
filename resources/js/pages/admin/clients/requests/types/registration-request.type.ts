@@ -1,5 +1,5 @@
 import CompanyEntityType from '@/enums/company-entity-type';
-import RegistrationStatus from '@/enums/registration-status.enum';
+import RegistrationStatus from '../enums/registration-status.enum';
 
 type RegistrationRequest = {
     id: number;

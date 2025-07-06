@@ -26,14 +26,15 @@ export default function RegistrationRequestsPage({ requests, stats, filters }: R
         <AdminLayout title="Solicitudes de registro" breadcrumbs={breadcrumbs}>
             <RequestsProvider initialRequests={requests} initialFilters={filters}>
                 <Content size="lg">
-                    <Heading title="Solicitudes de registro" description="Lista de de cliente que solicitan pertenecer a la plataforma." />
+                    {/* stats */}
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                         <TotalRequests stats={stats} />
                         <PendingRequests stats={stats} />
                         <ApprovedRequests stats={stats} />
                         <RejectedRequests stats={stats} />
                     </div>
-                    <div className="py-4">
+                    {/* table */}
+                    <div>
                         <Filters />
                         <RequestsTable />
                         <Pagination />

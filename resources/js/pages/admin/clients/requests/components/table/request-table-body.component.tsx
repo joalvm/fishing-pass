@@ -1,21 +1,12 @@
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { TableBody as ShadcnTableBody, TableCell, TableRow } from '@/components/ui/table';
 import CompanyEntityType from '@/enums/company-entity-type';
+import { CheckIcon, MoreHorizontalIcon, Trash2Icon, XIcon } from 'lucide-react';
 import { ComponentProps, useState } from 'react';
 import { useRequests } from '../../contexts/requests.context';
 import RegistrationRequest from '../../types/registration-request.type';
 import BadgeStatus from './badge-status.component';
-import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { router } from '@inertiajs/react';
-import { CheckIcon, MoreHorizontalIcon, Trash2Icon, XIcon } from 'lucide-react';
-import { toast } from 'sonner';
 import RejectionDialog from './rejection-dialog.component';
 
 const entityTypeLabel = (entityType: CompanyEntityType) => {
@@ -38,7 +29,7 @@ function TableBodyRow({ row }: TableBodyRowProps) {
 
     if (row === undefined) {
         return (
-            <TableRow className='h-10 border-b-white hover:bg-transparent'>
+            <TableRow className="h-10 border-b-background hover:bg-background">
                 <TableCell colSpan={8} className="h-10"></TableCell>
             </TableRow>
         );
@@ -92,10 +83,8 @@ export default function TableBody() {
 
     return (
         <ShadcnTableBody>
-            {requests.data.length > 0 &&
-                requests.data.map((request) => <TableBodyRow key={request.id} row={request} />)}
-            {remainingRows > 0 &&
-                Array.from({ length: remainingRows }, (_, i) => <TableBodyRow key={`empty-${i}`} />)}
+            {requests.data.length > 0 && requests.data.map((request) => <TableBodyRow key={request.id} row={request} />)}
+            {remainingRows > 0 && Array.from({ length: remainingRows }, (_, i) => <TableBodyRow key={`empty-${i}`} />)}
             {requests.data.length === 0 && (
                 <TableRow>
                     <TableCell colSpan={8} className="h-[400px] text-center">

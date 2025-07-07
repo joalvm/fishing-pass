@@ -79,13 +79,19 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
         int $rejectedBy,
         string $reason,
     ): RegistrationRequest {
-        $data = UpdateRegistrationRequestData::from([
-            ...$model->getAttributes(),
-            'status' => RegistrationStatus::REJECTED,
-            'rejected_reason' => $reason,
-            'approved_by' => $rejectedBy,
-            'approved_at' => now(),
-        ]);
+        $data = new UpdateRegistrationRequestData(
+            entityType: $model->entity_type,
+            businessName: $model->business_name,
+            documentTypeId: $model->document_type_id,
+            documentNumber: $model->document_number,
+            address: $model->address,
+            phone: $model->phone,
+            email: $model->email,
+            status: RegistrationStatus::REJECTED,
+            rejectedReason: $reason,
+            approvedBy: $rejectedBy,
+            approvedAt: now()->format('Y-m-d H:i:sP')
+        );
 
         return $this->update($model, $data);
     }

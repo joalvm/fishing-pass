@@ -28,4 +28,24 @@ class RegistrationRequestFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
         ];
     }
+
+    public function juridicalPerson(): static
+    {
+        return $this->state([
+            'business_name' => $this->faker->company,
+            'entity_type' => EntityType::JURIDICAL_PERSON->value,
+            'document_type_id' => 3,
+            'document_number' => $this->faker->unique()->numerify('###########'),
+        ]);
+    }
+
+    public function naturalPerson(): static
+    {
+        return $this->state([
+            'business_name' => $this->faker->name,
+            'entity_type' => EntityType::NATURAL_PERSON->value,
+            'document_type_id' => 1,
+            'document_number' => $this->faker->unique()->numerify('########'),
+        ]);
+    }
 }

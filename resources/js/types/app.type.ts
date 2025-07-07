@@ -6,6 +6,8 @@ import { Flatten } from './flatten.type';
 export interface PageProps {
     name: string;
     auth: Auth;
+    errors: Record<string, unknown>;
+    flash: Record<string, unknown>;
     ziggy: Config & { location: string };
     [key: string]: unknown;
 }

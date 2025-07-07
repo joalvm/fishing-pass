@@ -11,6 +11,7 @@ import RequestsTable from './components/table/request-table.component';
 import { RequestsProvider } from './contexts/requests.context';
 import RegistrationRequest from './types/registration-request.type';
 import Stats from './types/stats.type';
+import { Toaster } from 'sonner';
 
 interface RegistrationRequestsPageProps extends PageProps {
     requests: Paginate<RegistrationRequest>;
@@ -34,6 +35,7 @@ export default function RegistrationRequestsPage({ requests, stats, filters }: R
                     </div>
                     {/* table */}
                     <div>
+                        <Toaster />
                         <Filters />
                         <RequestsTable />
                     </div>

@@ -11,8 +11,10 @@ export default function TableHeader() {
                 <TableHead>Tipo de Entidad</TableHead>
                 <TableHead>Correo Electrónico</TableHead>
                 <TableHead className="text-center">Fecha de Solicitud</TableHead>
-                <TableHead className="text-right">
-                    <SettingsIcon className="h-4 w-4" />
+                <TableHead className="text-center">
+                    <span className="flex items-center justify-center">
+                        <SettingsIcon className="h-4 w-4" />
+                    </span>
                 </TableHead>
             </TableRow>
         </ShadcnTableHeader>

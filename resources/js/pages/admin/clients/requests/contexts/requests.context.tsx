@@ -15,6 +15,18 @@ interface RequestsContextType {
         page: number;
         perPage: number;
     };
+    // Diálogos
+    dialogs: {
+        rejection: {
+            isOpen: boolean;
+            request: RegistrationRequest | null;
+            open: (request: RegistrationRequest) => void;
+            close: () => void;
+        };
+        // Se dejarán espacios para los futuros diálogos
+        // deleteConfirmation: { ... };
+        // approval: { ... };
+    };
     setSearchTerm: (term: string) => void;
     setStatuses: (statuses: RegistrationStatus[]) => void;
     setPage: (page: number) => void;
@@ -31,6 +43,24 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
     const [statuses, setStatuses] = useState(Array.isArray(initialFilters.statuses) ? initialFilters.statuses : []);
     const [page, setPage] = useState(initialFilters.page ?? DEFAULT_PAGE);
     const [perPage, setPerPage] = useState(initialFilters.perPage ?? DEFAULT_PER_PAGE);
+    
+    // Estado para el diálogo de rechazo
+    const [rejectionDialog, setRejectionDialog] = useState<{
+        isOpen: boolean;
+        request: RegistrationRequest | null;
+    }>({
+        isOpen: false,
+        request: null,
+    });
+
+    // Controladores para el diálogo de rechazo
+    const openRejectionDialog = (request: RegistrationRequest) => {
+        setRejectionDialog({ isOpen: true, request });
+    };
+
+    const closeRejectionDialog = () => {
+        setRejectionDialog({ isOpen: false, request: null });
+    };
 
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
@@ -73,11 +103,21 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
         requests,
         filters: { searchTerm, statuses },
         pagination: { page, perPage },
+        dialogs: {
+            rejection: {
+                ...rejectionDialog,
+                open: openRejectionDialog,
+                close: closeRejectionDialog,
+            },
+            // Se dejarán espacios para los futuros diálogos
+            // deleteConfirmation: { ... },
+            // approval: { ... },
+        },
         setSearchTerm: handleSetSearchTerm,
         setStatuses: handleSetStatuses,
         setPage,
         setPerPage: handleSetPerPage,
-    }), [requests, searchTerm, statuses, page, perPage]);
+    }), [requests, searchTerm, statuses, page, perPage, rejectionDialog]);
 
     return (
         <RequestsContext.Provider value={value}>

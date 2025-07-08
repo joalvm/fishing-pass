@@ -1,19 +1,17 @@
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogOverlay, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { PageProps } from '@/types/app.type';
 import { useForm } from '@inertiajs/react';
 import { FormEvent, useEffect } from 'react';
 import { toast } from 'sonner';
-import RegistrationStatus from '../../enums/registration-status.enum';
-import RegistrationRequest from '../../types/registration-request.type';
+import { useRequests } from '../contexts/requests.context';
+import RegistrationStatus from '../enums/registration-status.enum';
 
-interface RejectionDialogProps {
-    request: RegistrationRequest | null;
-    onClose: () => void;
-}
-
-export default function RejectionDialog({ request, onClose }: RejectionDialogProps) {
+export default function RejectionDialog() {
+    const { dialogs } = useRequests();
+    const { rejection } = dialogs;
+    const { request, close } = rejection;
     const { data, ...form } = useForm({
         status: RegistrationStatus.REJECTED,
         rejection_reason: '',
@@ -37,7 +35,7 @@ export default function RejectionDialog({ request, onClose }: RejectionDialogPro
                     toast.error(flash.message as string);
                 } else {
                     toast.success('Se rechazó la solicitud correctamente.');
-                    onClose();
+                    close();
                 }
             },
             onError: (page) => {
@@ -47,7 +45,7 @@ export default function RejectionDialog({ request, onClose }: RejectionDialogPro
     };
 
     return (
-        <Dialog open={request !== null} onOpenChange={onClose}>
+        <Dialog open={rejection.isOpen} onOpenChange={(open) => !open && close()}>
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
@@ -66,7 +64,7 @@ export default function RejectionDialog({ request, onClose }: RejectionDialogPro
                         {form.errors.rejection_reason && <p className="text-sm text-red-500">{form.errors.rejection_reason}</p>}
                     </div>
                     <DialogFooter>
-                        <Button type="button" variant="outline" onClick={onClose} disabled={form.processing}>
+                        <Button type="button" variant="outline" onClick={close} disabled={form.processing}>
                             Cancelar
                         </Button>
                         <Button type="submit" disabled={!data.rejection_reason || !!request?.rejected_reason || form.processing}>
@@ -75,6 +73,7 @@ export default function RejectionDialog({ request, onClose }: RejectionDialogPro
                     </DialogFooter>
                 </form>
             </DialogContent>
+
         </Dialog>
     );
 }

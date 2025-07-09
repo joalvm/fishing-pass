@@ -7,7 +7,7 @@ use App\Enums\LengthType;
 use App\Enums\Person\Gender;
 use App\Models\Company\Company;
 use App\Models\DocumentType;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;

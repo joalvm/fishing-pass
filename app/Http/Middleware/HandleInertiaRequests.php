@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Company\Company;
 use App\Models\Person\Person;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;

@@ -10,5 +10,7 @@ class BindingServiceProvider extends ServiceProvider
         \App\Interfaces\DocumentTypesInterface::class => \App\Repositories\DocumentTypesRepository::class,
         \App\Interfaces\Companies\CompaniesInterface::class => \App\Repositories\Companies\CompaniesRepository::class,
         \App\Interfaces\Companies\RegistrationRequestInterface::class => \App\Repositories\Companies\RegistrationRequestRepository::class,
+        \App\Interfaces\Persons\PersonsInterface::class => \App\Repositories\Persons\PersonsRepository::class,
+        \App\Interfaces\Users\UsersInterface::class => \App\Repositories\Users\UsersRepository::class,
     ];
 }

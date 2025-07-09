@@ -62,7 +62,13 @@ function TableBodyRow({ row }: TableBodyRowProps) {
                             <span>Rechazar</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-600">
+                        <DropdownMenuItem 
+                            className="text-red-600"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                dialogs.deleteConfirmation.open(row);
+                            }}
+                        >
                             <Trash2Icon className="mr-1 h-4 w-4 text-red-600" />
                             <span>Eliminar</span>
                         </DropdownMenuItem>

@@ -24,7 +24,7 @@ interface RegistrationRequestInterface
     /**
      * Obtiene las estadísticas de las solicitudes de registro.
      */
-    public function stats(): ?Item;
+    public function stats(): ?\stdClass;
 
     /**
      * Crea una nueva solicitud de registro.

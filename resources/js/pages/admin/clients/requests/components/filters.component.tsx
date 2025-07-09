@@ -30,6 +30,7 @@ export function Filters() {
     return (
         <div className="flex items-center justify-between py-4">
             <Input
+                type='search'
                 placeholder="Buscar por nombre de empresa..."
                 value={filters.searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}

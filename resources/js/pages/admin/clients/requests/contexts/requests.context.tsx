@@ -23,8 +23,14 @@ interface RequestsContextType {
             open: (request: RegistrationRequest) => void;
             close: () => void;
         };
-        // Se dejarán espacios para los futuros diálogos
-        // deleteConfirmation: { ... };
+        deleteConfirmation: {
+            isOpen: boolean;
+            request: RegistrationRequest | null;
+            open: (request: RegistrationRequest) => void;
+            close: () => void;
+            isDeleting: boolean;
+        };
+        // Se dejará espacio para el diálogo de aprobación
         // approval: { ... };
     };
     setSearchTerm: (term: string) => void;
@@ -44,13 +50,23 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
     const [page, setPage] = useState(initialFilters.page ?? DEFAULT_PAGE);
     const [perPage, setPerPage] = useState(initialFilters.perPage ?? DEFAULT_PER_PAGE);
     
-    // Estado para el diálogo de rechazo
+    // Estados para los diálogos
     const [rejectionDialog, setRejectionDialog] = useState<{
         isOpen: boolean;
         request: RegistrationRequest | null;
     }>({
         isOpen: false,
         request: null,
+    });
+
+    const [deleteDialog, setDeleteDialog] = useState<{
+        isOpen: boolean;
+        request: RegistrationRequest | null;
+        isDeleting: boolean;
+    }>({
+        isOpen: false,
+        request: null,
+        isDeleting: false,
     });
 
     // Controladores para el diálogo de rechazo
@@ -60,6 +76,19 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
 
     const closeRejectionDialog = () => {
         setRejectionDialog({ isOpen: false, request: null });
+    };
+
+    // Controladores para el diálogo de confirmación de eliminación
+    const openDeleteDialog = (request: RegistrationRequest) => {
+        setDeleteDialog({ isOpen: true, request, isDeleting: false });
+    };
+
+    const closeDeleteDialog = () => {
+        setDeleteDialog(prev => ({ ...prev, isOpen: false, isDeleting: false }));
+    };
+
+    const setDeleting = (isDeleting: boolean) => {
+        setDeleteDialog(prev => ({ ...prev, isDeleting }));
     };
 
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -109,15 +138,20 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
                 open: openRejectionDialog,
                 close: closeRejectionDialog,
             },
-            // Se dejarán espacios para los futuros diálogos
-            // deleteConfirmation: { ... },
+            deleteConfirmation: {
+                ...deleteDialog,
+                open: openDeleteDialog,
+                close: closeDeleteDialog,
+                isDeleting: deleteDialog.isDeleting,
+            },
+            // Se dejará espacio para el diálogo de aprobación
             // approval: { ... },
         },
         setSearchTerm: handleSetSearchTerm,
         setStatuses: handleSetStatuses,
         setPage,
         setPerPage: handleSetPerPage,
-    }), [requests, searchTerm, statuses, page, perPage, rejectionDialog]);
+    }), [requests, searchTerm, statuses, page, perPage, rejectionDialog, deleteDialog]);
 
     return (
         <RequestsContext.Provider value={value}>

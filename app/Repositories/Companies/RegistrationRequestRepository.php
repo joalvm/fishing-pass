@@ -2,9 +2,13 @@
 
 namespace App\Repositories\Companies;
 
+use App\DataObjects\Repositories\Companies\CreateCompanyData;
 use App\DataObjects\Repositories\Companies\CreateRegistrationRequestData;
 use App\DataObjects\Repositories\Companies\UpdateRegistrationRequestData;
+use App\DataObjects\Repositories\Person\CreatePersonData;
 use App\Enums\Company\RegistrationStatus;
+use App\Enums\Person\Gender;
+use App\Interfaces\Companies\CompaniesInterface;
 use App\Interfaces\Companies\RegistrationRequestInterface;
 use App\Models\Company\RegistrationRequest;
 use Illuminate\Support\Facades\DB;
@@ -14,8 +18,9 @@ use Joalvm\Utils\Item;
 
 class RegistrationRequestRepository implements RegistrationRequestInterface
 {
-    public function __construct(public RegistrationRequest $model)
-    {
+    public function __construct(
+        public RegistrationRequest $model
+    ) {
     }
 
     public function all(): Collection
@@ -28,9 +33,10 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
         return $this->builder()->find($id);
     }
 
-    public function stats(): ?Item
+    public function stats(): ?\stdClass
     {
-        return Builder::table('public.company_registration_requests', 'crr')
+        return DB::query()
+            ->from('public.company_registration_requests', 'crr')
             ->select([
                 DB::raw('count(1) as total'),
                 DB::raw("count(1) filter (where status = 'APPROVED') as approved"),

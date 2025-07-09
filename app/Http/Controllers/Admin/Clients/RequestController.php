@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers\Admin\Clients;
 
-use App\Http\Controllers\Controller;
+use App\DataObjects\Repositories\Companies\CreateCompanyData;
 use App\Enums\Company\RegistrationStatus;
-use App\Interfaces\Companies\RegistrationRequestInterface;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Clients\UpdateRegistrationRequestStatusRequest;
+use App\Interfaces\Companies\CompaniesInterface;
+use App\Interfaces\Companies\RegistrationRequestInterface;
+use App\Models\Company\Company;
 use App\Models\Company\RegistrationRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class RequestController extends Controller
 {
     public function __construct(
         protected RegistrationRequestInterface $requestRepository,
+        protected CompaniesInterface $companiesRepository,
     ) {
     }
 
@@ -31,8 +34,8 @@ class RequestController extends Controller
         ;
 
         return Inertia::render('admin/clients/requests/requests', [
-            'stats' => $this->requestRepository->stats(),
-            'requests' => [
+            'stats' => Inertia::always($this->requestRepository->stats()),
+            'requests' => fn () => [
                 'data' => $collection,
                 'meta' => $collection->getMetadata(),
             ],
@@ -92,7 +95,7 @@ class RequestController extends Controller
             return back()->with('flash', ['error' => true, 'message' => 'Solicitud no encontrada.']);
         }
 
-        if ($model->status !== RegistrationStatus::PENDING) {
+        if (RegistrationStatus::PENDING !== $model->status) {
             return back()->with('flash', ['error' => true, 'message' => 'Solicitud no puede ser actualizada.']);
         }
 
@@ -102,23 +105,65 @@ class RequestController extends Controller
                 $user->id,
                 $input['rejection_reason']
             );
-        } else {
-            $this->requestRepository->approve($model, $user->id);
+        } elseif ($input['status'] === RegistrationStatus::APPROVED->value) {
+            $this->approveRequest($model, $request);
         }
 
-        return to_route('admin.clients.requests.index')
-            ->with('flash', ['success' => true, 'message' => 'Solicitud actualizada correctamente.']);
+        return redirect()
+            ->back()
+            ->with('flash', ['success' => true, 'message' => 'Solicitud actualizada correctamente.'])
+        ;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(RegistrationRequest $registrationRequest): RedirectResponse
+    public function destroy(int $id): RedirectResponse
     {
-        $this->requestRepository->delete($registrationRequest);
+        $model = $this->requestRepository->getModel($id);
+        if (!$model) {
+            return back()->with('flash', ['error' => true, 'message' => 'Solicitud no encontrada.']);
+        }
+
+        $this->requestRepository->delete($model);
 
         return redirect()
-            ->route('admin.clients.requests.index')
-            ->with('success', 'Solicitud eliminada correctamente.');
+            ->back()
+            ->with('flash', ['success' => true, 'message' => 'Solicitud eliminada correctamente.'])
+        ;
+    }
+
+    private function approveRequest(
+        RegistrationRequest $model,
+        UpdateRegistrationRequestStatusRequest $request,
+    ): void {
+        try {
+            DB::beginTransaction();
+
+            $this->requestRepository->approve($model, $request->user()->id);
+
+            $this->createCompany($model);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+
+    private function createCompany(RegistrationRequest $model): Company
+    {
+        // Creamos la empresa:
+        $companyData = new CreateCompanyData(
+            entityType: $model->entity_type,
+            businessName: $model->business_name,
+            documentTypeId: $model->document_type_id,
+            documentNumber: $model->document_number,
+            email: $model->email,
+            address: $model->address,
+            phone: $model->phone,
+        );
+
+        return $this->companiesRepository->create($companyData);
     }
 }

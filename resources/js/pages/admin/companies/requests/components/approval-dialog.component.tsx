@@ -23,18 +23,18 @@ export default function ApprovalDialog() {
     const { approval } = dialogs;
     const { request, close, notifyByEmail, setNotifyByEmail } = approval;
 
-    const form = useForm<{ notify_by_email: boolean; status: RegistrationStatus }>({
+    const {setData, reset, ...form } = useForm<{ notify_by_email: boolean; status: RegistrationStatus }>({
         status: RegistrationStatus.APPROVED,
         notify_by_email: true,
     });
 
     useEffect(() => {
         if (request) {
-            form.setData('notify_by_email', notifyByEmail);
+            setData('notify_by_email', notifyByEmail);
         } else {
-            form.reset();
+            reset();
         }
-    }, [request, notifyByEmail]);
+    }, [request, notifyByEmail, setData, reset]);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();

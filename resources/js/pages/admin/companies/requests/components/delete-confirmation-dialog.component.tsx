@@ -1,6 +1,5 @@
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
@@ -23,10 +22,8 @@ export default function DeleteConfirmationDialog() {
     if (!request) return null;
 
     const handleDelete = () => {
-        deleteRequest(route('admin.clients.requests.destroy', request.id), {
+        deleteRequest(route('admin.companies.requests.destroy', request.id), {
             preserveScroll: true,
-            preserveState: true,
-            only: ['requests', 'filters'], // Preserve these props from the current page
             onSuccess: () => {
                 toast.success('La solicitud ha sido eliminada correctamente.');
                 close();
@@ -56,19 +53,19 @@ export default function DeleteConfirmationDialog() {
                             <span>Cancelar</span>
                         </Button>
                     </AlertDialogCancel>
-                        <Button variant="destructive" onClick={handleDelete} disabled={processing} className="flex items-center gap-2">
-                            {processing ? (
-                                <>
-                                    <LoaderCircleIcon className="h-4 w-4 animate-spin" />
-                                    <span>Eliminando...</span>
-                                </>
-                            ) : (
-                                <>
-                                    <Trash2Icon className="h-4 w-4" />
-                                    <span>Sí, eliminar</span>
-                                </>
-                            )}
-                        </Button>
+                    <Button variant="destructive" onClick={handleDelete} disabled={processing} className="flex items-center gap-2">
+                        {processing ? (
+                            <>
+                                <LoaderCircleIcon className="h-4 w-4 animate-spin" />
+                                <span>Eliminando...</span>
+                            </>
+                        ) : (
+                            <>
+                                <Trash2Icon className="h-4 w-4" />
+                                <span>Sí, eliminar</span>
+                            </>
+                        )}
+                    </Button>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

@@ -33,7 +33,7 @@ class RequestController extends Controller
             ->all()
         ;
 
-        return Inertia::render('admin/clients/requests/requests', [
+        return Inertia::render('admin/companies/requests/requests', [
             'stats' => Inertia::always($this->requestRepository->stats()),
             'requests' => fn () => [
                 'data' => $collection,

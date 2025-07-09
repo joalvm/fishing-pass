@@ -1,16 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { PageProps } from '@/types/app.type';
-import { useForm } from '@inertiajs/react';
-import { FormEvent, useEffect } from 'react';
-import { toast } from 'sonner';
-import { CheckCircle2Icon, LoaderCircleIcon, XIcon } from 'lucide-react';
-import { useRequests } from '../contexts/requests.context';
-import RegistrationStatus from '../enums/registration-status.enum';
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
@@ -18,6 +7,16 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { PageProps } from '@/types/app.type';
+import { useForm } from '@inertiajs/react';
+import { CheckCircle2Icon, LoaderCircleIcon, XIcon } from 'lucide-react';
+import { FormEvent, useEffect } from 'react';
+import { toast } from 'sonner';
+import { useRequests } from '../contexts/requests.context';
+import RegistrationStatus from '../enums/registration-status.enum';
 
 export default function ApprovalDialog() {
     const { dialogs } = useRequests();
@@ -42,7 +41,7 @@ export default function ApprovalDialog() {
 
         if (!request) return;
 
-        form.put(route('admin.clients.requests.update', request.id), {
+        form.put(route('admin.companies.requests.update', request.id), {
             preserveScroll: true,
             onSuccess: (page) => {
                 const flash = (page.props as unknown as PageProps).flash;
@@ -71,7 +70,8 @@ export default function ApprovalDialog() {
                             <span>Confirmar Aprobación</span>
                         </AlertDialogTitle>
                         <AlertDialogDescription className="pt-2">
-                            ¿Está seguro que desea aprobar la solicitud de <span className="font-medium text-foreground">{request.business_name}</span>?
+                            ¿Está seguro que desea aprobar la solicitud de{' '}
+                            <span className="font-medium text-foreground">{request.business_name}</span>?
                         </AlertDialogDescription>
                     </AlertDialogHeader>
 
@@ -105,7 +105,7 @@ export default function ApprovalDialog() {
                         <Button
                             type="submit"
                             disabled={form.processing}
-                            className="flex items-center gap-2 focus-visible:ring-green-600/50  bg-green-600 hover:bg-green-700"
+                            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 focus-visible:ring-green-600/50"
                         >
                             {form.processing ? (
                                 <>

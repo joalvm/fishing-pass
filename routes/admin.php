@@ -28,7 +28,7 @@ Route::middleware(['auth', 'platform:admin'])
             })
         ;
 
-        Route::resource('clients/requests', RequestController::class)->names('clients.requests');
-        Route::resource('clients', CompaniesController::class)->names('clients');
+        Route::resource('companies/requests', RequestController::class)->names('companies.requests');
+        Route::resource('companies', CompaniesController::class)->names('companies');
     })
 ;

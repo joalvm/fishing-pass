@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Heading from '@/layouts/app/components/heading.component';
 import { ClipboardListIcon, TrendingUpIcon, TruckIcon, UsersIcon } from 'lucide-react';
 import AdminLayout from '../admin.layout';
+import Content from '@/layouts/app/components/content.component';
 
 const breadcrumbs = [{ title: 'Panel de control', href: route('admin.dashboard') }];
 
@@ -39,7 +40,7 @@ const stats = [
 export default function DashboardPage() {
     return (
         <AdminLayout breadcrumbs={breadcrumbs} title="Panel de control">
-            <div className="h-fullflex-1 flex w-full flex-col overflow-x-auto rounded-xl bg-background">
+            <Content size="full">
                 <Heading title="Panel de control" description="Resumen general de operaciones" />
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -59,7 +60,7 @@ export default function DashboardPage() {
                         );
                     })}
                 </div>
-            </div>
+            </Content>
         </AdminLayout>
     );
 }

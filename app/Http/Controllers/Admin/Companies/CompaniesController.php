@@ -13,7 +13,7 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        return Inertia::render('admin/clients/clients/clients');
+        return Inertia::render('admin/companies/companies/companies');
     }
 
     /**

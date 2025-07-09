@@ -1,15 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { PageProps } from '@/types/app.type';
-import { useForm } from '@inertiajs/react';
-import { FormEvent, useEffect } from 'react';
-import { toast } from 'sonner';
-import { XIcon, AlertCircleIcon, BanknoteXIcon, LoaderCircleIcon } from 'lucide-react';
-import { useRequests } from '../contexts/requests.context';
-import RegistrationStatus from '../enums/registration-status.enum';
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
@@ -17,6 +7,15 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { PageProps } from '@/types/app.type';
+import { useForm } from '@inertiajs/react';
+import { AlertCircleIcon, BanknoteXIcon, LoaderCircleIcon, XIcon } from 'lucide-react';
+import { FormEvent, useEffect } from 'react';
+import { toast } from 'sonner';
+import { useRequests } from '../contexts/requests.context';
+import RegistrationStatus from '../enums/registration-status.enum';
 
 export default function RejectionDialog() {
     const { dialogs } = useRequests();
@@ -31,13 +30,13 @@ export default function RejectionDialog() {
         if (!request) {
             form.reset();
         }
-    }, [request]);
+    }, [request, form]);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (!request) return;
 
-        form.put(route('admin.clients.requests.update', request.id), {
+        form.put(route('admin.companies.requests.update', request.id), {
             preserveScroll: true,
             onSuccess: (page) => {
                 const flash = (page.props as unknown as PageProps).flash;
@@ -48,7 +47,7 @@ export default function RejectionDialog() {
                     close();
                 }
             },
-            onError: (page) => {
+            onError: () => {
                 toast.error('Hubo un error al rechazar la solicitud.');
             },
         });

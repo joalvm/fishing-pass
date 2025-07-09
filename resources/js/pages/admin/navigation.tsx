@@ -10,18 +10,18 @@ const navigation: NavItem[] = [
     },
     {
         type: 'group',
-        title: 'Clientes',
+        title: 'Empresas',
         icon: Building2Icon,
         items: [
             {
                 type: 'item',
-                title: 'Lista de clientes',
-                href: route('admin.clients.index'),
+                title: 'Lista de empresas',
+                href: route('admin.companies.index'),
             },
             {
                 type: 'item',
                 title: 'Solicitudes de registro',
-                href: route('admin.clients.requests.index'),
+                href: route('admin.companies.requests.index'),
             },
         ],
     },

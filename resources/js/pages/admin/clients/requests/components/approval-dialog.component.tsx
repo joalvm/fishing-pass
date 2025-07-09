@@ -24,24 +24,25 @@ export default function ApprovalDialog() {
     const { approval } = dialogs;
     const { request, close, notifyByEmail, setNotifyByEmail } = approval;
 
-    const { data, setData, processing, put, reset } = useForm<{ notify_by_email: boolean; status: RegistrationStatus }>({
+    const form = useForm<{ notify_by_email: boolean; status: RegistrationStatus }>({
         status: RegistrationStatus.APPROVED,
         notify_by_email: true,
     });
 
     useEffect(() => {
         if (request) {
-            setData('notify_by_email', notifyByEmail);
+            form.setData('notify_by_email', notifyByEmail);
         } else {
-            reset();
+            form.reset();
         }
     }, [request, notifyByEmail]);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+
         if (!request) return;
 
-        put(route('admin.clients.requests.update', request.id), {
+        form.put(route('admin.clients.requests.update', request.id), {
             preserveScroll: true,
             onSuccess: (page) => {
                 const flash = (page.props as unknown as PageProps).flash;
@@ -88,7 +89,7 @@ export default function ApprovalDialog() {
                                 id="notify-by-email"
                                 checked={notifyByEmail}
                                 onCheckedChange={setNotifyByEmail}
-                                disabled={processing}
+                                disabled={form.processing}
                                 className="mt-1"
                             />
                         </div>
@@ -96,30 +97,28 @@ export default function ApprovalDialog() {
 
                     <AlertDialogFooter className="gap-3 sm:gap-2">
                         <AlertDialogCancel asChild>
-                            <Button variant="outline" className="flex items-center gap-2" disabled={processing}>
+                            <Button variant="outline" className="flex items-center gap-2" disabled={form.processing}>
                                 <XIcon className="h-4 w-4" />
                                 <span>Cancelar</span>
                             </Button>
                         </AlertDialogCancel>
-                        <AlertDialogAction asChild>
-                            <Button
-                                type="submit"
-                                disabled={processing}
-                                className="flex items-center gap-2 focus-visible:ring-green-600/50  bg-green-600 hover:bg-green-700"
-                            >
-                                {processing ? (
-                                    <>
-                                        <LoaderCircleIcon className="h-4 w-4 animate-spin" />
-                                        <span>Procesando...</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <CheckCircle2Icon className="h-4 w-4" />
-                                        <span>Confirmar Aprobación</span>
-                                    </>
-                                )}
-                            </Button>
-                        </AlertDialogAction>
+                        <Button
+                            type="submit"
+                            disabled={form.processing}
+                            className="flex items-center gap-2 focus-visible:ring-green-600/50  bg-green-600 hover:bg-green-700"
+                        >
+                            {form.processing ? (
+                                <>
+                                    <LoaderCircleIcon className="h-4 w-4 animate-spin" />
+                                    <span>Procesando...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <CheckCircle2Icon className="h-4 w-4" />
+                                    <span>Confirmar Aprobación</span>
+                                </>
+                            )}
+                        </Button>
                     </AlertDialogFooter>
                 </form>
             </AlertDialogContent>

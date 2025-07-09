@@ -86,26 +86,24 @@ export default function RejectionDialog() {
                                 <span>Cancelar</span>
                             </Button>
                         </AlertDialogCancel>
-                        <AlertDialogAction asChild>
-                            <Button
-                                type="submit"
-                                variant="destructive"
-                                disabled={!data.rejection_reason || !!request?.rejected_reason || form.processing}
-                                className="flex items-center gap-2"
-                            >
-                                {form.processing ? (
-                                    <>
-                                        <LoaderCircleIcon className="h-4 w-4 animate-spin" />
-                                        <span>Rechazando...</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <BanknoteXIcon className="h-4 w-4" />
-                                        <span>Confirmar Rechazo</span>
-                                    </>
-                                )}
-                            </Button>
-                        </AlertDialogAction>
+                        <Button
+                            type="submit"
+                            variant="destructive"
+                            disabled={!data.rejection_reason || !!request?.rejected_reason || form.processing}
+                            className="flex items-center gap-2"
+                        >
+                            {form.processing ? (
+                                <>
+                                    <LoaderCircleIcon className="h-4 w-4 animate-spin" />
+                                    <span>Rechazando...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <BanknoteXIcon className="h-4 w-4" />
+                                    <span>Confirmar Rechazo</span>
+                                </>
+                            )}
+                        </Button>
                     </AlertDialogFooter>
                 </form>
             </AlertDialogContent>

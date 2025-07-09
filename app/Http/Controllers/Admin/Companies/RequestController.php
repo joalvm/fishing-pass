@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Companies;
 use App\DataObjects\Repositories\Companies\CreateCompanyData;
 use App\Enums\Company\RegistrationStatus;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Clients\UpdateRegistrationRequestStatusRequest;
+use App\Http\Requests\Admin\Companies\UpdateRegistrationRequestStatusRequest;
 use App\Interfaces\Companies\CompaniesInterface;
 use App\Interfaces\Companies\RegistrationRequestInterface;
 use App\Models\Company\Company;

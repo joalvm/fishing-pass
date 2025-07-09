@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Admin\Clients;
+namespace App\Http\Requests\Admin\Companies;
 
 use App\Enums\Company\RegistrationStatus;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateRegistrationRequestStatusRequest extends FormRequest
 {
@@ -28,7 +27,7 @@ class UpdateRegistrationRequestStatusRequest extends FormRequest
             'rejection_reason' => [
                 'filled',
                 'required_if:status,' . RegistrationStatus::REJECTED->value,
-                'string'
+                'string',
             ],
             'notify_by_email' => ['boolean'],
         ];

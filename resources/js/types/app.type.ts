@@ -6,6 +6,8 @@ import { Flatten } from './flatten.type';
 export interface PageProps {
     name: string;
     auth: Auth;
+    errors: Record<string, unknown>;
+    flash: Record<string, unknown>;
     ziggy: Config & { location: string };
     [key: string]: unknown;
 }
@@ -13,13 +15,15 @@ export interface PageProps {
 export type Filter<T> = {
     page?: number;
     perPage?: number;
-    sort?: Partial<{ [K in Flatten<T>]: 'asc' | 'desc' }>;
+    sort?: Sort<T>;
     contains?: {
         items: Flatten<T>[];
         text: string;
     };
     [key: string]: unknown;
 };
+
+export type Sort<T> = Partial<{ [K in Flatten<T>]: 'asc' | 'desc' }>;
 
 export type Paginate<T> = {
     data: T[];

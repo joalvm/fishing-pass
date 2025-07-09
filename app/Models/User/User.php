@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
@@ -32,6 +32,13 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
     use ValidatesAttributes;
+
+    /**
+     * Contiene la contraseña sin hashear
+
+     * @var string
+     */
+    public string $realPassword;
 
     /**
      * The attributes that are mass assignable.
@@ -88,7 +95,7 @@ class User extends Authenticatable
                 $this->ruleUniqueEmail(),
             ],
             'password' => ['required', 'string'],
-            'avatar_url' => ['nullable', 'string', 'max:255'],
+            'avatar_url' => ['nullable', 'string'],
             'is_super_admin' => ['boolean'],
         ];
     }

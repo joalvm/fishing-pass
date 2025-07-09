@@ -22,6 +22,11 @@ interface RegistrationRequestInterface
     public function find(int $id): ?Item;
 
     /**
+     * Obtiene las estadísticas de las solicitudes de registro.
+     */
+    public function stats(): ?\stdClass;
+
+    /**
      * Crea una nueva solicitud de registro.
      */
     public function create(CreateRegistrationRequestData $data): RegistrationRequest;

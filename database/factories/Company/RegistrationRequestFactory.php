@@ -7,7 +7,7 @@ use App\Models\DocumentType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Company\Company>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Company\RegistrationRequest>
  */
 class RegistrationRequestFactory extends Factory
 {
@@ -27,5 +27,25 @@ class RegistrationRequestFactory extends Factory
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
         ];
+    }
+
+    public function juridicalPerson(): static
+    {
+        return $this->state([
+            'business_name' => $this->faker->company,
+            'entity_type' => EntityType::JURIDICAL_PERSON->value,
+            'document_type_id' => 3,
+            'document_number' => $this->faker->unique()->numerify('###########'),
+        ]);
+    }
+
+    public function naturalPerson(): static
+    {
+        return $this->state([
+            'business_name' => $this->faker->name,
+            'entity_type' => EntityType::NATURAL_PERSON->value,
+            'document_type_id' => 1,
+            'document_number' => $this->faker->unique()->numerify('########'),
+        ]);
     }
 }

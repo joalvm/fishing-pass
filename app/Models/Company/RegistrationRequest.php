@@ -91,7 +91,7 @@ class RegistrationRequest extends Model
             'phone' => ['nullable', 'string'],
             'email' => ['nullable', 'email'],
             'status' => ['required', RegistrationStatus::rule()],
-            'approved_at' => ['nullable', 'required_with:approved_by', 'date_format:Y-m-d H:i:sP'],
+            'approved_at' => ['nullable', 'required_with:approved_by', 'string'],
             'approved_by' => ['nullable', 'required_with:approved_at', 'integer', PgInteger::id()],
             'rejected_reason' => [
                 'nullable',

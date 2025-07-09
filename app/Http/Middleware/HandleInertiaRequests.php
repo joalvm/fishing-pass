@@ -4,8 +4,10 @@ namespace App\Http\Middleware;
 
 use App\Models\Company\Company;
 use App\Models\Person\Person;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Response;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -43,6 +45,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => $this->getAuth($request),
+            'flash' => fn () => $request->session()->get('flash'),
             'ziggy' => fn (): array => [
                 ...(new Ziggy())->toArray(),
                 'location' => $request->url(),

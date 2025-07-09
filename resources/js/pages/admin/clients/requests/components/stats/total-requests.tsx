@@ -1,20 +1,22 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Stats from "../../types/stats.type";
 import { ClockFadingIcon } from "lucide-react";
 
-export default function TotalRequests() {
+type TotalRequestsProps = {
+    stats: Stats;
+};
+
+export default function TotalRequests({ stats }: TotalRequestsProps) {
     return (
-        <Card className="shadow-none gap-2">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <Card className="shadow-none gap-2 py-4 flex-1/4">
+            <CardHeader className="flex flex-row items-center justify-between px-4">
                 <CardTitle className="text-sm font-medium">Total</CardTitle>
                 <ClockFadingIcon className="h-4 w-4 text-gray-500" />
             </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold" title={`total: 10`}>
-                    10
+            <CardContent className="px-4">
+                <div className="text-2xl font-bold" title={`total: ${stats.total}`}>
+                    {stats.total}
                 </div>
-                <p className="text-xs text-gray-500">
-                    ({Math.round((10 / 10) * 100)}% del total)
-                </p>
             </CardContent>
         </Card>
     );

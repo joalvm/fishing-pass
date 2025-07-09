@@ -5,7 +5,7 @@ const headingVariants = cva('flex flex-col gap-4 md:flex-row md:items-center md:
     variants: {
         size: {
             small: 'mb-0.5',
-            default: 'mb-8',
+            default: 'mb-1',
         },
     },
     defaultVariants: {

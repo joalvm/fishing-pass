@@ -2,19 +2,25 @@
 
 namespace App\Repositories\Companies;
 
+use App\DataObjects\Repositories\Companies\CreateCompanyData;
 use App\DataObjects\Repositories\Companies\CreateRegistrationRequestData;
 use App\DataObjects\Repositories\Companies\UpdateRegistrationRequestData;
+use App\DataObjects\Repositories\Person\CreatePersonData;
 use App\Enums\Company\RegistrationStatus;
+use App\Enums\Person\Gender;
+use App\Interfaces\Companies\CompaniesInterface;
 use App\Interfaces\Companies\RegistrationRequestInterface;
 use App\Models\Company\RegistrationRequest;
+use Illuminate\Support\Facades\DB;
 use Joalvm\Utils\Builder;
 use Joalvm\Utils\Collection;
 use Joalvm\Utils\Item;
 
 class RegistrationRequestRepository implements RegistrationRequestInterface
 {
-    public function __construct(public RegistrationRequest $model)
-    {
+    public function __construct(
+        public RegistrationRequest $model
+    ) {
     }
 
     public function all(): Collection
@@ -25,6 +31,20 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
     public function find(int $id): ?Item
     {
         return $this->builder()->find($id);
+    }
+
+    public function stats(): ?\stdClass
+    {
+        return DB::query()
+            ->from('public.company_registration_requests', 'crr')
+            ->select([
+                DB::raw('count(1) as total'),
+                DB::raw("count(1) filter (where status = 'APPROVED') as approved"),
+                DB::raw("count(1) filter (where status = 'REJECTED') as rejected"),
+                DB::raw("count(1) filter (where status = 'PENDING') as pending"),
+            ])
+            ->whereNull('crr.deleted_at')
+            ->first();
     }
 
     public function create(CreateRegistrationRequestData $data): RegistrationRequest
@@ -49,11 +69,14 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
     public function approve(
         RegistrationRequest $model,
         int $approvedBy,
+        bool $notifyByEmail = true,
     ): RegistrationRequest {
         $data = UpdateRegistrationRequestData::from([
+            ...$model->getAttributes(),
             'status' => RegistrationStatus::APPROVED,
             'approved_by' => $approvedBy,
             'approved_at' => now(),
+            'notify_by_email' => $notifyByEmail,
         ]);
 
         return $this->update($model, $data);
@@ -64,12 +87,19 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
         int $rejectedBy,
         string $reason,
     ): RegistrationRequest {
-        $data = UpdateRegistrationRequestData::from([
-            'status' => RegistrationStatus::REJECTED,
-            'rejected_reason' => $reason,
-            'approved_by' => $rejectedBy,
-            'approved_at' => now(),
-        ]);
+        $data = new UpdateRegistrationRequestData(
+            entityType: $model->entity_type,
+            businessName: $model->business_name,
+            documentTypeId: $model->document_type_id,
+            documentNumber: $model->document_number,
+            address: $model->address,
+            phone: $model->phone,
+            email: $model->email,
+            status: RegistrationStatus::REJECTED,
+            rejectedReason: $reason,
+            approvedBy: $rejectedBy,
+            approvedAt: now()->format('Y-m-d H:i:sP')
+        );
 
         return $this->update($model, $data);
     }

@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps } from 'react';
 
-const contentVariants = cva('flex-1 overflow-auto w-full mx-auto p-4 h-full', {
+const contentVariants = cva('flex flex-col overflow-auto w-full mx-auto p-4 h-full gap-6', {
     variants: {
         size: {
             full: 'max-w-full',

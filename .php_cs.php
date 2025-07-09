@@ -27,6 +27,7 @@ $rules = [
     'ternary_to_null_coalescing' => true,
     'single_line_throw' => false,
     'assign_null_coalescing_to_coalesce_equal' => true,
+    'blank_lines_before_namespace' => true,
     'multiline_whitespace_before_semicolons' => [
         'strategy' => 'new_line_for_chained_calls',
     ],

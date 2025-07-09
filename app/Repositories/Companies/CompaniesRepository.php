@@ -32,6 +32,7 @@ class CompaniesRepository implements CompaniesInterface
                 lastNamePaternal: 'System',
                 gender: Gender::MALE,
                 email: $model->email,
+                createUser: true,
             );
 
             $this->personsRepository->create($personData);

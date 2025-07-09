@@ -7,6 +7,7 @@ import { ComponentProps } from 'react';
 import { useRequests } from '../../contexts/requests.context';
 import RegistrationRequest from '../../types/registration-request.type';
 import BadgeStatus from './badge-status.component';
+import RegistrationStatus from '../../enums/registration-status.enum';
 
 const entityTypeLabel = (entityType: CompanyEntityType) => {
     switch (entityType) {
@@ -53,16 +54,16 @@ function TableBodyRow({ row }: TableBodyRowProps) {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => dialogs.approval.open(row)} disabled={row.status !== RegistrationStatus.PENDING}>
                             <CheckIcon className="mr-1 h-4 w-4" />
                             <span>Aprobar</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => dialogs.rejection.open(row)}>
+                        <DropdownMenuItem onClick={() => dialogs.rejection.open(row)} disabled={row.status !== RegistrationStatus.PENDING}>
                             <XIcon className="mr-1 h-4 w-4" />
                             <span>Rechazar</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem 
+                        <DropdownMenuItem
                             className="text-red-600"
                             onClick={(e) => {
                                 e.preventDefault();

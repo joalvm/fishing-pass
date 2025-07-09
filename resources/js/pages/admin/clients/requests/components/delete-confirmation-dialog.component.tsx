@@ -1,9 +1,18 @@
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/react';
-import { useRequests } from '../contexts/requests.context';
-import { toast } from 'sonner';
 import { LoaderCircleIcon, Trash2Icon, XIcon } from 'lucide-react';
+import { toast } from 'sonner';
+import { useRequests } from '../contexts/requests.context';
 
 export default function DeleteConfirmationDialog() {
     const { dialogs } = useRequests();
@@ -29,10 +38,7 @@ export default function DeleteConfirmationDialog() {
     };
 
     return (
-        <AlertDialog
-            open={isOpen}
-            onOpenChange={(open) => !open && close()}
-        >
+        <AlertDialog open={isOpen} onOpenChange={(open) => !open && close()}>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle className="flex items-center gap-2">
@@ -45,34 +51,24 @@ export default function DeleteConfirmationDialog() {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel asChild>
-                        <Button
-                            variant="outline"
-                            className="flex items-center gap-2"
-                            disabled={isDeleting}
-                            autoFocus
-                        >
+                        <Button variant="outline" className="flex items-center gap-2" disabled={isDeleting} autoFocus>
                             <XIcon className="h-4 w-4" />
                             <span>Cancelar</span>
                         </Button>
                     </AlertDialogCancel>
-                    <Button
-                        variant="destructive"
-                        onClick={handleDelete}
-                        disabled={processing}
-                        className="flex items-center gap-2"
-                    >
-                        {processing ? (
-                            <>
-                                <LoaderCircleIcon className="h-4 w-4 animate-spin" />
-                                <span>Eliminando...</span>
-                            </>
-                        ) : (
-                            <>
-                                <Trash2Icon className="h-4 w-4" />
-                                <span>Sí, eliminar</span>
-                            </>
-                        )}
-                    </Button>
+                        <Button variant="destructive" onClick={handleDelete} disabled={processing} className="flex items-center gap-2">
+                            {processing ? (
+                                <>
+                                    <LoaderCircleIcon className="h-4 w-4 animate-spin" />
+                                    <span>Eliminando...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Trash2Icon className="h-4 w-4" />
+                                    <span>Sí, eliminar</span>
+                                </>
+                            )}
+                        </Button>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

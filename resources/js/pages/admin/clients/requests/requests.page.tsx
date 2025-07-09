@@ -1,8 +1,11 @@
 import Content from '@/layouts/app/components/content.component';
-import Heading from '@/layouts/app/components/heading.component';
 import { Filter, PageProps, Paginate } from '@/types/app.type';
+import { Toaster } from 'sonner';
 import AdminLayout from '../../admin.layout';
+import DeleteConfirmationDialog from './components/delete-confirmation-dialog.component';
 import { Filters } from './components/filters.component';
+import RejectionDialog from './components/rejection-dialog.component';
+import ApprovalDialog from './components/approval-dialog.component';
 import ApprovedRequests from './components/stats/approved-requests';
 import PendingRequests from './components/stats/pending-requests';
 import RejectedRequests from './components/stats/rejected-requests';
@@ -11,9 +14,6 @@ import RequestsTable from './components/table/request-table.component';
 import { RequestsProvider } from './contexts/requests.context';
 import RegistrationRequest from './types/registration-request.type';
 import Stats from './types/stats.type';
-import { Toaster } from 'sonner';
-import RejectionDialog from './components/rejection-dialog.component';
-import DeleteConfirmationDialog from './components/delete-confirmation-dialog.component';
 
 interface RegistrationRequestsPageProps extends PageProps {
     requests: Paginate<RegistrationRequest>;
@@ -41,6 +41,7 @@ export default function RegistrationRequestsPage({ requests, stats, filters }: R
                         <Filters />
                         <RequestsTable />
                         <RejectionDialog />
+                        <ApprovalDialog />
                         <DeleteConfirmationDialog />
                     </div>
                 </Content>

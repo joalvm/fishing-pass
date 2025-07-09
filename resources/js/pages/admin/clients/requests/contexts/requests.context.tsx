@@ -23,6 +23,14 @@ interface RequestsContextType {
             open: (request: RegistrationRequest) => void;
             close: () => void;
         };
+        approval: {
+            isOpen: boolean;
+            request: RegistrationRequest | null;
+            notifyByEmail: boolean;
+            open: (request: RegistrationRequest) => void;
+            close: () => void;
+            setNotifyByEmail: (notify: boolean) => void;
+        };
         deleteConfirmation: {
             isOpen: boolean;
             request: RegistrationRequest | null;
@@ -30,8 +38,6 @@ interface RequestsContextType {
             close: () => void;
             isDeleting: boolean;
         };
-        // Se dejará espacio para el diálogo de aprobación
-        // approval: { ... };
     };
     setSearchTerm: (term: string) => void;
     setStatuses: (statuses: RegistrationStatus[]) => void;
@@ -59,6 +65,16 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
         request: null,
     });
 
+    const [approvalDialog, setApprovalDialog] = useState<{
+        isOpen: boolean;
+        request: RegistrationRequest | null;
+        notifyByEmail: boolean;
+    }>({
+        isOpen: false,
+        request: null,
+        notifyByEmail: true,
+    });
+
     const [deleteDialog, setDeleteDialog] = useState<{
         isOpen: boolean;
         request: RegistrationRequest | null;
@@ -76,6 +92,19 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
 
     const closeRejectionDialog = () => {
         setRejectionDialog({ isOpen: false, request: null });
+    };
+
+    // Controladores para el diálogo de aprobación
+    const openApprovalDialog = (request: RegistrationRequest) => {
+        setApprovalDialog({ isOpen: true, request, notifyByEmail: true });
+    };
+
+    const closeApprovalDialog = () => {
+        setApprovalDialog({ isOpen: false, request: null, notifyByEmail: true });
+    };
+
+    const setNotifyByEmail = (notify: boolean) => {
+        setApprovalDialog(prev => ({ ...prev, notifyByEmail: notify }));
     };
 
     // Controladores para el diálogo de confirmación de eliminación
@@ -138,20 +167,24 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
                 open: openRejectionDialog,
                 close: closeRejectionDialog,
             },
+            approval: {
+                ...approvalDialog,
+                open: openApprovalDialog,
+                close: closeApprovalDialog,
+                setNotifyByEmail,
+            },
             deleteConfirmation: {
                 ...deleteDialog,
                 open: openDeleteDialog,
                 close: closeDeleteDialog,
                 isDeleting: deleteDialog.isDeleting,
             },
-            // Se dejará espacio para el diálogo de aprobación
-            // approval: { ... },
         },
         setSearchTerm: handleSetSearchTerm,
         setStatuses: handleSetStatuses,
         setPage,
         setPerPage: handleSetPerPage,
-    }), [requests, searchTerm, statuses, page, perPage, rejectionDialog, deleteDialog]);
+    }), [requests, searchTerm, statuses, page, perPage, rejectionDialog, approvalDialog, deleteDialog]);
 
     return (
         <RequestsContext.Provider value={value}>

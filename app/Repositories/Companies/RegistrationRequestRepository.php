@@ -69,12 +69,14 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
     public function approve(
         RegistrationRequest $model,
         int $approvedBy,
+        bool $notifyByEmail = true,
     ): RegistrationRequest {
         $data = UpdateRegistrationRequestData::from([
             ...$model->getAttributes(),
             'status' => RegistrationStatus::APPROVED,
             'approved_by' => $approvedBy,
             'approved_at' => now(),
+            'notify_by_email' => $notifyByEmail,
         ]);
 
         return $this->update($model, $data);

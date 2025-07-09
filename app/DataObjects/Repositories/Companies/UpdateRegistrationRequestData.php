@@ -33,6 +33,8 @@ class UpdateRegistrationRequestData extends Data
         public Optional|string|null $rejectedReason = null,
         #[MapName('approved_at')]
         public Optional|string|null $approvedAt = null,
+        #[MapName('notify_by_email')]
+        public Optional|bool $notifyByEmail = true,
     ) {
     }
 }

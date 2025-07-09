@@ -30,6 +30,14 @@ class UpdateRegistrationRequestStatusRequest extends FormRequest
                 'required_if:status,' . RegistrationStatus::REJECTED->value,
                 'string'
             ],
+            'notify_by_email' => ['boolean'],
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'notify_by_email' => $this->boolean('notify_by_email', true),
+        ]);
     }
 }

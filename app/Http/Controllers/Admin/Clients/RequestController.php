@@ -140,9 +140,19 @@ class RequestController extends Controller
         try {
             DB::beginTransaction();
 
-            $this->requestRepository->approve($model, $request->user()->id);
+            $this->requestRepository->approve(
+                $model,
+                $request->user()->id,
+                $request->input('notify_by_email', true)
+            );
 
-            $this->createCompany($model);
+            $company = $this->createCompany($model);
+
+            if ($request->boolean('notify_by_email', true)) {
+                // Dispatch job to send approval email
+                // You'll need to create this notification
+                // $model->notify(new RegistrationApproved($company));
+            }
 
             DB::commit();
         } catch (\Throwable $th) {

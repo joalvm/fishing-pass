@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Clients;
+namespace App\Http\Controllers\Admin\Companies;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ClientsController extends Controller
+class CompaniesController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Clients;
+namespace App\Http\Controllers\Admin\Companies;
 
 use App\DataObjects\Repositories\Companies\CreateCompanyData;
 use App\Enums\Company\RegistrationStatus;

@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\Clients\ClientsController;
-use App\Http\Controllers\Admin\Clients\RequestController;
+use App\Http\Controllers\Admin\Companies\CompaniesController;
+use App\Http\Controllers\Admin\Companies\RequestController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Settings\PasswordController;
 use App\Http\Controllers\Admin\Settings\ProfileController;
@@ -29,6 +29,6 @@ Route::middleware(['auth', 'platform:admin'])
         ;
 
         Route::resource('clients/requests', RequestController::class)->names('clients.requests');
-        Route::resource('clients', ClientsController::class)->names('clients');
+        Route::resource('clients', CompaniesController::class)->names('clients');
     })
 ;

@@ -4,12 +4,12 @@ import EnabledFilter from './filters/enabled-filter.component';
 import EntityTypeFilter from './filters/entity-type-filter.component';
 import SearchFilter from './filters/search-filter.component';
 
+import { Button } from '@/components/ui/button';
+import { PlusIcon } from 'lucide-react';
+
 interface FiltersProps {
     documentTypes: DocumentType[];
 }
-
-import { Button } from '@/components/ui/button';
-import { PlusIcon } from 'lucide-react';
 
 export function Filters({ documentTypes }: FiltersProps) {
     return (

@@ -1,14 +1,8 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import DocumentType from '@/types/document-type.type';
-import { ListFilterIcon } from 'lucide-react';
+import { ListFilterIcon, ListFilterPlusIcon } from 'lucide-react';
 import { useCompanies } from '../../contexts/companies.context';
 
 interface DocumentTypeFilterProps {
@@ -21,16 +15,16 @@ export default function DocumentTypeFilter({ documentTypes }: DocumentTypeFilter
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="shadow-none">
-                    <ListFilterIcon className="mr-1 h-4 w-4" />
+                    {documentTypesFilter?.length ? <ListFilterIcon className="mr-1 h-4 w-4" /> : <ListFilterPlusIcon className="mr-1 h-4 w-4" />}
                     Tipo de documento
+                    {documentTypesFilter?.length > 0 && (
+                        <Badge variant="default" className="text-[0.65rem]">
+                            {documentTypesFilter.length}
+                        </Badge>
+                    )}
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuLabel className="flex items-center">
-                    <ListFilterIcon className="mr-2 h-4 w-4" />
-                    Filtrar por documento
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
                 {(documentTypes || []).map((dt) => (
                     <DropdownMenuCheckboxItem
                         key={dt.id}

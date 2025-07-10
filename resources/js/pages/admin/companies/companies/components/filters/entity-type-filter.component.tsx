@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -7,18 +8,24 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import CompanyEntityType from '@/enums/company-entity-type';
-import { ListFilterIcon } from 'lucide-react';
+import CompanyEntityType, { entityTypeLabel } from '@/enums/company-entity-type';
+import { ListFilterIcon, ListFilterPlusIcon } from 'lucide-react';
 import { useCompanies } from '../../contexts/companies.context';
 
 export default function EntityTypeFilter() {
     const { entityType, handleSetEntityType } = useCompanies();
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="shadow-none">
-                    <ListFilterIcon className="mr-1 h-4 w-4" />
+                    {entityType ? <ListFilterIcon className="mr-1 h-4 w-4" /> : <ListFilterPlusIcon className="mr-1 h-4 w-4" />}
                     Tipo de entidad
+                    {entityType && (
+                        <Badge variant="default" className="text-[0.65rem]">
+                            {entityTypeLabel(entityType)}
+                        </Badge>
+                    )}
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -33,7 +40,7 @@ export default function EntityTypeFilter() {
                         checked={entityType === type}
                         onCheckedChange={() => handleSetEntityType(entityType === type ? null : type)}
                     >
-                        {type}
+                        {entityTypeLabel(type)}
                     </DropdownMenuCheckboxItem>
                 ))}
             </DropdownMenuContent>

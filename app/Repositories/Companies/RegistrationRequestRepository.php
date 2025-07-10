@@ -2,13 +2,9 @@
 
 namespace App\Repositories\Companies;
 
-use App\DataObjects\Repositories\Companies\CreateCompanyData;
 use App\DataObjects\Repositories\Companies\CreateRegistrationRequestData;
 use App\DataObjects\Repositories\Companies\UpdateRegistrationRequestData;
-use App\DataObjects\Repositories\Person\CreatePersonData;
 use App\Enums\Company\RegistrationStatus;
-use App\Enums\Person\Gender;
-use App\Interfaces\Companies\CompaniesInterface;
 use App\Interfaces\Companies\RegistrationRequestInterface;
 use App\Models\Company\RegistrationRequest;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +15,7 @@ use Joalvm\Utils\Item;
 class RegistrationRequestRepository implements RegistrationRequestInterface
 {
     public function __construct(
-        public RegistrationRequest $model
+        public RegistrationRequest $model,
     ) {
     }
 
@@ -44,7 +40,8 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
                 DB::raw("count(1) filter (where status = 'PENDING') as pending"),
             ])
             ->whereNull('crr.deleted_at')
-            ->first();
+            ->first()
+        ;
     }
 
     public function create(CreateRegistrationRequestData $data): RegistrationRequest
@@ -146,8 +143,8 @@ class RegistrationRequestRepository implements RegistrationRequestInterface
             Builder::table('public.company_registration_requests', 'crr')
             ->schema($this->schema())
             ->join('public.document_types as dt', 'dt.id', 'crr.document_type_id')
-            ->whereNull('crr.deleted_at')
-        );
+            ->disableSchemaFilter()
+        )->whereNull('crr.deleted_at');
     }
 
     private function filters(Builder $builder): Builder

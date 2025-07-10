@@ -3,6 +3,6 @@ type Stats = {
     approved: number;
     rejected: number;
     pending: number;
-}
+};
 
 export default Stats;

@@ -5,9 +5,9 @@ import CompanyEntityType from '@/enums/company-entity-type';
 import { CheckIcon, MoreHorizontalIcon, Trash2Icon, XIcon } from 'lucide-react';
 import { ComponentProps } from 'react';
 import { useRequests } from '../../contexts/requests.context';
+import RegistrationStatus from '../../enums/registration-status.enum';
 import RegistrationRequest from '../../types/registration-request.type';
 import BadgeStatus from './badge-status.component';
-import RegistrationStatus from '../../enums/registration-status.enum';
 
 const entityTypeLabel = (entityType: CompanyEntityType) => {
     switch (entityType) {

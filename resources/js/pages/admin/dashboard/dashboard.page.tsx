@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Content from '@/layouts/app/components/content.component';
 import Heading from '@/layouts/app/components/heading.component';
 import { ClipboardListIcon, TrendingUpIcon, TruckIcon, UsersIcon } from 'lucide-react';
 import AdminLayout from '../admin.layout';
-import Content from '@/layouts/app/components/content.component';
 
 const breadcrumbs = [{ title: 'Panel de control', href: route('admin.dashboard') }];
 

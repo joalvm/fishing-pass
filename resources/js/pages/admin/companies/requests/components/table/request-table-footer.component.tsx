@@ -17,7 +17,7 @@ export default function TableFooter() {
         <ShadcnTableFooter>
             <TableRow>
                 <TableCell colSpan={7}>
-                    <div className="flex justify-end items-center space-x-6 lg:space-x-8">
+                    <div className="flex items-center justify-end space-x-6 lg:space-x-8">
                         {/* Página actual */}
                         <div className="flex items-center justify-center text-sm font-medium">
                             {current_page} / {last_page} <p className="ml-2 hidden text-sm font-medium sm:block"> páginas</p>

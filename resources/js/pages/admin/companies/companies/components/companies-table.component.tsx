@@ -1,13 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
     TableBody as ShadcnTableBody,
@@ -18,16 +11,23 @@ import {
     TableHead,
     TableRow,
 } from '@/components/ui/table';
-import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
+import { entityTypeLabel } from '@/enums/company-entity-type';
+import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon, MoreHorizontalIcon, SettingsIcon, Trash2Icon } from 'lucide-react';
 import { useCompanies } from '../contexts/companies.context';
 
 function StatusBadge({ enabled }: { enabled: boolean }) {
     return enabled ? (
-        <Badge variant="default" className="bg-green-50 text-[0.65rem] text-green-500">
+        <Badge
+            variant="outline"
+            className="border-transparent bg-green-400/10 text-[0.65rem] leading-none text-green-600 capitalize dark:text-green-400"
+        >
             Activa
         </Badge>
     ) : (
-        <Badge variant="destructive" className="bg-gray-50 text-[0.65rem] text-gray-500">
+        <Badge
+            variant="outline"
+            className="border-transparent bg-gray-400/10 text-[0.65rem] leading-none text-gray-600 capitalize dark:text-gray-400"
+        >
             Inactiva
         </Badge>
     );
@@ -42,10 +42,11 @@ function CompaniesTableHeader() {
                 <TableHead>Tipo</TableHead>
                 <TableHead>N° Documento</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Telefono</TableHead>
                 <TableHead className="text-center">Estado</TableHead>
                 <TableHead className="text-center">
                     <span className="flex items-center justify-center">
-                        <MoreHorizontalIcon className="h-4 w-4" />
+                        <SettingsIcon className="h-4 w-4" />
                     </span>
                 </TableHead>
             </TableRow>
@@ -59,7 +60,7 @@ function CompaniesTableBody() {
         return (
             <ShadcnTableBody>
                 <TableRow>
-                    <TableCell colSpan={7} className="py-6 text-center text-muted-foreground">
+                    <TableCell colSpan={8} className="py-6 text-center text-muted-foreground">
                         No hay empresas para mostrar.
                     </TableCell>
                 </TableRow>
@@ -72,9 +73,10 @@ function CompaniesTableBody() {
                 <TableRow key={company.id} className="transition-colors hover:bg-muted/50">
                     <TableCell>{company.id}</TableCell>
                     <TableCell className="font-medium">{company.business_name}</TableCell>
-                    <TableCell>{company.entity_type}</TableCell>
+                    <TableCell>{entityTypeLabel(company.entity_type)}</TableCell>
                     <TableCell>{company.document_number}</TableCell>
                     <TableCell>{company.email}</TableCell>
+                    <TableCell>{company.phone}</TableCell>
                     <TableCell className="text-center">
                         <StatusBadge enabled={company.enabled} />
                     </TableCell>
@@ -87,8 +89,6 @@ function CompaniesTableBody() {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
                                 <DropdownMenuItem className="text-destructive focus:bg-destructive/10" onClick={() => openDeleteDialog(company)}>
                                     <Trash2Icon className="mr-2 h-4 w-4 text-destructive" /> Eliminar
                                 </DropdownMenuItem>
@@ -113,7 +113,7 @@ function CompaniesTableFooter() {
     return (
         <ShadcnTableFooter>
             <TableRow>
-                <TableCell colSpan={7} className="py-3">
+                <TableCell colSpan={8} className="py-3">
                     <div className="flex items-center justify-end space-x-6 lg:space-x-8">
                         {/* Página actual */}
                         <div className="flex items-center justify-center text-sm font-medium">

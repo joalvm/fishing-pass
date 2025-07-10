@@ -23,7 +23,7 @@ export default function ApprovalDialog() {
     const { approval } = dialogs;
     const { request, close, notifyByEmail, setNotifyByEmail } = approval;
 
-    const {setData, reset, ...form } = useForm<{ notify_by_email: boolean; status: RegistrationStatus }>({
+    const { setData, reset, ...form } = useForm<{ notify_by_email: boolean; status: RegistrationStatus }>({
         status: RegistrationStatus.APPROVED,
         notify_by_email: true,
     });

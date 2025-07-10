@@ -1,5 +1,5 @@
-import CharType from "@/enums/char-type.enum";
-import LengthType from "@/enums/length-type.enum";
+import CharType from '@/enums/char-type.enum';
+import LengthType from '@/enums/length-type.enum';
 
 interface DocumentType {
     id: number;

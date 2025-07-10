@@ -29,7 +29,7 @@ class RequestController extends Controller
     public function index(Request $request)
     {
         $collection = $this->requestRepository
-            ->setStatuses($request->input('statuses'))
+            ->setStatuses($request->query('statuses'))
             ->all()
         ;
 
@@ -40,14 +40,14 @@ class RequestController extends Controller
                 'meta' => $collection->getMetadata(),
             ],
             'filters' => [
-                'per_page' => to_int($request->input('per_page', $collection->perPage())),
-                'page' => to_int($request->input('page', $collection->currentPage())),
-                'contains' => $request->input('contains', [
-                    'items' => $request->input('contains.items', ['business_name', 'document_number', 'email']),
-                    'text' => $request->input('contains.text', ''),
+                'per_page' => to_int($request->query('per_page', $collection->perPage())),
+                'page' => to_int($request->query('page', $collection->currentPage())),
+                'contains' => $request->query('contains', [
+                    'items' => $request->query('contains.items', ['business_name', 'document_number', 'email']),
+                    'text' => $request->query('contains.text', ''),
                 ]),
-                'sort' => $request->input('sort', new \stdClass()),
-                'statuses' => $request->input('statuses', []),
+                'sort' => $request->query('sort', new \stdClass()),
+                'statuses' => $request->query('statuses', []),
             ],
         ]);
     }

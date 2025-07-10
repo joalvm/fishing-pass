@@ -157,11 +157,11 @@ class CompaniesRepository implements CompaniesInterface
         }
 
         if (null !== $this->enabled) {
-            $builder->whereRaw('c.enabled IS ?', [$this->enabled]);
+            $builder->where('c.enabled', $this->enabled);
         }
 
         if (null !== $this->registeredViaForm) {
-            $builder->whereRaw('c.registration_request_id IS ?', [$this->registeredViaForm]);
+            $builder->where('c.registration_request_id', $this->registeredViaForm);
         }
 
         return $builder;

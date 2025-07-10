@@ -1,18 +1,37 @@
 import Content from '@/layouts/app/components/content.component';
 import Heading from '@/layouts/app/components/heading.component';
 import AdminLayout from '../../admin.layout';
-
+import CompaniesTable from './components/companies-table.component';
+import DeleteConfirmationDialog from './components/delete-confirmation-dialog.component';
+import { Filters } from './components/filters.component';
+import StatsCards from './components/stats-cards.component';
+import { CompaniesProvider } from './contexts/companies.context';
 import CompaniesPageProps from './types/companies-page.type';
 
 const breadcrumbs = [{ title: 'Clientes', href: route('admin.companies.index') }];
 
-export default function CompaniesPage({ companies }: CompaniesPageProps) {
+// Datos fake para las tarjetas de estadísticas
+const fakeStats = {
+    total: 32,
+    active: 25,
+    inactive: 7,
+    registeredViaForm: 12,
+};
+
+export default function CompaniesPage({ companies, filters, document_types }: CompaniesPageProps) {
     return (
         <AdminLayout title="Clientes" breadcrumbs={breadcrumbs}>
-            <Content size="lg">
-                <Heading title="Clientes" description="Lista de clientes registrados en el sistema." />
-                <pre>{JSON.stringify(companies, null, 2)}</pre>
-            </Content>
+            <CompaniesProvider companies={companies} initialFilters={filters}>
+                <Content size="lg">
+                    <Heading title="Clientes" description="Lista de clientes registrados en el sistema." />
+                    <StatsCards {...fakeStats} />
+                    <div className="mt-6">
+                        <Filters documentTypes={document_types} />
+                        <CompaniesTable />
+                        <DeleteConfirmationDialog />
+                    </div>
+                </Content>
+            </CompaniesProvider>
         </AdminLayout>
     );
 }

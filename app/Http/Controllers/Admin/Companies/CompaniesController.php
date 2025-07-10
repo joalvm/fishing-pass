@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Companies;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\Companies\CompaniesInterface;
+use App\Interfaces\DocumentTypesInterface;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,6 +12,7 @@ class CompaniesController extends Controller
 {
     public function __construct(
         protected CompaniesInterface $companiesRepository,
+        protected DocumentTypesInterface $documentTypesRepository,
     ) {
     }
 
@@ -20,10 +22,10 @@ class CompaniesController extends Controller
     public function index(Request $request)
     {
         $collection = $this->companiesRepository
-            ->setDocumentTypes($request->input('document_types'))
-            ->setEntityType($request->input('entity_type'))
-            ->setEnabled($request->input('enabled'))
-            ->setRegisteredViaForm($request->input('registered_via_form'))
+            ->setDocumentTypes($request->query('document_types'))
+            ->setEntityType($request->query('entity_type'))
+            ->setEnabled($request->query('enabled'))
+            ->setRegisteredViaForm($request->query('registered_via_form'))
             ->all()
         ;
 
@@ -34,18 +36,19 @@ class CompaniesController extends Controller
                     'data' => $collection,
                     'meta' => $collection->getMetadata(),
                 ],
+                'document_types' => fn () => $this->documentTypesRepository->all(),
                 'filters' => [
-                    'per_page' => to_int($request->input('per_page', $collection->perPage())),
-                    'page' => to_int($request->input('page', $collection->currentPage())),
-                    'contains' => $request->input('contains', [
-                        'items' => $request->input('contains.items', ['business_name', 'document_number']),
-                        'text' => $request->input('contains.text', ''),
+                    'per_page' => to_int($request->query('per_page', $collection->perPage())),
+                    'page' => to_int($request->query('page', $collection->currentPage())),
+                    'contains' => $request->query('contains', [
+                        'items' => $request->query('contains.items', ['business_name', 'document_number']),
+                        'text' => $request->query('contains.text', ''),
                     ]),
-                    'sort' => $request->input('sort', new \stdClass()),
-                    'document_types' => $request->input('document_types'),
-                    'entity_type' => $request->input('entity_type'),
-                    'enabled' => $request->input('enabled'),
-                    'registered_via_form' => $request->input('registered_via_form'),
+                    'sort' => $request->query('sort', new \stdClass()),
+                    'document_types' => $request->query('document_types'),
+                    'entity_type' => $request->query('entity_type'),
+                    'enabled' => $request->query('enabled'),
+                    'registered_via_form' => $request->query('registered_via_form'),
                 ],
             ]
         );

@@ -1,9 +1,9 @@
-import { createContext, useContext, useState, useMemo, ReactNode, useEffect } from 'react';
-import { Filter, Paginate } from '@/types/app.type';
-import RegistrationRequest from '../types/registration-request.type';
 import { useDebounce } from '@/hooks/use-debounce.hook';
-import RegistrationStatus from '../enums/registration-status.enum';
+import { Filter, Paginate } from '@/types/app.type';
 import { router } from '@inertiajs/react';
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
+import RegistrationStatus from '../enums/registration-status.enum';
+import RegistrationRequest from '../types/registration-request.type';
 
 interface RequestsContextType {
     requests: Paginate<RegistrationRequest>;
@@ -49,13 +49,20 @@ const RequestsContext = createContext<RequestsContextType | undefined>(undefined
 const DEFAULT_PAGE = 1;
 const DEFAULT_PER_PAGE = 10;
 
-export function RequestsProvider({ children, initialRequests, initialFilters }: { children: ReactNode; initialRequests: Paginate<RegistrationRequest>; initialFilters: Filter<RegistrationRequest> }) {
+export function RequestsProvider({
+    children,
+    initialRequests,
+    initialFilters,
+}: PropsWithChildren<{
+    initialRequests: Paginate<RegistrationRequest>;
+    initialFilters: Filter<RegistrationRequest>;
+}>) {
     const [requests, setRequests] = useState(initialRequests);
     const [searchTerm, setSearchTerm] = useState(initialFilters.contains?.text ?? '');
     const [statuses, setStatuses] = useState(Array.isArray(initialFilters.statuses) ? initialFilters.statuses : []);
     const [page, setPage] = useState(initialFilters.page ?? DEFAULT_PAGE);
     const [perPage, setPerPage] = useState(initialFilters.perPage ?? DEFAULT_PER_PAGE);
-    
+
     // Estados para los diálogos
     const [rejectionDialog, setRejectionDialog] = useState<{
         isOpen: boolean;
@@ -104,7 +111,7 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
     };
 
     const setNotifyByEmail = (notify: boolean) => {
-        setApprovalDialog(prev => ({ ...prev, notifyByEmail: notify }));
+        setApprovalDialog((prev) => ({ ...prev, notifyByEmail: notify }));
     };
 
     // Controladores para el diálogo de confirmación de eliminación
@@ -113,11 +120,7 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
     };
 
     const closeDeleteDialog = () => {
-        setDeleteDialog(prev => ({ ...prev, isOpen: false, isDeleting: false }));
-    };
-
-    const setDeleting = (isDeleting: boolean) => {
-        setDeleteDialog(prev => ({ ...prev, isDeleting }));
+        setDeleteDialog((prev) => ({ ...prev, isOpen: false, isDeleting: false }));
     };
 
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -129,17 +132,27 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
     useEffect(() => {
         const params = {} as Filter<RegistrationRequest>;
 
-        if (debouncedSearchTerm) params.contains = { items: ['business_name', 'document_number'], text: debouncedSearchTerm };
-        if (statuses.length > 0) params.statuses = statuses;
-        if (perPage !== DEFAULT_PER_PAGE) params.per_page = perPage;
-        if (page !== DEFAULT_PAGE) params.page = page;
+        if (debouncedSearchTerm) {
+            params.contains = { items: ['business_name', 'document_number'], text: debouncedSearchTerm };
+        }
 
-        router.get(location.pathname, params as any, {
+        if (statuses.length > 0) {
+            params.statuses = statuses;
+        }
+
+        if (perPage !== DEFAULT_PER_PAGE) {
+            params.per_page = perPage;
+        }
+
+        if (page !== DEFAULT_PAGE) {
+            params.page = page;
+        }
+
+        router.get(location.pathname, params as unknown as FormData, {
             preserveState: true,
             preserveScroll: true,
             replace: true,
         });
-
     }, [debouncedSearchTerm, statuses, page, perPage]);
 
     const handleSetSearchTerm = (term: string) => {
@@ -157,40 +170,39 @@ export function RequestsProvider({ children, initialRequests, initialFilters }: 
         setPage(DEFAULT_PAGE);
     };
 
-    const value = useMemo(() => ({
-        requests,
-        filters: { searchTerm, statuses },
-        pagination: { page, perPage },
-        dialogs: {
-            rejection: {
-                ...rejectionDialog,
-                open: openRejectionDialog,
-                close: closeRejectionDialog,
+    const value = useMemo(
+        () => ({
+            requests,
+            filters: { searchTerm, statuses },
+            pagination: { page, perPage },
+            dialogs: {
+                rejection: {
+                    ...rejectionDialog,
+                    open: openRejectionDialog,
+                    close: closeRejectionDialog,
+                },
+                approval: {
+                    ...approvalDialog,
+                    open: openApprovalDialog,
+                    close: closeApprovalDialog,
+                    setNotifyByEmail,
+                },
+                deleteConfirmation: {
+                    ...deleteDialog,
+                    open: openDeleteDialog,
+                    close: closeDeleteDialog,
+                    isDeleting: deleteDialog.isDeleting,
+                },
             },
-            approval: {
-                ...approvalDialog,
-                open: openApprovalDialog,
-                close: closeApprovalDialog,
-                setNotifyByEmail,
-            },
-            deleteConfirmation: {
-                ...deleteDialog,
-                open: openDeleteDialog,
-                close: closeDeleteDialog,
-                isDeleting: deleteDialog.isDeleting,
-            },
-        },
-        setSearchTerm: handleSetSearchTerm,
-        setStatuses: handleSetStatuses,
-        setPage,
-        setPerPage: handleSetPerPage,
-    }), [requests, searchTerm, statuses, page, perPage, rejectionDialog, approvalDialog, deleteDialog]);
-
-    return (
-        <RequestsContext.Provider value={value}>
-            {children}
-        </RequestsContext.Provider>
+            setSearchTerm: handleSetSearchTerm,
+            setStatuses: handleSetStatuses,
+            setPage,
+            setPerPage: handleSetPerPage,
+        }),
+        [requests, searchTerm, statuses, page, perPage, rejectionDialog, approvalDialog, deleteDialog],
     );
+
+    return <RequestsContext.Provider value={value}>{children}</RequestsContext.Provider>;
 }
 
 export function useRequests() {

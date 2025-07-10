@@ -25,7 +25,7 @@ export default function CompaniesPage({ companies, filters, document_types }: Co
                 <Content size="lg">
                     <Heading title="Clientes" description="Lista de clientes registrados en el sistema." />
                     <StatsCards {...fakeStats} />
-                    <div className="mt-6">
+                    <div>
                         <Filters documentTypes={document_types} />
                         <CompaniesTable />
                         <DeleteConfirmationDialog />

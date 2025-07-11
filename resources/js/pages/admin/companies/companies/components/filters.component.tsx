@@ -5,6 +5,7 @@ import EntityTypeFilter from './filters/entity-type-filter.component';
 import SearchFilter from './filters/search-filter.component';
 
 import { Button } from '@/components/ui/button';
+import { Link } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
 
 interface FiltersProps {
@@ -23,9 +24,11 @@ export function Filters({ documentTypes }: FiltersProps) {
             </div>
             {/* Segmento 3: Botón crear empresa */}
             <div className="flex justify-end">
-                <Button type="button" variant="outline" className="shadow-none">
-                    <PlusIcon className="mr-1 h-4 w-4" />
-                    Nuevo
+                <Button type="button" variant="outline" asChild className="shadow-none">
+                    <Link href={route('admin.companies.create')}>
+                        <PlusIcon className="mr-1 h-4 w-4" />
+                        Nuevo
+                    </Link>
                 </Button>
             </div>
         </div>

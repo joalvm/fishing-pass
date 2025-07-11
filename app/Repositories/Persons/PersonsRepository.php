@@ -18,7 +18,7 @@ class PersonsRepository implements PersonsInterface
 
     public function create(CreatePersonData $data): Person
     {
-        $model = $this->model->newInstance($data->toArray());
+        $model = $this->model->newInstance($data->all());
 
         $model->validate()->save();
 
@@ -26,7 +26,8 @@ class PersonsRepository implements PersonsInterface
             $userData = new CreateUserData(
                 personId: $model->id,
                 email: $model->email,
-                isSuperAdmin: false,
+                password: $data->password,
+                isSuperAdmin: $data->isSuperAdmin,
             );
 
             $this->usersRepository->create($userData);

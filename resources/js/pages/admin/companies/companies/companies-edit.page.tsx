@@ -1,7 +1,7 @@
 import Content from '@/layouts/app/components/content.component';
 import AdminLayout from '@/pages/admin/admin.layout';
 import { PageProps } from '@/types/app.type';
-import Company from '../types/companies.type';
+import Company from './types/companies.type';
 
 const breadcrumbs = (businessName: string) => [{ title: 'Empresas', href: route('admin.companies.index') }, { title: businessName }];
 

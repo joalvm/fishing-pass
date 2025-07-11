@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Http\Requests\Admin\Companies;
+
+use App\Enums\Company\EntityType;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
+use Joalvm\Utils\Rules\PgInteger;
+
+class StoreCompanyRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return !is_null($this->user());
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'business_name' => ['required', 'string'],
+            'document_type_id' => ['required', 'integer', PgInteger::id()],
+            'document_number' => ['required', 'string'],
+            'entity_type' => ['required', 'string', EntityType::ruleIn()],
+            'email' => ['required', 'string', 'email'],
+            'address' => ['required', 'string'],
+            'phone' => ['filled', 'string'],
+            // Para la creacion del usuario de la empresa
+            'user' => ['filled', 'array:email,password,first_name,last_name,notify'],
+            'user.first_name' => ['required', 'string'],
+            'user.last_name' => ['required', 'string'],
+            'user.email' => ['required', 'string', 'email'],
+            'user.password' => ['required', 'string', Password::min(6)->letters()->numbers()->symbols()],
+            'user.notify' => ['required', 'boolean'],
+        ];
+    }
+}

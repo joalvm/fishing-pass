@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers\Admin\Companies;
 
+use App\DataObjects\Repositories\Companies\CreateCompanyData;
+use App\DataObjects\Repositories\Person\CreatePersonData;
+use App\Enums\Person\Gender;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Companies\StoreCompanyRequest;
 use App\Interfaces\Companies\CompaniesInterface;
 use App\Interfaces\DocumentTypesInterface;
+use App\Interfaces\Persons\PersonsInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 
 class CompaniesController extends Controller
@@ -13,6 +19,7 @@ class CompaniesController extends Controller
     public function __construct(
         protected CompaniesInterface $companiesRepository,
         protected DocumentTypesInterface $documentTypesRepository,
+        protected PersonsInterface $personsRepository,
     ) {
     }
 
@@ -59,13 +66,43 @@ class CompaniesController extends Controller
      */
     public function create()
     {
+        return Inertia::render('admin/companies/companies/companies-create', [
+            'document_types' => fn () => $this->documentTypesRepository->all(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCompanyRequest $request)
     {
+        $input = $request->validated();
+        $data = CreateCompanyData::from(Arr::except($input, ['user']));
+
+        $data->createUser = false;
+
+        $company = $this->companiesRepository->create($data);
+
+        if (Arr::has($input, 'user')) {
+            $personData = new CreatePersonData(
+                companyId: $company->id,
+                firstName: $input['user']['first_name'],
+                lastNamePaternal: $input['user']['last_name'],
+                documentTypeId: $input['document_type_id'],
+                documentNumber: $input['document_number'],
+                gender: Gender::FEMALE,
+                email: $input['user']['email'],
+                password: $input['user']['password'],
+                createUser: true,
+                isSuperAdmin: false,
+            );
+
+            $this->personsRepository->create($personData);
+        }
+
+        return redirect()->route('admin.companies.create')
+            ->with('flash', ['success' => true, 'message' => 'Empresa creada correctamente.'])
+        ;
     }
 
     /**
@@ -85,7 +122,7 @@ class CompaniesController extends Controller
             return redirect()->back()->with('flash', ['error' => true, 'message' => 'Empresa no encontrada.']);
         }
 
-        return Inertia::render('admin/companies/companies/companies-edit/companies-edit', [
+        return Inertia::render('admin/companies/companies/companies-edit', [
             'company' => $company,
         ]);
     }
@@ -100,7 +137,15 @@ class CompaniesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
+        $company = $this->companiesRepository->getModel($id);
+        if (!$company) {
+            return redirect()->back()->with('flash', ['error' => true, 'message' => 'Empresa no encontrada.']);
+        }
+
+        $this->companiesRepository->delete($company);
+
+        return redirect()->back()->with('flash', ['success' => true, 'message' => 'Empresa eliminada correctamente.']);
     }
 }

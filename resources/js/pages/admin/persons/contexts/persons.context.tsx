@@ -98,7 +98,7 @@ export function PersonsProvider({
 
         if (debouncedSearchTerm) {
             params.contains = {
-                items: ['first_name', 'middle_name', 'last_name_paternal', 'last_name_maternal', 'document_number', 'email'],
+                items: initialFilters.contains?.items || [],
                 text: debouncedSearchTerm,
             };
         }
@@ -106,6 +106,7 @@ export function PersonsProvider({
         if (gender) {
             params.gender = gender;
         }
+
         if (documentTypes.length > 0) {
             params.document_types = documentTypes;
         }
@@ -113,6 +114,7 @@ export function PersonsProvider({
         if (perPage !== DEFAULT_PER_PAGE) {
             params.per_page = perPage;
         }
+
         if (page !== DEFAULT_PAGE) {
             params.page = page;
         }

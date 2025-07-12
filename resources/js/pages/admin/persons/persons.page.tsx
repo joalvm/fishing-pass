@@ -14,7 +14,7 @@ export default function PersonsPage({ persons, filters, document_types }: Person
             <PersonsProvider persons={persons} initialFilters={filters}>
                 <Content size="xxl">
                     <Heading title="Personal" description="Lista de personal de la empresa." />
-                    <div>
+                    <div className="flex flex-col gap-4">
                         <Filters documentTypes={document_types} />
                         <PersonsTable />
                         {/* Aquí irá el diálogo de confirmación de borrado y otros diálogos */}

@@ -59,6 +59,9 @@ class PersonsController extends Controller
      */
     public function create()
     {
+        return Inertia::render('admin/persons/persons-create', [
+            'document_types' => fn () => $this->documentTypeRepository->all(),
+        ]);
     }
 
     /**
@@ -80,6 +83,15 @@ class PersonsController extends Controller
      */
     public function edit(string $id)
     {
+        $person = $this->personsRepository->find($id);
+        if (!$person) {
+            abort(404, 'Person not found');
+        }
+
+        return Inertia::render('admin/persons/persons-edit', [
+            'person' => $person,
+            'document_types' => fn () => $this->documentTypeRepository->all(),
+        ]);
     }
 
     /**
@@ -92,7 +104,17 @@ class PersonsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
+        $person = $this->personsRepository->getModel($id);
+        if (!$person) {
+            abort(404, 'Person not found');
+        }
+
+        $this->personsRepository->delete($person);
+
+        return redirect()->back()
+            ->with('flash', ['error' => false, 'message' => __('Person deleted successfully')])
+        ;
     }
 }

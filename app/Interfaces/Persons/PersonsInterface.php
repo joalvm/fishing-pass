@@ -36,6 +36,11 @@ interface PersonsInterface
     public function delete(Person $model): Person;
 
     /**
+     * Obtiene el modelo de persona por su ID.
+     */
+    public function getModel(int $id): ?Person;
+
+    /**
      * Filtra personas por tipo de documento.
      */
     public function setDocumentTypes(mixed $documentTypes): static;

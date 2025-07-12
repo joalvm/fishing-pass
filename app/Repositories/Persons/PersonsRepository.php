@@ -82,6 +82,11 @@ class PersonsRepository implements PersonsInterface
         return $model;
     }
 
+    public function getModel(int $id): ?Person
+    {
+        return $this->model->newQuery()->find($id);
+    }
+
     public function setDocumentTypes(mixed $documentTypes): static
     {
         $this->documentTypes = to_list_int($documentTypes);
@@ -137,6 +142,19 @@ class PersonsRepository implements PersonsInterface
                 'id',
                 'name',
                 'abbr',
+                'with_user' => function (Builder $query) {
+                    $query->selectRaw(
+                        sprintf(
+                            'exists (%s)',
+                            $query->newQuery()
+                                ->selectRaw('1')
+                                ->from('public.users as u')
+                                ->whereColumn('u.person_id', 'p.id')
+                                ->whereNull('u.deleted_at')
+                                ->toRawSql()
+                        )
+                    );
+                },
             ],
             'created_at',
             'updated_at',

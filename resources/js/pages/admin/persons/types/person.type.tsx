@@ -10,6 +10,7 @@ interface Person {
     email: string;
     phone: string;
     document_number: string;
+    with_user: boolean;
     document_type: DocumentType;
     created_at: string;
     updated_at: string;

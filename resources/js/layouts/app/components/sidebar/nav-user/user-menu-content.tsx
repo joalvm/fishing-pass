@@ -1,13 +1,16 @@
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import AuthType from '@/enums/auth-type.enum';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { useApp } from '@/layouts/app/app.context';
-import { Link, router } from '@inertiajs/react';
+import { PageProps } from '@/types/app.type';
+import { Link, router, usePage } from '@inertiajs/react';
 import { LogOut, Settings } from 'lucide-react';
 import { UserInfo } from './user-info';
 
 export function UserMenuContent() {
-    const { authType } = useApp();
+    const {
+        auth: { type: authType },
+    } = usePage<PageProps>().props;
+
     const cleanup = useMobileNavigation();
 
     const handleLogout = () => {

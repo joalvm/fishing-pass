@@ -14,7 +14,7 @@ export default function StatsCards({ total, active, inactive, registeredViaForm 
             <Card className="flex-1/4 gap-2 py-4 shadow-none">
                 <CardHeader className="flex flex-row items-center justify-between px-4">
                     <CardTitle className="text-sm font-medium">Total</CardTitle>
-                    <UsersIcon className="h-4 w-4 text-gray-500" />
+                    <UsersIcon className="h-4 w-4" />
                 </CardHeader>
                 <CardContent className="px-4">
                     <div className="text-2xl font-bold" title={`Total empresas: ${total}`}>
@@ -25,10 +25,10 @@ export default function StatsCards({ total, active, inactive, registeredViaForm 
             <Card className="flex-1/4 gap-2 py-4 shadow-none">
                 <CardHeader className="flex flex-row items-center justify-between px-4">
                     <CardTitle className="text-sm font-medium">Activas</CardTitle>
-                    <CheckCircle2Icon className="h-4 w-4 text-green-600" />
+                    <CheckCircle2Icon className="h-4 w-4" />
                 </CardHeader>
                 <CardContent className="px-4">
-                    <div className="text-2xl font-bold text-green-700" title={`Empresas activas: ${active}`}>
+                    <div className="text-2xl font-bold" title={`Empresas activas: ${active}`}>
                         {active}
                     </div>
                 </CardContent>
@@ -36,10 +36,10 @@ export default function StatsCards({ total, active, inactive, registeredViaForm 
             <Card className="flex-1/4 gap-2 py-4 shadow-none">
                 <CardHeader className="flex flex-row items-center justify-between px-4">
                     <CardTitle className="text-sm font-medium">Inactivas</CardTitle>
-                    <BanIcon className="h-4 w-4 text-gray-400" />
+                    <BanIcon className="h-4 w-4" />
                 </CardHeader>
                 <CardContent className="px-4">
-                    <div className="text-2xl font-bold text-gray-500" title={`Empresas inactivas: ${inactive}`}>
+                    <div className="text-2xl font-bold" title={`Empresas inactivas: ${inactive}`}>
                         {inactive}
                     </div>
                 </CardContent>
@@ -47,10 +47,10 @@ export default function StatsCards({ total, active, inactive, registeredViaForm 
             <Card className="flex-1/4 gap-2 py-4 shadow-none">
                 <CardHeader className="flex flex-row items-center justify-between px-4">
                     <CardTitle className="text-sm font-medium">Registradas vía formulario</CardTitle>
-                    <FileTextIcon className="h-4 w-4 text-blue-600" />
+                    <FileTextIcon className="h-4 w-4" />
                 </CardHeader>
                 <CardContent className="px-4">
-                    <div className="text-2xl font-bold text-blue-700" title={`Registradas vía formulario: ${registeredViaForm}`}>
+                    <div className="text-2xl font-bold" title={`Registradas vía formulario: ${registeredViaForm}`}>
                         {registeredViaForm}
                     </div>
                 </CardContent>

@@ -3,10 +3,9 @@ import { Separator } from '@/components/ui/separator';
 import AuthType from '@/enums/auth-type.enum';
 import Heading from '@/layouts/app/components/heading.component';
 import { cn } from '@/lib/utils';
-import { type NavItem } from '@/types/app.type';
-import { Link } from '@inertiajs/react';
+import { PageProps, type NavItem } from '@/types/app.type';
+import { Link, usePage } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
-import { useApp } from './app.context';
 import AppLayout, { AppLayoutProps } from './app.layout';
 
 function sideNavItems(authType: AuthType) {
@@ -32,7 +31,9 @@ function sideNavItems(authType: AuthType) {
 }
 
 function Content({ children }: PropsWithChildren) {
-    const { authType } = useApp();
+    const {
+        auth: { type: authType },
+    } = usePage<PageProps>().props;
 
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {

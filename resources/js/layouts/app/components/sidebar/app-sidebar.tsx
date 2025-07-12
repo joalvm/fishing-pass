@@ -20,6 +20,7 @@ interface AppSidebarProps {
 
 export function AppSidebar({ items }: AppSidebarProps) {
     const { open } = useSidebar();
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

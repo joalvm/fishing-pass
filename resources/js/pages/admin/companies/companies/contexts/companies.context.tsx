@@ -136,8 +136,6 @@ export function CompaniesProvider({
             params.page = page;
         }
 
-        console.log(params);
-
         router.get(location.pathname, params as unknown as FormData, {
             preserveState: true,
             preserveScroll: true,

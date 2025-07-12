@@ -1,8 +1,8 @@
 import DocumentType from '@/types/document-type.type';
-import DocumentTypeFilter from './filters/document-type-filter.component';
-import EnabledFilter from './filters/enabled-filter.component';
-import EntityTypeFilter from './filters/entity-type-filter.component';
-import SearchFilter from './filters/search-filter.component';
+import DocumentTypeFilter from './document-type-filter.component';
+import EnabledFilter from './enabled-filter.component';
+import EntityTypeFilter from './entity-type-filter.component';
+import SearchFilter from './search-filter.component';
 
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';

@@ -19,7 +19,7 @@ type CompaniesCreatePageProps = PageProps & {
     document_types: DocumentType[];
 };
 
-export default function CompaniesCreatePage({ document_types, errors }: CompaniesCreatePageProps) {
+export default function CompaniesCreatePage({ document_types }: CompaniesCreatePageProps) {
     const [withUser, setWithUser] = useState(false);
 
     const form = useForm<CompanyFormValues>({
@@ -44,9 +44,6 @@ export default function CompaniesCreatePage({ document_types, errors }: Companie
     useEffect(() => {
         form.setData('user.email' as keyof CompanyFormValues, form.data.email);
     }, [form.data.email]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    console.log('page errors', errors);
-    console.log('form errors', form.errors);
 
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();

@@ -1,10 +1,10 @@
 import Content from '@/layouts/app/components/content.component';
 import Heading from '@/layouts/app/components/heading.component';
 import AdminLayout from '../../admin.layout';
-import CompaniesTable from './components/companies-table.component';
 import DeleteConfirmationDialog from './components/delete-confirmation-dialog.component';
-import { Filters } from './components/filters.component';
+import { Filters } from './components/filters/filters.component';
 import StatsCards from './components/stats-cards.component';
+import CompaniesTable from './components/table/companies-table.component';
 import { CompaniesProvider } from './contexts/companies.context';
 import CompaniesPageProps from './types/companies-page.type';
 

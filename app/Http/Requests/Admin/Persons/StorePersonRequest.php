@@ -34,7 +34,7 @@ class StorePersonRequest extends FormRequest
             'document_number' => ['required', 'string'],
             'email' => ['filled', 'string', 'email'],
             'phone' => ['filled', 'string'],
-            'user' => ['filled', 'array:email,password'],
+            'user' => ['filled', 'array:email,password,notify'],
             'user.email' => ['required_with:user', 'filled', 'email'],
             'user.password' => [
                 'required_with:user',
@@ -42,6 +42,7 @@ class StorePersonRequest extends FormRequest
                 'string',
                 Password::min(6)->letters()->numbers()->symbols()->mixedCase(),
             ],
+            'user.notify' => ['required_with:user', 'boolean'],
         ];
     }
 }

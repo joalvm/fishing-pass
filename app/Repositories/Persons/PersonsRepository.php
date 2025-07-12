@@ -4,7 +4,6 @@ namespace App\Repositories\Persons;
 
 use App\DataObjects\Repositories\Person\CreatePersonData;
 use App\DataObjects\Repositories\Person\UpdatePersonData;
-use App\DataObjects\Repositories\User\CreateUserData;
 use App\Enums\Person\Gender;
 use App\Interfaces\Persons\PersonsInterface;
 use App\Interfaces\Users\UsersInterface;
@@ -49,17 +48,6 @@ class PersonsRepository implements PersonsInterface
         $model = $this->model->newInstance($data->all());
 
         $model->validate()->save();
-
-        if ($data->createUser) {
-            $userData = new CreateUserData(
-                personId: $model->id,
-                email: $model->email,
-                password: $data->password,
-                isSuperAdmin: $data->isSuperAdmin,
-            );
-
-            $this->usersRepository->create($userData);
-        }
 
         return $model;
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Companies;
 use App\DataObjects\Repositories\Companies\CreateCompanyData;
 use App\DataObjects\Repositories\Companies\UpdateCompanyData;
 use App\DataObjects\Repositories\Person\CreatePersonData;
+use App\DataObjects\Repositories\User\CreateUserData;
 use App\Enums\Person\Gender;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Companies\StoreCompanyRequest;
@@ -12,6 +13,7 @@ use App\Http\Requests\Admin\Companies\UpdateCompanyRequest;
 use App\Interfaces\Companies\CompaniesInterface;
 use App\Interfaces\DocumentTypesInterface;
 use App\Interfaces\Persons\PersonsInterface;
+use App\Interfaces\Users\UsersInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +25,7 @@ class CompaniesController extends Controller
         protected CompaniesInterface $companiesRepository,
         protected DocumentTypesInterface $documentTypesRepository,
         protected PersonsInterface $personsRepository,
+        protected UsersInterface $userRepository,
     ) {
     }
 
@@ -89,22 +92,7 @@ class CompaniesController extends Controller
 
             $company = $this->companiesRepository->create($data);
 
-            if (Arr::has($input, 'user')) {
-                $personData = new CreatePersonData(
-                    companyId: $company->id,
-                    firstName: Arr::get($input, 'user.first_name'),
-                    lastNamePaternal: Arr::get($input, 'user.last_name'),
-                    documentTypeId: $input['document_type_id'],
-                    documentNumber: $input['document_number'],
-                    gender: Gender::FEMALE,
-                    email: Arr::get($input, 'user.email'),
-                    password: Arr::get($input, 'user.password'),
-                    createUser: true,
-                    isSuperAdmin: false,
-                );
-
-                $this->personsRepository->create($personData);
-            }
+            $this->registerCompany($company, $request);
 
             DB::commit();
         } catch (\Throwable $e) {
@@ -125,8 +113,9 @@ class CompaniesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $id)
     {
+        return redirect()->route('admin.companies.edit', $id)->withInput();
     }
 
     /**
@@ -185,5 +174,34 @@ class CompaniesController extends Controller
         $this->companiesRepository->delete($company);
 
         return redirect()->back()->with('flash', ['success' => true, 'message' => 'Empresa eliminada correctamente.']);
+    }
+
+    private function registerCompany($company, StoreCompanyRequest $request)
+    {
+        if (!$request->has('user')) {
+            return;
+        }
+
+        $input = $request->validated('user');
+
+        $personData = new CreatePersonData(
+            companyId: $company->id,
+            firstName: Arr::get($input, 'first_name'),
+            lastNamePaternal: Arr::get($input, 'last_name'),
+            documentTypeId: $input['document_type_id'],
+            documentNumber: $input['document_number'],
+            gender: Gender::FEMALE,
+            email: $input['email'] ?? '',
+        );
+
+        $person = $this->personsRepository->create($personData);
+
+        $userData = new CreateUserData(
+            personId: $person->id,
+            email: $input['email'],
+            password: $input['password'],
+        );
+
+        $this->userRepository->create($userData);
     }
 }

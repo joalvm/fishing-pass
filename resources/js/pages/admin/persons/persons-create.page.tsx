@@ -1,3 +1,4 @@
+import PersonGender from '@/enums/person-gender.enum';
 import Content from '@/layouts/app/components/content.component';
 import Heading from '@/layouts/app/components/heading.component';
 import { PageProps } from '@/types/app.type';
@@ -16,11 +17,28 @@ type PersonsCreatePageProps = PageProps & {
 
 const breadcrumbs = (title: string) => [{ title: 'Personal', href: route('admin.persons.index') }, { title }];
 
-export default function PersonsCreatePage({ document_types }: PersonsCreatePageProps) {
-    const { form, withUser, setWithUser, resetAll } = usePersonForm({ documentTypes: document_types });
+export default function PersonsCreatePage({ document_types, errors }: PersonsCreatePageProps) {
+    const { form, withUser, setWithUser, resetAll } = usePersonForm({
+        documentTypes: document_types,
+        initialValues: {
+            first_name: '',
+            middle_name: undefined,
+            last_name_paternal: '',
+            last_name_maternal: undefined,
+            gender: PersonGender.FEMALE,
+            document_type_id: 1,
+            document_number: '',
+            email: undefined,
+            phone: undefined,
+            user: undefined,
+        },
+    });
 
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
+
+        console.log('Submitting form with data:', form.data);
+
         form.post(route('admin.persons.store'), {
             preserveScroll: true,
             onSuccess: () => {

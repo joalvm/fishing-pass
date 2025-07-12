@@ -3,33 +3,21 @@ import { useEffect, useState } from 'react';
 import type PersonFormValues from '../types/person-form-values.type';
 
 interface UsePersonFormOptions {
-    initialValues?: Partial<PersonFormValues>;
+    initialValues: PersonFormValues;
     documentTypes: { id: number }[];
 }
 
-export function usePersonForm({ initialValues = {}, documentTypes }: UsePersonFormOptions) {
+export function usePersonForm({ initialValues, documentTypes }: UsePersonFormOptions) {
     const [withUser, setWithUser] = useState(Boolean(initialValues.user));
 
-    const form = useForm<PersonFormValues>({
-        first_name: '',
-        middle_name: '',
-        last_name_paternal: '',
-        last_name_maternal: '',
-        gender: null,
-        document_type_id: documentTypes[0]?.id ?? '',
-        document_number: '',
-        email: '',
-        phone: '',
-        user: undefined,
-        ...initialValues,
-    });
+    const form = useForm<PersonFormValues>(initialValues);
 
     // Sincronizar email de usuario con email de persona
     useEffect(() => {
         if (withUser) {
             form.setData('user', {
                 ...form.data.user,
-                email: form.data.email,
+                email: form.data?.email || '',
                 password: form.data.user?.password || '',
                 notify: form.data.user?.notify || false,
             });
@@ -43,7 +31,7 @@ export function usePersonForm({ initialValues = {}, documentTypes }: UsePersonFo
             form.setData('user', undefined);
         } else if (!form.data.user) {
             form.setData('user', {
-                email: form.data.email,
+                email: form.data?.email || '',
                 password: '',
                 notify: false,
             });

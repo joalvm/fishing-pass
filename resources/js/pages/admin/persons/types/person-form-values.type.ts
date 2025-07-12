@@ -11,10 +11,10 @@ type PersonFormValues = {
     middle_name?: string;
     last_name_paternal: string;
     last_name_maternal?: string;
-    gender: PersonGender | null;
-    document_type_id: number | '';
+    gender: PersonGender;
+    document_type_id: number;
     document_number: string;
-    email: string;
+    email?: string;
     phone?: string;
     user?: PersonUserFormValues;
 };

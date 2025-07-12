@@ -100,8 +100,9 @@ class PersonsController extends Controller
         } catch (\Throwable $e) {
             DB::rollBack();
 
+            dd($e);
+
             return redirect()->back()
-                ->withInput()
                 ->with('flash', ['error' => true, 'message' => __('An error occurred while creating the person.')])
             ;
         }

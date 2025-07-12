@@ -28,7 +28,7 @@ export default function PersonForm({ form, documentTypes }: PersonFormProps) {
                 </Label>
                 <Input
                     id="first_name"
-                    value={form.data.first_name}
+                    value={form.data.first_name || ''}
                     onChange={(e) => form.setData('first_name', e.target.value)}
                     disabled={form.processing}
                     required
@@ -41,7 +41,7 @@ export default function PersonForm({ form, documentTypes }: PersonFormProps) {
                 <Label htmlFor="middle_name">Segundo nombre</Label>
                 <Input
                     id="middle_name"
-                    value={form.data.middle_name}
+                    value={form.data.middle_name || ''}
                     onChange={(e) => form.setData('middle_name', e.target.value)}
                     disabled={form.processing}
                     placeholder="Segundo nombre"
@@ -55,7 +55,7 @@ export default function PersonForm({ form, documentTypes }: PersonFormProps) {
                 </Label>
                 <Input
                     id="last_name_paternal"
-                    value={form.data.last_name_paternal}
+                    value={form.data.last_name_paternal || ''}
                     onChange={(e) => form.setData('last_name_paternal', e.target.value)}
                     disabled={form.processing}
                     required
@@ -68,7 +68,7 @@ export default function PersonForm({ form, documentTypes }: PersonFormProps) {
                 <Label htmlFor="last_name_maternal">Apellido materno</Label>
                 <Input
                     id="last_name_maternal"
-                    value={form.data.last_name_maternal}
+                    value={form.data.last_name_maternal || ''}
                     onChange={(e) => form.setData('last_name_maternal', e.target.value)}
                     disabled={form.processing}
                     placeholder="Apellido materno"
@@ -81,8 +81,8 @@ export default function PersonForm({ form, documentTypes }: PersonFormProps) {
                     Tipo de documento<small>*</small>
                 </Label>
                 <Select
-                    value={form.data.document_type_id ? String(form.data.document_type_id) : ''}
-                    onValueChange={(v) => form.setData('document_type_id', v ? Number(v) : '')}
+                    value={form.data.document_type_id.toString()}
+                    onValueChange={(v) => form.setData('document_type_id', Number(v))}
                     disabled={form.processing}
                     required
                 >
@@ -105,7 +105,7 @@ export default function PersonForm({ form, documentTypes }: PersonFormProps) {
                 </Label>
                 <Input
                     id="document_number"
-                    value={form.data.document_number}
+                    value={form.data.document_number || ''}
                     onChange={(e) => form.setData('document_number', e.target.value)}
                     disabled={form.processing}
                     required
@@ -141,8 +141,8 @@ export default function PersonForm({ form, documentTypes }: PersonFormProps) {
                 <Input
                     id="email"
                     type="email"
-                    value={form.data.email}
-                    onChange={(e) => form.setData('email', e.target.value)}
+                    value={form.data.email || ''}
+                    onChange={(e) => form.setData('email', e.target.value || undefined)}
                     disabled={form.processing}
                     required
                     placeholder="Correo electrónico"
@@ -154,8 +154,8 @@ export default function PersonForm({ form, documentTypes }: PersonFormProps) {
                 <Label htmlFor="phone">Teléfono</Label>
                 <Input
                     id="phone"
-                    value={form.data.phone ?? ''}
-                    onChange={(e) => form.setData('phone', e.target.value)}
+                    value={form.data.phone || ''}
+                    onChange={(e) => form.setData('phone', e.target.value || undefined)}
                     disabled={form.processing}
                     placeholder="Teléfono"
                     className="shadow-none"

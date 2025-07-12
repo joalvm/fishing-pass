@@ -31,9 +31,6 @@ class CreatePersonData extends Data
         #[MapName('company_id')]
         public int|Optional|null $companyId = null,
         public string|Optional|null $phone = null,
-        public bool $createUser = false,
-        public string|Optional|null $password = null,
-        public bool $isSuperAdmin = false,
     ) {
     }
 }

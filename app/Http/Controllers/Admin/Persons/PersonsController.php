@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers\Admin\Persons;
 
+use App\DataObjects\Repositories\Person\CreatePersonData;
+use App\DataObjects\Repositories\Person\UpdatePersonData;
+use App\DataObjects\Repositories\User\CreateUserData;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Persons\StorePersonRequest;
+use App\Http\Requests\Admin\Persons\UpdatePersonRequest;
 use App\Interfaces\DocumentTypesInterface;
 use App\Interfaces\Persons\PersonsInterface;
+use App\Interfaces\Users\UsersInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class PersonsController extends Controller
 {
     public function __construct(
         protected PersonsInterface $personsRepository,
+        protected UsersInterface $userRepository,
         protected DocumentTypesInterface $documentTypeRepository,
     ) {
     }
@@ -67,21 +76,55 @@ class PersonsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePersonRequest $request)
     {
+        $input = $request->validated();
+        $data = CreatePersonData::from(Arr::except($input, 'user'));
+
+        DB::beginTransaction();
+
+        try {
+            $person = $this->personsRepository->create($data);
+
+            if ($request->has('user')) {
+                $userData = new CreateUserData(
+                    personId: $person->id,
+                    email: $input['user']['email'],
+                    password: Arr::get($input['user'], 'password'),
+                );
+
+                $this->userRepository->create($userData);
+            }
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return redirect()->back()
+                ->withInput()
+                ->with('flash', ['error' => true, 'message' => __('An error occurred while creating the person.')])
+            ;
+        }
+
+        return redirect()->back()
+            ->with('flash', ['error' => false, 'message' => __('Person created successfully')])
+        ;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $id)
     {
+        return redirect()->route('admin.persons.edit', $id)
+            ->withInput()
+        ;
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(int $id)
     {
         $person = $this->personsRepository->find($id);
         if (!$person) {
@@ -89,7 +132,7 @@ class PersonsController extends Controller
         }
 
         return Inertia::render('admin/persons/persons-edit', [
-            'person' => $person,
+            'person' => fn () => $person,
             'document_types' => fn () => $this->documentTypeRepository->all(),
         ]);
     }
@@ -97,8 +140,21 @@ class PersonsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePersonRequest $request, string $id)
     {
+        $person = $this->personsRepository->getModel($id);
+        if (!$person) {
+            abort(404, 'Person not found');
+        }
+
+        $input = $request->validated();
+        $data = UpdatePersonData::from($input);
+
+        $this->personsRepository->update($person, $data);
+
+        return redirect()->back()
+            ->with('flash', ['error' => false, 'message' => __('Person updated successfully')])
+        ;
     }
 
     /**

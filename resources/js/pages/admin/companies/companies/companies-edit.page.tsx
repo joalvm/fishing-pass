@@ -1,10 +1,14 @@
+import { Toaster } from '@/components/ui/sonner';
 import Content from '@/layouts/app/components/content.component';
 import Heading from '@/layouts/app/components/heading.component';
 import AdminLayout from '@/pages/admin/admin.layout';
 import { PageProps } from '@/types/app.type';
 import DocumentType from '@/types/document-type.type';
-import { router } from '@inertiajs/react';
-import { CompanyForm } from './components/company-form.component';
+import { useForm } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
+import { toast } from 'sonner';
+import CompanyFormButtonSubmit from './components/form/company-form-button-submit.component';
+import { CompanyForm } from './components/form/company-form.component';
 import Company from './types/companies.type';
 import CompanyFormValues from './types/company-form-values.type';
 
@@ -16,30 +20,41 @@ type CompaniesEditPageProps = PageProps & {
 };
 
 export default function CompaniesEditPage({ company, document_types }: CompaniesEditPageProps) {
-    const initialData = {
-        business_name: company.business_name,
+    const form = useForm<CompanyFormValues>({
+        entity_type: company.entity_type,
         document_type_id: company.document_type.id,
         document_number: company.document_number,
-        entity_type: company.entity_type,
+        business_name: company.business_name,
         email: company.email,
         address: company.address,
         phone: company.phone,
-    };
+    });
 
     /**
      * Handler para el envío del formulario
      *
      * @param data Datos del formulario
      */
-    const handleSubmit = (data: CompanyFormValues) => {
-        router.put(route('admin.companies.update', company.id), data);
+    const handleSubmit: FormEventHandler = (e) => {
+        e.preventDefault();
+
+        form.put(route('admin.companies.update', company.id), {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success('Empresa actualizada correctamente.');
+            },
+        });
     };
 
     return (
         <AdminLayout title="Editar Empresa" breadcrumbs={breadcrumbs(company.business_name)}>
             <Content size="lg">
+                <Toaster />
                 <Heading title="Editar Empresa" description="Editar datos de la empresa." />
-                <CompanyForm mode="edit" initialData={initialData} documentTypes={document_types} onSubmit={handleSubmit} />
+                <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+                    <CompanyForm form={form} documentTypes={document_types} />
+                    <CompanyFormButtonSubmit recentlySuccessful={form.recentlySuccessful} processing={form.processing} />
+                </form>
             </Content>
         </AdminLayout>
     );

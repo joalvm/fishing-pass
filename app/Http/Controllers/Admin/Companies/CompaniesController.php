@@ -14,6 +14,7 @@ use App\Interfaces\DocumentTypesInterface;
 use App\Interfaces\Persons\PersonsInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class CompaniesController extends Controller
@@ -83,26 +84,40 @@ class CompaniesController extends Controller
 
         $data->createUser = false;
 
-        $company = $this->companiesRepository->create($data);
+        try {
+            DB::beginTransaction();
 
-        if (Arr::has($input, 'user')) {
-            $personData = new CreatePersonData(
-                companyId: $company->id,
-                firstName: $input['user']['first_name'],
-                lastNamePaternal: $input['user']['last_name'],
-                documentTypeId: $input['document_type_id'],
-                documentNumber: $input['document_number'],
-                gender: Gender::FEMALE,
-                email: $input['user']['email'],
-                password: $input['user']['password'],
-                createUser: true,
-                isSuperAdmin: false,
-            );
+            $company = $this->companiesRepository->create($data);
 
-            $this->personsRepository->create($personData);
+            if (Arr::has($input, 'user')) {
+                $personData = new CreatePersonData(
+                    companyId: $company->id,
+                    firstName: Arr::get($input, 'user.first_name'),
+                    lastNamePaternal: Arr::get($input, 'user.last_name'),
+                    documentTypeId: $input['document_type_id'],
+                    documentNumber: $input['document_number'],
+                    gender: Gender::FEMALE,
+                    email: Arr::get($input, 'user.email'),
+                    password: Arr::get($input, 'user.password'),
+                    createUser: true,
+                    isSuperAdmin: false,
+                );
+
+                $this->personsRepository->create($personData);
+            }
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->back()
+                ->with('flash', ['error' => true, 'message' => "Error:\n{$e->getMessage()}"])
+            ;
         }
 
-        return redirect()->route('admin.companies.create')
+        return redirect()
+            ->back()
             ->with('flash', ['success' => true, 'message' => 'Empresa creada correctamente.'])
         ;
     }

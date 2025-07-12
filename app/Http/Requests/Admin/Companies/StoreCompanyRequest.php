@@ -34,11 +34,11 @@ class StoreCompanyRequest extends FormRequest
             'phone' => ['filled', 'string'],
             // Para la creacion del usuario de la empresa
             'user' => ['filled', 'array:email,password,first_name,last_name,notify'],
-            'user.first_name' => ['required', 'string'],
-            'user.last_name' => ['required', 'string'],
-            'user.email' => ['required', 'string', 'email'],
-            'user.password' => ['required', 'string', Password::min(6)->letters()->numbers()->symbols()],
-            'user.notify' => ['required', 'boolean'],
+            'user.first_name' => ['required_with:user', 'string'],
+            'user.last_name' => ['required_with:user', 'string'],
+            'user.email' => ['required_with:user', 'string', 'email'],
+            'user.password' => ['required_with:user', 'string', Password::min(6)->letters()->numbers()->symbols()],
+            'user.notify' => ['required_with:user', 'boolean'],
         ];
     }
 }

@@ -37,9 +37,9 @@ function CompaniesTableHeader() {
     return (
         <ShadcnTableHeader>
             <TableRow>
-                <TableHead>ID</TableHead>
+                <TableHead>Tipo de Entidad</TableHead>
                 <TableHead>Razón Social</TableHead>
-                <TableHead>Tipo</TableHead>
+                <TableHead>Documento</TableHead>
                 <TableHead>N° Documento</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Telefono</TableHead>
@@ -71,9 +71,11 @@ function CompaniesTableBody() {
         <ShadcnTableBody>
             {companies.data.map((company) => (
                 <TableRow key={company.id} className="transition-colors hover:bg-muted/50">
-                    <TableCell>{company.id}</TableCell>
+                    <TableCell>
+                        <Badge variant="outline">{entityTypeLabel(company.entity_type)}</Badge>
+                    </TableCell>
                     <TableCell className="font-medium">{company.business_name}</TableCell>
-                    <TableCell>{entityTypeLabel(company.entity_type)}</TableCell>
+                    <TableCell>{company.document_type.abbr}</TableCell>
                     <TableCell>{company.document_number}</TableCell>
                     <TableCell>{company.email}</TableCell>
                     <TableCell>{company.phone}</TableCell>
@@ -90,15 +92,12 @@ function CompaniesTableBody() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuItem
-                                    onClick={() => window.location.href = route('admin.companies.edit', company.id)}
+                                    onClick={() => (window.location.href = route('admin.companies.edit', company.id))}
                                     className="text-primary"
                                 >
                                     <SettingsIcon className="mr-2 h-4 w-4" /> Editar
                                 </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => openDeleteDialog(company)}
-                                    className="text-destructive focus:text-destructive"
-                                >
+                                <DropdownMenuItem onClick={() => openDeleteDialog(company)} className="text-destructive focus:text-destructive">
                                     <Trash2Icon className="mr-2 h-4 w-4" /> Eliminar
                                 </DropdownMenuItem>
                             </DropdownMenuContent>

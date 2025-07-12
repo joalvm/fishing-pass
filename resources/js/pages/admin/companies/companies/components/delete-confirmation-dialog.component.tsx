@@ -8,21 +8,30 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { useForm } from '@inertiajs/react';
 import { LoaderCircleIcon, Trash2Icon } from 'lucide-react';
+import { toast } from 'sonner';
 import { useCompanies } from '../contexts/companies.context';
 
 export default function DeleteConfirmationDialog() {
-    const { deleteDialog, closeDeleteDialog, setDeleting } = useCompanies();
+    const { deleteDialog, closeDeleteDialog } = useCompanies();
+    const form = useForm();
 
-    // Aquí iría la lógica para eliminar la empresa usando Inertia o fetch
-    const handleDelete = async () => {
-        setDeleting(true);
-        // Simular delay de borrado
-        setTimeout(() => {
-            setDeleting(false);
-            closeDeleteDialog();
-            // Aquí puedes disparar un toast de éxito
-        }, 1200);
+    if (!deleteDialog || !deleteDialog.company) {
+        return null;
+    }
+
+    const handleDelete = () => {
+        form.delete(route('admin.companies.destroy', deleteDialog?.company?.id), {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success('La empresa ha sido eliminada correctamente.');
+                closeDeleteDialog();
+            },
+            onError: () => {
+                toast.error('Ocurrió un error al intentar eliminar la solicitud.');
+            },
+        });
     };
 
     return (

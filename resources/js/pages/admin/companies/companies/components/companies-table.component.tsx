@@ -89,8 +89,17 @@ function CompaniesTableBody() {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem className="text-destructive focus:bg-destructive/10" onClick={() => openDeleteDialog(company)}>
-                                    <Trash2Icon className="mr-2 h-4 w-4 text-destructive" /> Eliminar
+                                <DropdownMenuItem
+                                    onClick={() => window.location.href = route('admin.companies.edit', company.id)}
+                                    className="text-primary"
+                                >
+                                    <SettingsIcon className="mr-2 h-4 w-4" /> Editar
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() => openDeleteDialog(company)}
+                                    className="text-destructive focus:text-destructive"
+                                >
+                                    <Trash2Icon className="mr-2 h-4 w-4" /> Eliminar
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

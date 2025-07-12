@@ -27,7 +27,7 @@ export default function RegistrationRequestsPage({ requests, stats, filters }: R
     return (
         <AdminLayout title="Solicitudes de registro" breadcrumbs={breadcrumbs}>
             <RequestsProvider initialRequests={requests} initialFilters={filters}>
-                <Content size="lg">
+                <Content size="xxl">
                     {/* stats */}
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                         <TotalRequests stats={stats} />

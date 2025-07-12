@@ -38,11 +38,11 @@ interface RegistrationForm {
     phone?: string;
 }
 
-export default function RegisterPage({ className, documentTypes, ...props }: RegisterProps) {
+export default function RegisterPage({ documentTypes }: RegisterProps) {
     const [isJuridical, setIsJuridical] = useState(true);
     const [successRegister, setSuccesRegister] = useState(false);
 
-    const { data, ...form } = useForm<Partial<RegistrationForm>>({
+    const { data, setData, ...form } = useForm<Partial<RegistrationForm>>({
         entity_type: isJuridical ? CompanyEntityType.JURIDICAL_PERSON : CompanyEntityType.NATURAL_PERSON,
         document_type_id: 3,
     });
@@ -50,9 +50,9 @@ export default function RegisterPage({ className, documentTypes, ...props }: Reg
     // Efecto para manejar el cambio de tipo de entidad
     useEffect(() => {
         if (isJuridical) {
-            form.setData('document_type_id', 3); // RUC por defecto para persona jurídica
+            setData('document_type_id', 3); // RUC por defecto para persona jurídica
         } else {
-            form.setData('document_type_id', 1); // DNI por defecto para persona natural
+            setData('document_type_id', 1); // DNI por defecto para persona natural
         }
 
         // Colocar el foco en el número de documento al cambiar el tipo de entidad
@@ -60,7 +60,7 @@ export default function RegisterPage({ className, documentTypes, ...props }: Reg
         if (documentNumberInput) {
             documentNumberInput.focus();
         }
-    }, [isJuridical]);
+    }, [isJuridical, setData]);
 
     // Manejar el envío del formulario
     const handleSubmit: FormEventHandler = (e) => {
@@ -74,7 +74,7 @@ export default function RegisterPage({ className, documentTypes, ...props }: Reg
                 form.reset();
                 form.clearErrors();
             },
-            onError: (errors) => {
+            onError: () => {
                 toast.error('Error al enviar el formulario. Por favor, revise los campos marcados.', {
                     classNames: {
                         icon: 'text-red-500',
@@ -100,7 +100,7 @@ export default function RegisterPage({ className, documentTypes, ...props }: Reg
                             variant="outline"
                             onValueChange={(value) => {
                                 setIsJuridical(value === CompanyEntityType.JURIDICAL_PERSON);
-                                form.setData('entity_type', value as CompanyEntityType);
+                                setData('entity_type', value as CompanyEntityType);
                             }}
                             value={data.entity_type}
                         >
@@ -127,9 +127,9 @@ export default function RegisterPage({ className, documentTypes, ...props }: Reg
                         <Select
                             disabled={isJuridical || form.processing}
                             onValueChange={(value) => {
-                                form.setData('document_type_id', Number.parseInt(value));
+                                setData('document_type_id', Number.parseInt(value));
                                 // Limpiar el número de documento cuando cambie el tipo
-                                form.setData('document_number', '');
+                                setData('document_number', '');
                             }}
                             value={data.document_type_id?.toString()}
                             required
@@ -159,7 +159,7 @@ export default function RegisterPage({ className, documentTypes, ...props }: Reg
                             value={data.document_number || ''}
                             placeholder="Número de documento"
                             disabled={form.processing}
-                            onChange={(e) => form.setData('document_number', e.target.value)}
+                            onChange={(e) => setData('document_number', e.target.value)}
                             autoFocus
                             required
                         />
@@ -177,7 +177,7 @@ export default function RegisterPage({ className, documentTypes, ...props }: Reg
                             value={data.business_name || ''}
                             placeholder="Razón social"
                             disabled={form.processing}
-                            onChange={(e) => form.setData('business_name', e.target.value)}
+                            onChange={(e) => setData('business_name', e.target.value)}
                             required
                         />
                         <InputError message={form.errors.business_name} />
@@ -194,7 +194,7 @@ export default function RegisterPage({ className, documentTypes, ...props }: Reg
                                 value={data.email || ''}
                                 placeholder="Correo electrónico"
                                 disabled={form.processing}
-                                onChange={(e) => form.setData('email', e.target.value.trim())}
+                                onChange={(e) => setData('email', e.target.value.trim())}
                             />
                             <InputError message={form.errors.email} />
                         </div>
@@ -207,7 +207,7 @@ export default function RegisterPage({ className, documentTypes, ...props }: Reg
                                 type="phone"
                                 placeholder="Teléfono"
                                 value={data.phone || ''}
-                                onChange={(e) => form.setData('phone', e.target.value.trim())}
+                                onChange={(e) => setData('phone', e.target.value.trim())}
                                 disabled={form.processing}
                             />
                             <InputError message={form.errors.phone} />
@@ -221,7 +221,7 @@ export default function RegisterPage({ className, documentTypes, ...props }: Reg
                             id="address"
                             value={data.address || ''}
                             placeholder="Dirección"
-                            onChange={(e) => form.setData('address', e.target.value)}
+                            onChange={(e) => setData('address', e.target.value)}
                             disabled={form.processing}
                         />
                         <InputError message={form.errors.address} />

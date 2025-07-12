@@ -6,17 +6,19 @@ const contentVariants = cva('flex flex-col overflow-auto w-full mx-auto p-4 h-fu
     variants: {
         size: {
             full: 'max-w-full',
-            lg: 'max-w-7xl',
+            lg: 'max-w-2xl',
+            xl: 'max-w-4xl',
+            xxl: 'max-w-7xl',
         },
     },
     defaultVariants: {
-        size: 'lg',
+        size: 'xxl',
     },
 });
 
 type ContentProps = ComponentProps<'div'> &
     VariantProps<typeof contentVariants> & {
-        size: 'full' | 'lg';
+        size: 'full' | 'lg' | 'xl' | 'xxl';
     };
 
 export default function Content({ className, children, size }: ContentProps) {

@@ -143,6 +143,7 @@ class CompaniesRepository implements CompaniesInterface
                 ->schema($this->schema())
                 ->join('public.document_types as dt', 'dt.id', 'c.document_type_id')
                 ->disableSchemaFilter()
+                ->orderBy('c.updated_at', 'desc')
         )->whereNull('c.deleted_at');
     }
 

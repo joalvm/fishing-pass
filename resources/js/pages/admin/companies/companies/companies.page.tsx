@@ -22,7 +22,7 @@ export default function CompaniesPage({ companies, filters, document_types }: Co
     return (
         <AdminLayout title="Clientes" breadcrumbs={breadcrumbs}>
             <CompaniesProvider companies={companies} initialFilters={filters}>
-                <Content size="lg">
+                <Content size="xxl">
                     <Heading title="Clientes" description="Lista de clientes registrados en el sistema." />
                     <StatsCards {...fakeStats} />
                     <div>

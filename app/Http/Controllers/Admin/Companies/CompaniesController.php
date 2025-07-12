@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin\Companies;
 
 use App\DataObjects\Repositories\Companies\CreateCompanyData;
+use App\DataObjects\Repositories\Companies\UpdateCompanyData;
 use App\DataObjects\Repositories\Person\CreatePersonData;
 use App\Enums\Person\Gender;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Companies\StoreCompanyRequest;
+use App\Http\Requests\Admin\Companies\UpdateCompanyRequest;
 use App\Interfaces\Companies\CompaniesInterface;
 use App\Interfaces\DocumentTypesInterface;
 use App\Interfaces\Persons\PersonsInterface;
@@ -119,19 +121,40 @@ class CompaniesController extends Controller
     {
         $company = $this->companiesRepository->find($id);
         if (!$company) {
-            return redirect()->back()->with('flash', ['error' => true, 'message' => 'Empresa no encontrada.']);
+            return to_route('admin.companies.index')->with(
+                'flash',
+                ['error' => true, 'message' => 'Empresa no encontrada.'],
+            );
         }
 
         return Inertia::render('admin/companies/companies/companies-edit', [
             'company' => $company,
+            'document_types' => fn () => $this->documentTypesRepository->all(),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCompanyRequest $request, string $id)
     {
+        $input = $request->validated();
+        $company = $this->companiesRepository->getModel($id);
+        if (!$company) {
+            return to_route('admin.companies.index')->with(
+                'flash',
+                ['error' => true, 'message' => 'Empresa no encontrada.'],
+            );
+        }
+
+        $data = UpdateCompanyData::from($input);
+
+        $this->companiesRepository->update($company, $data);
+
+        return redirect()->back()->with(
+            'flash',
+            ['success' => true, 'message' => 'Empresa actualizada correctamente.'],
+        );
     }
 
     /**

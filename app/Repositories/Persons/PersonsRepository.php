@@ -21,12 +21,12 @@ class PersonsRepository implements PersonsInterface
      *
      * @var array<int>
      */
-    private array $documentTypes;
+    private array $documentTypes = [];
 
     /**
      * Filtro por género.
      */
-    private ?Gender $gender;
+    private ?Gender $gender = null;
 
     public function __construct(
         public Person $model,

@@ -1,5 +1,5 @@
 import { NavItem } from '@/types/app.type';
-import { Building2Icon, LayoutGridIcon } from 'lucide-react';
+import { Building2Icon, LayoutGridIcon, UsersIcon } from 'lucide-react';
 
 const navigation: NavItem[] = [
     {
@@ -7,6 +7,12 @@ const navigation: NavItem[] = [
         title: 'Panel de control',
         href: route('admin.dashboard'),
         icon: LayoutGridIcon,
+    },
+    {
+        type: 'item',
+        title: 'Personal',
+        href: route('admin.persons.index'),
+        icon: UsersIcon,
     },
     {
         type: 'group',

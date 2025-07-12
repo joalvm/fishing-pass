@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Companies\CompaniesController;
 use App\Http\Controllers\Admin\Companies\RequestController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\Persons\PersonsController;
 use App\Http\Controllers\Admin\Settings\PasswordController;
 use App\Http\Controllers\Admin\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -30,5 +31,6 @@ Route::middleware(['auth', 'platform:admin'])
 
         Route::resource('companies/requests', RequestController::class)->names('companies.requests');
         Route::resource('companies', CompaniesController::class)->names('companies');
+        Route::resource('persons', PersonsController::class)->names('persons');
     })
 ;

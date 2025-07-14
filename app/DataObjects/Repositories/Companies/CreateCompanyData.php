@@ -24,7 +24,6 @@ class CreateCompanyData extends Data
         public string $email,
         public string $address,
         public string|Optional|null $phone = null,
-        public bool $createUser = true,
     ) {
     }
 }

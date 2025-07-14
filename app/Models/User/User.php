@@ -7,6 +7,7 @@ namespace App\Models\User;
 use App\Models\Person\Person;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Lang;
@@ -32,11 +33,10 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
     use ValidatesAttributes;
+    use SoftDeletes;
 
     /**
-     * Contiene la contraseña sin hashear
-
-     * @var string
+     * Contiene la contraseña sin hashear.
      */
     public string $realPassword;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Settings;
+namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Settings\ProfileUpdateRequest;
@@ -16,7 +16,7 @@ class ProfileController extends Controller
 
     public function edit(): \Inertia\Response
     {
-        return Inertia::render('admin/settings/profile', [
+        return Inertia::render('settings/profile', [
             'documentTypes' => $this->documentTypeRepository->all(),
         ]);
     }
@@ -33,6 +33,6 @@ class ProfileController extends Controller
         $request->user()->person->update();
         $request->user()->update();
 
-        return to_route('admin.settings.profile.edit');
+        return back()->with('success', 'Perfil actualizado correctamente.');
     }
 }

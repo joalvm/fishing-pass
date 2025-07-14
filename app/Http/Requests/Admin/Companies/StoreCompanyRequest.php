@@ -38,7 +38,14 @@ class StoreCompanyRequest extends FormRequest
             'user.last_name' => ['required_with:user', 'string'],
             'user.email' => ['required_with:user', 'string', 'email'],
             'user.password' => ['required_with:user', 'string', Password::min(6)->letters()->numbers()->symbols()],
-            'user.notify' => ['required_with:user', 'boolean'],
+            'user.notify' => [
+                'filled',
+                function ($attribute, $value, $fail) {
+                    if (!is_bool($value)) {
+                        $fail(__('validation.boolean', ['attribute' => $attribute]));
+                    }
+                },
+            ],
         ];
     }
 }

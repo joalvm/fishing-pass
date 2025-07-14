@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Settings;
+namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Settings\PasswordUpdateRequest;
@@ -12,13 +12,15 @@ class PasswordController extends Controller
 {
     public function edit(): \Inertia\Response
     {
-        return Inertia::render('admin/settings/password');
+        return Inertia::render('settings/password');
     }
 
     public function update(PasswordUpdateRequest $request): RedirectResponse
     {
         if (!Hash::check($request->input('current_password'), $request->user()->password)) {
-            return back()->withErrors(['current_password' => 'La contraseña actual es incorrecta.']);
+            return back()->withErrors([
+                'current_password' => 'La contraseña actual es incorrecta.',
+            ]);
         }
 
         $validated = $request->validated();
@@ -27,6 +29,6 @@ class PasswordController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return to_route('admin.settings.password.edit');
+        return back()->with('success', 'Contraseña actualizada correctamente.');
     }
 }

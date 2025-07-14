@@ -6,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import PersonGender from '@/enums/person-gender.enum';
-import Heading from '@/layouts/app/components/heading.component';
 import SettingsLayout from '@/layouts/app/settings.layout';
 import { PageProps } from '@/types/app.type';
 import DocumentType from '@/types/document-type.type';
@@ -14,7 +13,6 @@ import { Transition } from '@headlessui/react';
 import { Link, useForm } from '@inertiajs/react';
 import { CheckCircleIcon, InfoIcon, LoaderCircleIcon, SaveIcon, SendIcon, ShieldAlertIcon } from 'lucide-react';
 import { FormEventHandler } from 'react';
-import navigation from '../navigation';
 
 const breadcrumbs = [
     {
@@ -57,15 +55,14 @@ export default function ProfilePage({ documentTypes, auth: { person, user } }: P
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        form.put(route('admin.settings.profile.update'), {
+        form.put(route('settings.profile.update'), {
             preserveScroll: true,
         });
     };
 
     return (
-        <SettingsLayout navigation={navigation} breadcrumbs={breadcrumbs}>
+        <SettingsLayout breadcrumbs={breadcrumbs}>
             <div className="space-y-6">
-                <Heading title="Configuración de perfil" description="Actualiza tu información de perfil aquí." size="small" />
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {user.email_verified_at === null && (
                         <div>
@@ -260,8 +257,8 @@ export default function ProfilePage({ documentTypes, auth: { person, user } }: P
                             </p>
                         </Transition>
                         <Button disabled={form.processing}>
-                            Guardar
                             {form.processing ? <LoaderCircleIcon className="animate-spin" /> : <SaveIcon />}
+                            Guardar
                         </Button>
                     </div>
                 </form>

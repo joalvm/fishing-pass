@@ -1,6 +1,7 @@
 import Content from '@/layouts/app/components/content.component';
 import Heading from '@/layouts/app/components/heading.component';
 import AdminLayout from '../admin.layout';
+import DeleteConfirmationDialog from './components/delete-confirmation-dialog.component';
 import { Filters } from './components/filters/filters.component';
 import PersonsTable from './components/table/persons-table.component';
 import { PersonsProvider } from './contexts/persons.context';
@@ -17,7 +18,7 @@ export default function PersonsPage({ persons, filters, document_types }: Person
                     <div className="flex flex-col gap-4">
                         <Filters documentTypes={document_types} />
                         <PersonsTable />
-                        {/* Aquí irá el diálogo de confirmación de borrado y otros diálogos */}
+                        <DeleteConfirmationDialog />
                     </div>
                 </Content>
             </PersonsProvider>

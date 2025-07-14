@@ -82,7 +82,9 @@ function TableBodyRow({ row }: TableBodyRowProps) {
 
 export default function TableBody() {
     const { requests, pagination } = useRequests();
-    const remainingRows = pagination.perPage - requests.data.length;
+    const remainingRows = requests.data.length < pagination.perPage && requests.data.length > 0 ? pagination.perPage - requests.data.length : 0;
+
+    console.log('Remaining rows:', requests.data.length, pagination.perPage, remainingRows);
 
     return (
         <ShadcnTableBody>
@@ -90,7 +92,7 @@ export default function TableBody() {
             {remainingRows > 0 && Array.from({ length: remainingRows }, (_, i) => <TableBodyRow key={`empty-${i}`} />)}
             {requests.data.length === 0 && (
                 <TableRow>
-                    <TableCell colSpan={8} className="h-[400px] text-center">
+                    <TableCell colSpan={8} className="h-[400px] text-center hover:bg-background">
                         No hay resultados.
                     </TableCell>
                 </TableRow>

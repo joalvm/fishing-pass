@@ -8,7 +8,6 @@ import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { CheckCircleIcon, LoaderCircleIcon, SaveIcon } from 'lucide-react';
 import { FormEventHandler } from 'react';
-import navigation from '../navigation';
 
 const breadcrumbs = [
     {
@@ -33,14 +32,14 @@ export default function ProfilePage() {
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        form.put(route('admin.settings.password.update'), {
+        form.put(route('settings.password.update'), {
             onSuccess: () => form.reset('current_password', 'password', 'password_confirmation'),
             replace: true,
         });
     };
 
     return (
-        <SettingsLayout navigation={navigation} breadcrumbs={breadcrumbs}>
+        <SettingsLayout breadcrumbs={breadcrumbs}>
             <Heading title="Cambiar contraseña" description="Actualiza tu contraseña aquí." size="small" />
             <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
                 <div className="grid gap-2">

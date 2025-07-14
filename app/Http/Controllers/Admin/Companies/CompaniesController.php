@@ -85,8 +85,6 @@ class CompaniesController extends Controller
         $input = $request->validated();
         $data = CreateCompanyData::from(Arr::except($input, ['user']));
 
-        $data->createUser = false;
-
         try {
             DB::beginTransaction();
 
@@ -96,6 +94,7 @@ class CompaniesController extends Controller
 
             DB::commit();
         } catch (\Throwable $e) {
+            dd($e);
             DB::rollBack();
 
             return redirect()
@@ -182,24 +181,22 @@ class CompaniesController extends Controller
             return;
         }
 
-        $input = $request->validated('user');
-
         $personData = new CreatePersonData(
             companyId: $company->id,
-            firstName: Arr::get($input, 'first_name'),
-            lastNamePaternal: Arr::get($input, 'last_name'),
-            documentTypeId: $input['document_type_id'],
-            documentNumber: $input['document_number'],
+            firstName: $request->validated('user.first_name'),
+            lastNamePaternal: $request->validated('user.last_name'),
+            documentTypeId: $request->validated('document_type_id'),
+            documentNumber: $request->validated('document_number'),
             gender: Gender::FEMALE,
-            email: $input['email'] ?? '',
+            email: $request->validated('user.email') ?? '',
         );
 
         $person = $this->personsRepository->create($personData);
 
         $userData = new CreateUserData(
             personId: $person->id,
-            email: $input['email'],
-            password: $input['password'],
+            email: $request->validated('user.email'),
+            password: $request->validated('user.password'),
         );
 
         $this->userRepository->create($userData);

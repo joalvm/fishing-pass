@@ -10,6 +10,6 @@ class DashboardController
 {
     public function index(Request $request): Response
     {
-        return Inertia::render('client/dashboard');
+        return Inertia::render('client/dashboard/dashboard');
     }
 }

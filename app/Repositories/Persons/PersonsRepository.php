@@ -27,6 +27,16 @@ class PersonsRepository implements PersonsInterface
      */
     private ?Gender $gender = null;
 
+    /**
+     * Filtro por id de empresa.
+     */
+    private ?int $companyId = null;
+
+    /**
+     * Filtro de personas ligadas a una empresa.
+     */
+    private ?bool $withCompany = null;
+
     public function __construct(
         public Person $model,
         public UsersInterface $usersRepository,
@@ -89,13 +99,26 @@ class PersonsRepository implements PersonsInterface
         return $this;
     }
 
+    public function setCompanyId(int $companyId): static
+    {
+        $this->companyId = $companyId;
+
+        return $this;
+    }
+
+    public function setWithCompany(bool $withCompany): static
+    {
+        $this->withCompany = $withCompany;
+
+        return $this;
+    }
+
     private function builder(): Builder
     {
         return $this->filters(
             Builder::table('public.persons', 'p')
                 ->schema($this->schema())
                 ->join('public.document_types as dt', 'dt.id', 'p.document_type_id')
-                ->where('p.company_id', 'is', DB::raw('null'))
                 ->orderBy('p.updated_at', 'desc')
                 ->disableSchemaFilter()
         )->whereNull(['p.deleted_at']);
@@ -103,12 +126,20 @@ class PersonsRepository implements PersonsInterface
 
     private function filters(Builder $builder): Builder
     {
+        if ($this->companyId) {
+            $builder->where('p.company_id', $this->companyId);
+        }
+
         if ($this->documentTypes) {
             $builder->whereIn('p.document_type_id', $this->documentTypes);
         }
 
         if ($this->gender) {
             $builder->where('p.gender', $this->gender->value);
+        }
+
+        if (!is_null($this->withCompany)) {
+            $builder->where('p.company_id', 'is', DB::raw($this->withCompany ? 'not null' : 'null'));
         }
 
         return $builder;

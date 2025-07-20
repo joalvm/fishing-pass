@@ -49,4 +49,14 @@ interface PersonsInterface
      * Filtra personas por género.
      */
     public function setGender(mixed $gender): static;
+
+    /**
+     * Filtra personas por id de empresa.
+     */
+    public function setCompanyId(int $companyId): static;
+
+    /**
+     * Filtra personas ligadas a una empresa.
+     */
+    public function setWithCompany(bool $withCompany): static;
 }

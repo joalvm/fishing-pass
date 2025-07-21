@@ -18,7 +18,7 @@ export function StaffFilters({ documentTypes }: StaffFiltersProps) {
             </div>
             <div className="flex justify-end">
                 <Button type="button" variant="default" asChild className="shadow-none">
-                    <Link href={route('admin.persons.create')}>
+                    <Link href={route('client.staff.create')}>
                         <PlusIcon className="mr-1 h-4 w-4" />
                         Agregar
                     </Link>

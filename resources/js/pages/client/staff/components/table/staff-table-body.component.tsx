@@ -39,7 +39,7 @@ export default function StaffTableBody() {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => (window.location.href = route('admin.persons.edit', person.id))}>
+                                <DropdownMenuItem onClick={() => (window.location.href = route('client.staff.edit', person.id))}>
                                     <PencilIcon className="mr-2 h-4 w-4" /> Editar
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => openDeleteDialog(person)} className="text-destructive focus:text-destructive">

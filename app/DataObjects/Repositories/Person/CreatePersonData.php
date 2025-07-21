@@ -23,7 +23,6 @@ class CreatePersonData extends Data
         #[MapName('gender')]
         #[WithCast(EnumCast::class, Gender::class)]
         public Gender $gender,
-        public string $email,
         #[MapName('middle_name')]
         public string|Optional|null $middleName = null,
         #[MapName('last_name_maternal')]

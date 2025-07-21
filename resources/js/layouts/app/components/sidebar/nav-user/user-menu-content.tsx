@@ -9,6 +9,7 @@ export function UserMenuContent() {
 
     const handleLogout = () => {
         cleanup();
+        sessionStorage.clear();
         router.flushAll();
     };
 

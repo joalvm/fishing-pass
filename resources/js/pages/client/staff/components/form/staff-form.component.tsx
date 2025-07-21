@@ -6,14 +6,14 @@ import PersonGender from '@/enums/person-gender.enum';
 import DocumentType from '@/types/document-type.type';
 import { InertiaFormProps } from '@inertiajs/react';
 import { useEffect } from 'react';
-import PersonFormValues from '../../types/person-form-values.type';
+import StaffFormValues from '../../types/staff-form-values.type';
 
-interface PersonFormProps {
-    form: InertiaFormProps<PersonFormValues>;
+interface StaffFormProps {
+    form: InertiaFormProps<StaffFormValues>;
     documentTypes: DocumentType[];
 }
 
-export default function PersonForm({ form, documentTypes }: PersonFormProps) {
+export default function StaffForm({ form, documentTypes }: StaffFormProps) {
     useEffect(() => {
         if (form.data.document_type_id && !documentTypes.some((dt) => dt.id === form.data.document_type_id)) {
             form.setData('document_type_id', documentTypes[0]?.id ?? '');
@@ -90,11 +90,13 @@ export default function PersonForm({ form, documentTypes }: PersonFormProps) {
                         <SelectValue placeholder="Selecciona tipo de documento" />
                     </SelectTrigger>
                     <SelectContent>
-                        {documentTypes.map((dt) => (
-                            <SelectItem key={dt.id} value={String(dt.id)}>
-                                {dt.name}
-                            </SelectItem>
-                        ))}
+                        {documentTypes
+                            .filter((dt) => dt.id !== 3)
+                            .map((dt) => (
+                                <SelectItem key={dt.id} value={String(dt.id)}>
+                                    {dt.name}
+                                </SelectItem>
+                            ))}
                     </SelectContent>
                 </Select>
                 <InputError message={form.errors.document_type_id} />
@@ -133,22 +135,6 @@ export default function PersonForm({ form, documentTypes }: PersonFormProps) {
                     </SelectContent>
                 </Select>
                 <InputError message={form.errors.gender} />
-            </div>
-            <div className="grid gap-2">
-                <Label htmlFor="email">
-                    Email<small>*</small>
-                </Label>
-                <Input
-                    id="email"
-                    type="email"
-                    value={form.data.email || ''}
-                    onChange={(e) => form.setData('email', e.target.value || undefined)}
-                    disabled={form.processing}
-                    required
-                    placeholder="Correo electrónico"
-                    className="shadow-none"
-                />
-                <InputError message={form.errors.email} />
             </div>
             <div className="grid gap-2">
                 <Label htmlFor="phone">Teléfono</Label>

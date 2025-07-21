@@ -17,7 +17,7 @@ type PersonsCreatePageProps = PageProps & {
 
 const breadcrumbs = (title: string) => [{ title: 'Personal', href: route('admin.persons.index') }, { title }];
 
-export default function PersonsCreatePage({ document_types, errors }: PersonsCreatePageProps) {
+export default function PersonsCreatePage({ document_types }: PersonsCreatePageProps) {
     const { form, withUser, setWithUser, resetAll } = usePersonForm({
         documentTypes: document_types,
         initialValues: {

@@ -1,4 +1,3 @@
-import { Toaster } from '@/components/ui/sonner';
 import CompanyEntityType from '@/enums/company-entity-type';
 import Content from '@/layouts/app/components/content.component';
 import Heading from '@/layouts/app/components/heading.component';
@@ -66,7 +65,6 @@ export default function CompaniesCreatePage({ document_types, errors }: Companie
         <AdminLayout title="Crear Empresa" breadcrumbs={breadcrumbs('Crear Empresa')}>
             <Content size="lg">
                 <Heading title="Crear Empresa" description="Crear una nueva empresa." />
-                <Toaster />
                 <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
                     <CompanyForm form={form} documentTypes={document_types} />
                     <CompanyUserForm withUser={withUser} form={form} setWithUser={setWithUser} />

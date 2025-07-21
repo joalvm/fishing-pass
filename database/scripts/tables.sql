@@ -39,7 +39,6 @@ CREATE TABLE public."persons" (
     "last_name_paternal" varchar NOT NULL,
     "last_name_maternal" varchar NULL,
     "gender" public."gender" NOT NULL,
-    "email" varchar NOT NULL,
     "phone" varchar NULL,
     "created_at" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,

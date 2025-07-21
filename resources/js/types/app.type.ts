@@ -7,7 +7,10 @@ export interface PageProps {
     name: string;
     auth: Auth;
     errors: Record<string, unknown>;
-    flash: Record<string, unknown>;
+    flash: {
+        status?: 'success' | 'error' | 'info';
+        message?: string;
+    };
     ziggy: Config & { location: string };
     [key: string]: unknown;
 }

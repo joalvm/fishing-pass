@@ -23,7 +23,6 @@ class UpdatePersonData extends Data
         #[MapName('gender')]
         #[WithCast(EnumCast::class, Gender::class)]
         public Gender|Optional $gender,
-        public string|Optional|null $email,
         #[MapName('middle_name')]
         public string|Optional|null $middleName,
         #[MapName('last_name_maternal')]

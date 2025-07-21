@@ -1,4 +1,3 @@
-import { Toaster } from '@/components/ui/sonner';
 import Content from '@/layouts/app/components/content.component';
 import Heading from '@/layouts/app/components/heading.component';
 import AdminLayout from '@/pages/admin/admin.layout';
@@ -49,7 +48,6 @@ export default function CompaniesEditPage({ company, document_types }: Companies
     return (
         <AdminLayout title="Editar Empresa" breadcrumbs={breadcrumbs(company.business_name)}>
             <Content size="lg">
-                <Toaster />
                 <Heading title="Editar Empresa" description="Editar datos de la empresa." />
                 <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
                     <CompanyForm form={form} documentTypes={document_types} />

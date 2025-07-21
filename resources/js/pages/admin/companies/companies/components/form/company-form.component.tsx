@@ -38,7 +38,7 @@ export function CompanyForm({ form, documentTypes }: CompanyFormProps) {
     return (
         <>
             {/* Toggle Tipo de Entidad - Sin label */}
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+            <div className="grid grid-cols-1 items-start gap-2 md:grid-cols-2">
                 <div className="grid gap-2">
                     <RadioGroup
                         value={form.data.entity_type}
